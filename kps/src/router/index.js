@@ -9,7 +9,7 @@ import Technologies from '../views/Technologies.vue'
 
 const routes = [
   { path: '/', name: 'Accueil', component: Accueil },
-  { path: '/a-propos', name: 'APropos', component: APropos },
+  { path: '/about', name: 'APropos', component: APropos },
   { path: '/contact', name: 'Contact', component: Contact },
   { path: '/expertise', name: 'Expertise', component: Expertise },
   { path: '/technologies', name: 'Technologies', component: Technologies }
