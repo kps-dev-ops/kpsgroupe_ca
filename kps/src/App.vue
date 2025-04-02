@@ -1,8 +1,10 @@
 <template>
   <nav>
     <RouterLink to="/">Accueil</RouterLink> |
-    <!-- <RouterLink to="/a-propos">À propos</RouterLink> |
-    <RouterLink to="/contact">Contact</RouterLink> -->
+    <RouterLink to="/about">À propos</RouterLink> |
+    <RouterLink to="/contact">Contact</RouterLink> |
+    <RouterLink to="/expertise">Expertise</RouterLink> |
+    <RouterLink to="/technologies">Technologies</RouterLink>
   </nav>
 
   <RouterView />
