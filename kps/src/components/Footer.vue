@@ -17,20 +17,20 @@
   
           <!-- Navigation Links -->
           <div class="col-md-3 footer-links">
-            <h4>Navigation</h4>
+            <h4 style="color:#5E5325;">Navigation</h4>
             <ul>
               <li v-for="(item, index) in store.navLinks" :key="index">
-                <a :href="item.href">{{ item.label }}</a>
+                <a style="text-decoration: none;":href="item.href">{{ item.label }}</a>
               </li>
             </ul>
           </div>
   
           <!-- Contact -->
           <div class="col-md-3 footer-links">
-            <div class="footer-contact pt-3">
+            <div class="footer-contact pt-2">
               <p>{{ store.contact.adresse }}</p>
               <p class="mt-3"><strong>Téléphone:</strong> <span>{{ store.contact.tel }}</span></p>
-              <p><strong>Email:</strong> <span><a :href="`mailto:${store.contact.email}`">{{ store.contact.email }}</a></span></p>
+              <p><strong>Email:</strong> <span><a style="color:cadetblue; text-decoration: none;" :href="`mailto:${store.contact.email}`">{{ store.contact.email }}</a></span></p>
             </div>
           </div>
         </div>
