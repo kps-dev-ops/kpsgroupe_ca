@@ -10,7 +10,7 @@ export const useAccueilStore = defineStore('accueil', {
     contactText: 'Contactez-nous',
     contactHref: '#contact',
     videoText: 'Voir la vidéo',
-    videoUrl: 'https://www.youtube.com/watch?v=Y7f98aduVJ8',
+    videoUrl: 'https://www.youtube.com/embed/Y7f98aduVJ8',
     image: './src/assets/img/illustration-1.webp',
     message: `Nous mettons en œuvre une solution sur mesure
       pour renforcer votre efficacité et piloter votre activité en temps réel.`,

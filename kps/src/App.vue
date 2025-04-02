@@ -1,5 +1,6 @@
 <template>
   <Headers/>
+  <home />
   <nav>
     <!-- <RouterLink to="/">Accueil</RouterLink> | -->
     <!-- <RouterLink to="/about">À propos</RouterLink> | -->
@@ -14,4 +15,5 @@
 <script setup>
 import { RouterView, RouterLink } from 'vue-router'
 import Headers from './components/Headers.vue';
+import home from './components/home.vue';
 </script>

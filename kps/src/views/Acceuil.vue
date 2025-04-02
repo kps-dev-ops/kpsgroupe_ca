@@ -52,7 +52,17 @@
   </template>
   
   <script setup>
-  import { useAccueilStore } from '../stores/useAccueilStore'
-  const store = useAccueilStore()
-  </script>
-  
+import { onMounted } from 'vue' // ✅ import manquant
+
+import { useAccueilStore } from '../stores/useAccueilStore'
+const store = useAccueilStore()
+
+import GLightbox from 'glightbox'
+import 'glightbox/dist/css/glightbox.min.css'
+
+onMounted(() => {
+  GLightbox({
+    selector: '.glightbox'
+  })
+})
+</script>
