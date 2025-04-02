@@ -10,8 +10,8 @@
       <!-- Menu dynamique -->
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li v-for="(item, index) in store.menu" :key="index">
-            <a :href="item.href" :class="{ active: index === 0 }">{{ item.label }}</a>
+          <li  v-for="(item, index) in store.menu" :key="index">
+            <a style="text-decoration: none;" :href="item.href" :class="{ active: index === 0 }">{{ item.label }}</a>
           </li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list" @click="store.toggleMenu"></i>
