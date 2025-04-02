@@ -20,7 +20,7 @@
             <h4 style="color:#5E5325;">Navigation</h4>
             <ul>
               <li v-for="(item, index) in store.navLinks" :key="index">
-                <a style="text-decoration: none;":href="item.href">{{ item.label }}</a>
+                <a :href="item.href" style="text-decoration: none;">{{ item.label }}</a>
               </li>
             </ul>
           </div>

@@ -18,7 +18,7 @@
       </nav>
 
       <!-- Bouton dynamique -->
-      <a class="btn-getstarted" :href="store.contactHref">
+      <a style="text-decoration: none;" class="btn-getstarted" :href="store.contactHref">
         {{ store.contactText }}
       </a>
     </div>
