@@ -6,14 +6,14 @@
       </div>
   
       <div class="container">
-        <div class="d-flex justify-content-center">
-          <ul class="nav nav-tabs" data-aos="fade-up" data-aos-delay="100">
+        <!-- Ajout du wrapper stylé -->
+        <div class="nav-wrapper d-flex justify-content-center">
+          <ul class="nav nav-pills" data-aos="fade-up" data-aos-delay="100">
             <li class="nav-item" v-for="tab in store.tabs" :key="tab.id">
               <a
                 class="nav-link"
                 :class="{ active: store.activeTab === tab.id }"
-                data-bs-toggle="tab"
-                :data-bs-target="`#${tab.id}`"
+                href="#"
                 @click.prevent="store.activeTab = tab.id"
               >
                 <h4>{{ tab.title }}</h4>
@@ -54,4 +54,29 @@
   import { useTechnologieStore } from '../stores/useTechnologieStore'
   const store = useTechnologieStore()
   </script>
+  
+  <style scoped>
+  /* Wrapper avec forme circulaire */
+  .nav-wrapper {
+    background: #f8f9fa;
+    border-radius: 60px;
+    padding: 10px 20px;
+    display: inline-block;
+  }
+  
+  /* Style des onglets */
+  .nav-pills .nav-link {
+    border-radius: 50px;
+    padding: 10px 20px;
+    color: #4e342e;
+    font-weight: bold;
+    transition: 0.3s ease;
+    background-color: transparent;
+  }
+  
+  .nav-pills .nav-link.active {
+    background-color: #45A79E;
+    color: white;
+  }
+  </style>
   
