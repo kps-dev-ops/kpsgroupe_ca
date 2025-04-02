@@ -1,26 +1,38 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+  <!-- <img  class="imgf" alt="Vue logo" src="./assets/th.png" width="125" height="120">
+  <h1 class="soul">oul connexion</h1> -->
+  <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+  <!-- <LoginView/> -->
+  <RouterView /> 
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+// import HelloWorld from './components/HelloWorld.vue'
+// import LoginView from './components/LoginView.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    // HelloWorld,
+    // LoginView
   }
 }
-</script>
 
+
+</script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.imgf{
+  position: relative;
+  left:460px;
+  top:-10px;
+}
+
+.soul {
+  position:relative;
+  left:550px;
+  top:-82px;
+  font-size: 2em;
+  font-family: 'Roboto', sans-serif;
+
 }
 </style>

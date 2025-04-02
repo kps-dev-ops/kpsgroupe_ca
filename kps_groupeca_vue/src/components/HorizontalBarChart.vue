@@ -11,7 +11,7 @@
   ChartJS.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
   
   export default defineComponent({
-    name: 'HorizontalBarChart',
+    name: 'HorizontalbarDash',
     props: {
       table: {
         type: Array,
@@ -31,7 +31,7 @@
           {
             label: 'Coach Effectiveness',
             data: props.table1,
-            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            backgroundColor:       'rgba(100, 149, 237, 0.4)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1
           }
@@ -69,7 +69,7 @@
   <style>
   .bar-chart-container {
     position: relative;
-    height: 450px;
+    height: 350px;
     width: 100%;
     margin: 0 auto;
     padding: 10px; 
