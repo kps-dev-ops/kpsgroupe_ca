@@ -15,6 +15,8 @@ const routes = [
   { path: '/technologies', name: 'Technologies', component: Technologies }
 ]
 
+
+
 const router = createRouter({
   history: createWebHistory(),
   routes
