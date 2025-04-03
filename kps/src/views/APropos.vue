@@ -14,7 +14,7 @@
 
         <div class="col-xl-6" data-aos="fade-up" data-aos-delay="300">
           <div class="image-wrapper">
-            <div class="images position-relative" data-aos="zoom-out" data-aos-delay="400">
+            <div class="images position-relative" data-aos="zoom-out" data-aos-delay="300">
               <img :src="aProposStore.imageUrl" alt="Business Meeting" class="img-fluid main-image rounded-4">
               <img :src="aProposStore.smallImageUrl" alt="Team Discussion" class="img-fluid small-image rounded-4">
             </div>
