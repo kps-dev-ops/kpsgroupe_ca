@@ -1,7 +1,7 @@
 <template>
     <section id="Technologies" class="features section">
       <div class="container section-title" data-aos="fade-up">
-        <h2>Technologies</h2>
+        <h2 style="color:#5E5325 ;">Technologies</h2>
         <p>{{ store.intro }}</p>
       </div>
   

@@ -4,34 +4,31 @@
         <Swiper
           :modules="[Autoplay, Pagination]"
           :loop="true"
+          :watchSlidesProgress="true"
           :speed="600"
           :autoplay="{ delay: 3000, disableOnInteraction: false }"
-          :pagination="{ clickable: true }"
+          :pagination="{ el: '.swiper-pagination', clickable: true }"
           :breakpoints="breakpoints"
           class="clients-swiper"
         >
           <SwiperSlide v-for="(logo, index) in store.logos" :key="index">
             <img :src="logo" class="img-fluid" alt="Client logo" />
           </SwiperSlide>
-  
-          <!-- Pagination visible dans le slot si besoin -->
-          <template #pagination>
-            <div class="swiper-pagination"></div>
-          </template>
         </Swiper>
+        <div class="swiper-pagination mt-4"></div>
       </div>
     </section>
   </template>
   
   <script setup>
   import { useClientsStore } from '../stores/useClientsStore'
-  const store = useClientsStore()
-  
   import { Swiper, SwiperSlide } from 'swiper/vue'
   import { Autoplay, Pagination } from 'swiper/modules'
   
   import 'swiper/css'
   import 'swiper/css/pagination'
+  
+  const store = useClientsStore()
   
   const breakpoints = {
     320: { slidesPerView: 2, spaceBetween: 40 },

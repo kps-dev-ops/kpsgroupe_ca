@@ -11,6 +11,7 @@ export const useClientsStore = defineStore('clients', {
       './src/assets/img/clients/client-6.png',
       './src/assets/img/clients/client-7.png',
       './src/assets/img/clients/client-8.png'
+      
     ]
   })
 })
