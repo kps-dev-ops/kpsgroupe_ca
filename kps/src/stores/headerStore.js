@@ -16,7 +16,9 @@ export const useHeaderStore = defineStore('header', {
 
   actions: {
     toggleMenu() {
+      console.log('toggleMenu called!') 
       this.isMenuOpen = !this.isMenuOpen
+      console.log('isMenuOpen:', this.isMenuOpen) // ✅ T
     },
 
     updateMenu(newMenu) {
