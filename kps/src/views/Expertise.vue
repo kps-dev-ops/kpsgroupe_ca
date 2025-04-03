@@ -2,7 +2,7 @@
   <section id="services" class="services section light-background">
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
-      <h2>{{ servicesStore.sectionTitle }}</h2>
+      <h2 style="color:#5E5325;">{{ servicesStore.sectionTitle }}</h2>
       <p>{{ servicesStore.sectionDescription }}</p>
     </div>
     
@@ -21,7 +21,7 @@
               <i :class="service.icon"></i>
             </div>
             <div>
-              <h3>{{ service.title }}</h3>
+              <h3 style="color:#5E5325;">{{ service.title }}</h3>
               <p>{{ service.description }}</p>
             </div>
           </div>
