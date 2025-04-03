@@ -1,7 +1,7 @@
 <template>
   <section id="contact" class="contact section light-background">
     <div class="container section-title" data-aos="fade-up">
-      <h2>{{ contactStore.sectionTitle }}</h2>
+      <h2 style="color:#5E5325;" >{{ contactStore.sectionTitle }}</h2>
       <p>{{ contactStore.sectionDescription }}</p>
     </div>
 
@@ -9,8 +9,8 @@
       <div class="row g-4 g-lg-5">
         <div class="col-lg-5">
           <div class="info-box" data-aos="fade-up" data-aos-delay="200">
-            <h3>Contact Info</h3>
-
+            <h3 >Contact Info</h3>
+            <p>Nous sommes disponibles pour vous accompagner dans tous vos projets.</p>
             <div v-for="(info, index) in contactStore.contactInfos" :key="index" class="info-item" data-aos="fade-up" :data-aos-delay="info.delay">
               <div class="icon-box">
                 <i :class="info.icon"></i>
@@ -21,7 +21,7 @@
                   <span v-for="(item, i) in info.value" :key="i">{{ item }}<br /></span>
                 </p>
                 <p v-else>
-                  <a v-if="info.link" :href="info.link" target="_blank">{{ info.value }}</a>
+                  <a v-if="info.link" :href="info.link"  style="text-decoration: none;"target="_blank">{{ info.value }}</a>
                   <span v-else>{{ info.value }}</span>
                 </p>
               </div>
@@ -31,7 +31,7 @@
 
         <div class="col-lg-7">
           <div class="contact-form" data-aos="fade-up" data-aos-delay="300">
-            <h3>Prendre contact</h3>
+            <h3 style="color:#5E5325;">Prendre contact</h3>
             <p>Remplissez ce formulaire et nous vous répondrons dans les plus brefs délais.</p>
 
             <form @submit.prevent="handleSubmit" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
