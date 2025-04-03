@@ -75,19 +75,32 @@ const form = ref({
 
 const handleSubmit = async () => {
   try {
-    const response = await fetch('/forms/contact.php', { 
+    const response = await fetch('http://localhost:8000/forms/contact.php', { 
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(form.value)
+      body: new URLSearchParams({
+        name: form.value.name,
+        email: form.value.email,
+        subject: form.value.subject,
+        message: form.value.message
+      })
     });
 
-    const result = await response.text();
-    alert(result);
+    if (!response.ok) {
+      throw new Error(`Erreur serveur : ${response.status}`);
+    }
 
-    // form.value = { name: '', email: '', subject: '', message: '' };
+    const result = await response.json();
+
+    if (result.status === 'success') {
+      alert('Message envoyé avec succès !');
+      form.value = { name: '', email: '', subject: '', message: '' };
+    } else {
+      alert(`Échec de l'envoi : ${result.message}`);
+    }
   } catch (error) {
     console.error('Erreur lors de l\'envoi du message:', error);
-    alert('Échec de l\'envoi du message.');
+    alert('Échec de l\'envoi du message. Vérifiez votre connexion et réessayez.');
   }
 };
 
