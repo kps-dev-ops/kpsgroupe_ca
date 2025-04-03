@@ -8,13 +8,15 @@
       </a>
 
       <!-- Menu dynamique -->
-      <nav id="navmenu" class="navmenu">
+      <nav id="navmenu" :class="['navmenu', store.isMenuOpen ? 'menu-open' : '']">
         <ul>
-          <li  v-for="(item, index) in store.menu" :key="index">
+          <li v-for="(item, index) in store.menu" :key="index">
             <a style="text-decoration: none;" :href="item.href" :class="{ active: index === 0 }">{{ item.label }}</a>
           </li>
         </ul>
+        <!-- Fix: Appel correct de la fonction avec store -->
         <i class="mobile-nav-toggle d-xl-none bi bi-list" @click="store.toggleMenu"></i>
+
       </nav>
 
       <!-- Bouton dynamique -->
