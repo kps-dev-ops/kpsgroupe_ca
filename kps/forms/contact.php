@@ -9,10 +9,6 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-echo "<pre>";
-var_dump($_ENV);  // Affiche toutes les variables d'environnement disponibles
-echo "</pre>";
-
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -25,9 +21,14 @@ if (!file_exists(__DIR__ . '/.env')) {
 } else {
   echo 'Le fichier .env est présent.<br>';
 }
-
+putenv("TEST_VAR=hello");
+echo 'TEST_VAR = ' . getenv('TEST_VAR') . "<br>"; 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
+
+echo "<pre>";
+var_dump($_ENV);  // Affiche toutes les variables d'environnement disponibles
+echo "</pre>";
 
 // Vérification de la variable d'environnement
 var_dump(getenv('MAIL_USERNAME'));  // Affiche la valeur de la variable d'environnement
@@ -55,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Port = getenv('MAIL_PORT');
 
         $mail->setFrom(getenv('MAIL_USERNAME'), 'Ubbfy Contact');
-        $mail->addAddress('contact@kpsgroupe.com');
+        $mail->addAddress('owens.aihunzoun1@gmail.com');
         $mail->addReplyTo($email, $name);
 
         $mail->isHTML(true);
