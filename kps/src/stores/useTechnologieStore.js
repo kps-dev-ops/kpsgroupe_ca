@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useTechnologieStore = defineStore('Technologies', {
   state: () => ({
     intro: `KPS CONSULTING ANALYTICS place l'innovation et l'excellence au cœur de son
-    développement et intervient dans les domaines liés à la transformation digitale...`,
+    développement et intervient dans les domaines liés à la transformation digitale des grands groupes, des PME, des TPE et nous accompagnons toutes sortes de start-ups. `,
     activeTab: 'features-tab-1',
     tabs: [
       {

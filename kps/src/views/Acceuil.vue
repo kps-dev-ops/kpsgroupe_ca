@@ -4,7 +4,7 @@
         <div class="row align-items-center">
           <div class="col-lg-6">
             <div class="hero-content" data-aos="fade-up" data-aos-delay="100">
-              <div class="company-badge mb-4">
+              <div style="font-weight: normal" class="company-badge mb-4" >
                 {{ store.intro }}
               </div>
               <h2 class="mb-4" style="color: #45A79E;">
@@ -14,7 +14,7 @@
                 {{ store.description }}
               </p>
               <div class="hero-buttons">
-                <a :href="store.contactHref" class="btn btn-primary me-0 me-sm-2 mx-1">{{ store.contactText }}</a>
+                <a style="font-weight:bold ;" :href="store.contactHref" class="btn btn-primary me-0 me-sm-2 mx-1">{{ store.contactText }}</a>
                 <a :href="store.videoUrl" class="btn btn-link mt-2 mt-sm-0 glightbox">
                   <i class="bi bi-play-circle me-1"></i>
                   {{ store.videoText }}
@@ -41,7 +41,7 @@
                 <i :class="stat.icon"></i>
               </div>
               <div class="stat-content">
-                <h4>{{ stat.title }}</h4>
+                <h4 style="color: #5E5325;">{{ stat.title }}</h4>
                 <p class="mb-0">{{ stat.description }}</p>
               </div>
             </div>
