@@ -38,7 +38,7 @@
       await account.createEmailPasswordSession(email.value, password.value)
       const user = await account.get()
       authStore.setToken(user.$id)
-      router.push('/dashboard')
+      router.push('/Blogs')
     } catch (err) {
       error.value = err.message
     }

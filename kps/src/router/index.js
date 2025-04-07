@@ -6,6 +6,7 @@ import Expertise from '../views/Expertise.vue'
 import Technologies from '../views/Technologies.vue'
 import Secretlogin from '../views/Secretlogin.vue'
 import home from '../components/home.vue'
+import Blogs from '../views/Blogs.vue'
 // import APropos from '../views/APropos.vue'
 // import Contact from '../views/Contact.vue'
 
@@ -13,9 +14,10 @@ const routes = [
   { path: '', name: 'home', component: home},
   // { path: '/about', name: 'APropos', component: APropos },
   // { path: '/contact', name: 'Contact', component: Contact },
-  // { path: '/expertise', name: 'Expertise', component: Expertise },
   { path: '/home', name: 'home', component: home },
-  { path: '/login', name: 'Secretlogin', component: Secretlogin , meta:{hidden: true}}
+  { path: '/login', name: 'Secretlogin', component: Secretlogin , meta:{hidden: true}},
+  { path: '/Blogs', name: 'Blogs', component: Blogs },
+
 ]
 
 
