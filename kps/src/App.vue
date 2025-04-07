@@ -1,10 +1,5 @@
 <template>
-  <Headers />
-  <home />
-  <nav>
-    <!-- tes RouterLinks si tu les remets un jour -->
-  </nav>
-
+  <!-- <Headers /> -->
   <RouterView />
 
   <!-- 🔼 Flèche retour en haut -->
@@ -19,9 +14,8 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { RouterView, RouterLink } from 'vue-router'
+import { RouterView } from 'vue-router'
 import Headers from './components/Headers.vue'
-import home from './components/home.vue'
 
 const isVisible = ref(false)
 
@@ -66,5 +60,4 @@ onUnmounted(() => {
 .scroll-to-top:hover {
   background-color: #1a8e87;
 }
-
 </style>

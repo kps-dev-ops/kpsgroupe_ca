@@ -69,6 +69,38 @@ html {
   scroll-behavior: smooth;
 }
 
+a {
+  position: relative;
+  padding-bottom: 4px;
+  color: black;
+  font-weight: normal;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Style actif (texte) */
+a.active {
+  color:#2aa39a;
+  font-weight: bold;
+}
+
+/* Effet de soulignement animé */
+a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: #2aa39a;
+  transition: width 0.4s ease-in-out;
+}
+
+/* Active = ligne qui s'étire */
+a.active::after {
+  width: 100%;
+}
+
+
 /* Lien actif */
 .active {
   color: #2aa39a;

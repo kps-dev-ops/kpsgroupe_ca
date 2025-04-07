@@ -4,15 +4,18 @@ import APropos from '../views/APropos.vue'
 import Contact from '../views/Contact.vue'
 import Expertise from '../views/Expertise.vue'
 import Technologies from '../views/Technologies.vue'
+import Secretlogin from '../views/Secretlogin.vue'
+import home from '../components/home.vue'
 // import APropos from '../views/APropos.vue'
 // import Contact from '../views/Contact.vue'
 
 const routes = [
-//   { path: '/', name: 'Accueil', component: Accueil },
-  { path: '/about', name: 'APropos', component: APropos },
-  { path: '/contact', name: 'Contact', component: Contact },
-  { path: '/expertise', name: 'Expertise', component: Expertise },
-  { path: '/technologies', name: 'Technologies', component: Technologies }
+  { path: '', name: 'home', component: home},
+  // { path: '/about', name: 'APropos', component: APropos },
+  // { path: '/contact', name: 'Contact', component: Contact },
+  // { path: '/expertise', name: 'Expertise', component: Expertise },
+  { path: '/home', name: 'home', component: home },
+  { path: '/login', name: 'Secretlogin', component: Secretlogin , meta:{hidden: true}}
 ]
 
 
