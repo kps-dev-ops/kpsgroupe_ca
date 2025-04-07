@@ -2,9 +2,6 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// Test de l'affichage PHP
-echo "Test de l'affichage PHP<br>";
-
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
@@ -12,26 +9,12 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use Dotenv\Dotenv;
 
 require '../src/assets/vendor/autoload.php';
 
-if (!file_exists(__DIR__ . '/.env')) {
-  echo 'Le fichier .env est manquant !';
-} else {
-  echo 'Le fichier .env est présent.<br>';
-}
-putenv("TEST_VAR=hello");
-echo 'TEST_VAR = ' . getenv('TEST_VAR') . "<br>"; 
-$dotenv = Dotenv::createImmutable(__DIR__);
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
-
-echo "<pre>";
-var_dump($_ENV);  // Affiche toutes les variables d'environnement disponibles
-echo "</pre>";
-
-// Vérification de la variable d'environnement
-var_dump(getenv('MAIL_USERNAME'));  // Affiche la valeur de la variable d'environnement
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'] ?? 'Anonyme';
@@ -48,15 +31,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         $mail->isSMTP();
-        $mail->Host = getenv('MAIL_HOST');
+        $mail->Host = $_ENV['MAIL_HOST'];
         $mail->SMTPAuth = true;
-        $mail->Username = getenv('MAIL_USERNAME');
-        $mail->Password = getenv('MAIL_PASSWORD');
+        $mail->Username = $_ENV['MAIL_USERNAME'];
+        $mail->Password = $_ENV['MAIL_PASSWORD'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port = getenv('MAIL_PORT');
+        $mail->Port = $_ENV['MAIL_PORT'];
 
-        $mail->setFrom(getenv('MAIL_USERNAME'), 'Ubbfy Contact');
-        $mail->addAddress('owens.aihunzoun1@gmail.com');
+        $mail->setFrom($_ENV['MAIL_USERNAME'], 'Ubbfy Contact');
+        $mail->addAddress($_ENV['MAIL_SENDER']);
         $mail->addReplyTo($email, $name);
 
         $mail->isHTML(true);
