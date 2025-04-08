@@ -13,5 +13,12 @@ import 'aos/dist/aos.css'
 
 AOS.init()
 const pinia = createPinia()
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faFileAlt, faUser } from '@fortawesome/free-solid-svg-icons'
 
+library.add(faFileAlt, faUser)
+
+
+// App.component('font-awesome-icon', FontAwesomeIcon)
 createApp(App).use(router).use(pinia).mount('#app')

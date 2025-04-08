@@ -7,6 +7,7 @@ import Technologies from '../views/Technologies.vue'
 import Secretlogin from '../views/Secretlogin.vue'
 import home from '../components/home.vue'
 import Blogs from '../views/Blogs.vue'
+import blogdetail from '../views/blogdetail.vue'
 // import APropos from '../views/APropos.vue'
 // import Contact from '../views/Contact.vue'
 
@@ -17,6 +18,12 @@ const routes = [
   { path: '/home', name: 'home', component: home },
   { path: '/login', name: 'Secretlogin', component: Secretlogin , meta:{hidden: true}},
   { path: '/Blogs', name: 'Blogs', component: Blogs },
+  {
+    path: '/blog/:id',
+    name: 'BlogDetail',
+    component: blogdetail
+  }
+  
 
 ]
 

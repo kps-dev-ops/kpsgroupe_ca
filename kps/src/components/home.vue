@@ -3,10 +3,11 @@
     <Accueil />
     <APropos />
     <Expertise />
+    
     <Technologies/>
     <Clients/>
+    <blog/>
     <Contact/>
-    
     <Footer/>
     
     </template>
@@ -21,5 +22,6 @@
   import Headers from './Headers.vue';
   import Expertise from '../views/Expertise.vue';
   import Contact from '../views/Contact.vue';
+  import blog from '../views/blog.vue';
   </script>
   
