@@ -1,175 +1,194 @@
-
 <template>
-    <section class="post-page">
-      <div class="header">
-        <h2>Articles</h2>
-        <button class="toggle-btn" @click="toggleForm">{{ step > 0 ? 'Fermer' : '➕ Nouveau Post' }}</button>
-      </div>
-  
-      <div v-if="step === 0" class="posts-list">
-        <div class="post-card" v-for="post in posts" :key="post.$id">
-          <img :src="post.image_url" alt="cover" />
-          <h3>{{ post.title }}</h3>
-          <p>{{ post.subtitle }}</p>
-          <div class="actions">
-            <button @click="editPost(post)">✏️</button>
-            <button @click="deletePost(post.$id)">🗑️</button>
-          </div>
+  <section class="post-page">
+    <div class="header">
+      <h2>Articles</h2>
+      <button class="toggle-btn" @click="toggleForm">
+        {{ step > 0 ? 'Fermer' : '➕ Nouveau Post' }}
+      </button>
+    </div>
+
+    <div v-if="step === 0" class="posts-list">
+      <div class="post-card" v-for="post in posts" :key="post.$id">
+        <img :src="post.image_url" alt="cover" />
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.subtitle }}</p>
+        <div class="actions">
+          <button @click="editPost(post)">✏️</button>
+          <button @click="deletePost(post.$id)">🗑️</button>
         </div>
       </div>
-  
-      <div v-if="step > 0" class="form-box">
-        <form @submit.prevent="handleSubmit">
-          <div v-show="step === 1">
-            <div class="input-group" v-for="field in ['title', 'subtitle', 'slug']" :key="field">
-              <input v-model="form[field]" required :placeholder="labels[field]" />
-            </div>
-            <div class="input-group">
-              <textarea v-model="form.description" rows="2" placeholder="Résumé de l'article" />
-            </div>
-            <div class="input-group">
-              <input type="file" @change="uploadImage" />
-            </div>
+    </div>
+
+    <div v-if="step > 0" class="form-box">
+      <form @submit.prevent="handleSubmit">
+        <div v-show="step === 1">
+          <div class="input-group" v-for="field in ['title', 'subtitle', 'slug']" :key="field">
+            <input v-model="form[field]" required :placeholder="labels[field]" />
           </div>
-  
-          <div v-show="step === 2">
-            <div class="input-group">
-              <textarea v-model="form.content" rows="4" placeholder="Contenu HTML ou Markdown" />
-            </div>
-            <div class="input-group">
-              <input v-model="form.categories" placeholder="Catégories (virgule)" />
-            </div>
-            <div class="input-group">
-              <input v-model="form.author.name" placeholder="Nom auteur" required />
-            </div>
-            <div class="input-group">
-              <input v-model="form.author.email" placeholder="Email de l’auteur" required />
-            </div>
-            <div class="input-group">
-              <input v-model="form.author.bio" placeholder="Bio de l’auteur" />
-            </div>
-            <div class="input-group">
-              <select v-model="form.author.avatar_url">
-                <option disabled value="">Choisir un avatar</option>
-                <option v-for="avatar in avatarList" :key="avatar" :value="avatar">
-                  {{ avatar }}
-                </option>
-              </select>
-            </div>
+          <div class="input-group">
+            <textarea v-model="form.description" rows="2" placeholder="Résumé de l'article" />
           </div>
-  
-          <div class="form-footer">
-            <button type="button" @click="step--" :disabled="step === 1">⬅</button>
-            <button type="button" @click="step === 2 ? handleSubmit() : step++">
-              {{ step === 2 ? (editingId ? 'Mettre à jour' : 'Publier') : 'Suivant ➡' }}
-            </button>
+          <div class="input-group">
+            <input type="file" @change="uploadImage" />
           </div>
-        </form>
-      </div>
-    </section>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted } from 'vue'
-  import { Client, Databases, ID, Storage } from 'appwrite'
-  
-  const client = new Client()
-  client.setEndpoint('https://[TON_ENDPOINT]').setProject('[TON_PROJECT_ID]')
-  const db = new Databases(client)
-  const storage = new Storage(client)
-  const databaseId = '[TON_DATABASE_ID]'
-  const collectionId = 'posts'
-  const bucketId = '[TON_BUCKET_ID]'
-  
-  const posts = ref([])
-  const form = ref({
+        </div>
+
+        <div v-show="step === 2">
+          <div class="input-group">
+            <textarea v-model="form.content" rows="4" placeholder="Contenu HTML ou Markdown" />
+          </div>
+          <div class="input-group">
+            <input v-model="form.categories" placeholder="Catégories (virgule)" />
+          </div>
+          <div class="input-group">
+            <input v-model="form.author.name" placeholder="Nom auteur" required />
+          </div>
+          <div class="input-group">
+            <input v-model="form.author.email" placeholder="Email de l’auteur" required />
+          </div>
+          <div class="input-group">
+            <input v-model="form.author.bio" placeholder="Bio de l’auteur" />
+          </div>
+          <div class="input-group">
+            <select v-model="form.author.avatar_url">
+              <option disabled value="">Choisir un avatar</option>
+              <option v-for="avatar in avatarList" :key="avatar" :value="avatar">
+                {{ avatar }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <button type="button" @click="step--" :disabled="step === 1">⬅</button>
+          <button type="button" @click="step === 2 ? handleSubmit() : step++">
+            {{ step === 2 ? (editingId ? 'Mettre à jour' : 'Publier') : 'Suivant ➡' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { Client, Databases, ID, Storage } from 'appwrite'
+
+const client = new Client()
+client.setEndpoint('https://appwrite.ubbfy.com/v1').setProject('67f3ad4f00234f8ab06c')
+const db = new Databases(client)
+const storage = new Storage(client)
+const databaseId = '67f3de5700068b483ca7'
+const collectionId = '67f3ebc80030da0f765e'
+const authorsCollectionId = '67f3ebd100297452daba'
+const bucketId = '67f3ad7b0017d490c545'
+
+const posts = ref([])
+const editingId = ref(null)
+const step = ref(0)
+
+const form = ref({
+  title: '', subtitle: '', slug: '', description: '',
+  content: '', image_url: '', categories: '',
+  author: { name: '', email: '', bio: '', avatar_url: '', created_at: '' }
+})
+
+const labels = {
+  title: 'Titre',
+  subtitle: 'Sous-titre',
+  slug: 'Slug (mon-article)'
+}
+
+const avatarList = [
+  "https://api.dicebear.com/6.x/bottts/svg?seed=A",
+  "https://api.dicebear.com/6.x/bottts/svg?seed=B",
+  "https://api.dicebear.com/6.x/bottts/svg?seed=C",
+  "https://api.dicebear.com/6.x/bottts/svg?seed=D"
+]
+
+onMounted(() => {
+  loadPosts()
+})
+
+const toggleForm = () => {
+  step.value = step.value > 0 ? 0 : 1
+  if (step.value === 1) resetForm()
+}
+
+const loadPosts = async () => {
+  const res = await db.listDocuments(databaseId, collectionId)
+  posts.value = res.documents
+}
+
+const handleSubmit = async () => {
+  const authorData = {
+    name: form.value.author.name,
+    email: form.value.author.email,
+    bio: form.value.author.bio || '',
+    avatar_url: form.value.author.avatar_url,
+    created_at: form.value.author.created_at || new Date().toISOString()
+  }
+
+  const authorRes = await db.createDocument(databaseId, authorsCollectionId, ID.unique(), authorData)
+  const postsId = `post-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+
+  const payload = {
+    ...form.value,
+    categories: form.value.categories.split(',').map(x => x.trim()),
+    authors: authorRes.$id,
+    posts_id: postsId,
+    published: true,
+    updated_at: new Date().toISOString()
+  }
+
+  delete payload.author
+
+  if (editingId.value) {
+    await db.updateDocument(databaseId, collectionId, editingId.value, payload)
+  } else {
+    payload.created_at = new Date().toISOString()
+    await db.createDocument(databaseId, collectionId, ID.unique(), payload)
+  }
+
+  await loadPosts()
+  step.value = 0
+  resetForm()
+}
+
+const resetForm = () => {
+  editingId.value = null
+  form.value = {
     title: '', subtitle: '', slug: '', description: '',
     content: '', image_url: '', categories: '',
-    author: {
-      name: '', email: '', bio: '', avatar_url: '', created_at: ''
-    }
-  })
-  const labels = { title: 'Titre', subtitle: 'Sous-titre', slug: 'Slug (mon-article)' }
-  const editingId = ref(null)
-  const step = ref(0)
-  
-  const avatarList = [
-    "https://api.dicebear.com/6.x/bottts/svg?seed=A",
-    "https://api.dicebear.com/6.x/bottts/svg?seed=B",
-    "https://api.dicebear.com/6.x/bottts/svg?seed=C",
-    "https://api.dicebear.com/6.x/bottts/svg?seed=D"
-  ]
-  
-  onMounted(async () => {
+    author: { name: '', email: '', bio: '', avatar_url: '', created_at: '' }
+  }
+}
+
+const editPost = (post) => {
+  form.value = {
+    ...post,
+    categories: post.categories?.join(', ') || '',
+    author: post.author || { name: '', email: '', bio: '', avatar_url: '', created_at: '' }
+  }
+  editingId.value = post.$id
+  step.value = 1
+}
+
+const deletePost = async (id) => {
+  if (confirm("Supprimer ce post ?")) {
+    await db.deleteDocument(databaseId, collectionId, id)
     await loadPosts()
-  })
-  
-  const toggleForm = () => {
-    step.value = step.value > 0 ? 0 : 1
-    if (step.value === 1) resetForm()
   }
-  
-  const loadPosts = async () => {
-    const res = await db.listDocuments(databaseId, collectionId)
-    posts.value = res.documents
-  }
-  
-  const handleSubmit = async () => {
-    if (!form.value.author.created_at) {
-      form.value.author.created_at = new Date().toISOString()
-    }
-    const payload = {
-      ...form.value,
-      categories: form.value.categories.split(',').map(x => x.trim()),
-      updated_at: new Date().toISOString()
-    }
-  
-    if (editingId.value) {
-      await db.updateDocument(databaseId, collectionId, editingId.value, payload)
-    } else {
-      payload.created_at = new Date().toISOString()
-      await db.createDocument(databaseId, collectionId, ID.unique(), payload)
-    }
-    await loadPosts()
-    step.value = 0
-    resetForm()
-  }
-  
-  const resetForm = () => {
-    editingId.value = null
-    form.value = {
-      title: '', subtitle: '', slug: '', description: '',
-      content: '', image_url: '', categories: '',
-      author: { name: '', email: '', bio: '', avatar_url: '', created_at: '' }
-    }
-  }
-  
-  const editPost = (post) => {
-    form.value = {
-      ...post,
-      categories: post.categories?.join(', ') || '',
-      author: post.author || { name: '', email: '', bio: '', avatar_url: '', created_at: '' }
-    }
-    editingId.value = post.$id
-    step.value = 1
-  }
-  
-  const deletePost = async (id) => {
-    if (confirm("Supprimer ce post ?")) {
-      await db.deleteDocument(databaseId, collectionId, id)
-      await loadPosts()
-    }
-  }
-  
-  const uploadImage = async (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-    const uploaded = await storage.createFile(bucketId, ID.unique(), file)
-    form.value.image_url = `https://[TON_ENDPOINT]/storage/buckets/${bucketId}/files/${uploaded.$id}/view?project=[TON_PROJECT_ID]&mode=admin`
-  }
-  </script>
-  
-  
+}
+
+const uploadImage = async (e) => {
+  const file = e.target.files[0]
+  if (!file) return
+  const uploaded = await storage.createFile(bucketId, ID.unique(), file)
+  form.value.image_url = `https://appwrite.ubbfy.com/storage/buckets/${bucketId}/files/${uploaded.$id}/view?project=67f3ad4f00234f8ab06c&mode=admin`
+}
+
+</script>
   <style scoped>
   .post-page {
     padding: 2rem;
