@@ -1,107 +1,69 @@
 <template>
-    <div class="blog-detail">
-      <!-- Section bannière avec titre -->
-      <div class="banner">
-        <h1>{{ post.title }}</h1>
-        <div class="author-bar">
-          <img :src="post.author.avatar_url" alt="avatar" class="avatar" />
-          <div class="meta">
-            <p>{{ post.author.name }}</p>
-            <small>{{ formatDate(post.created_at) }}</small>
-          </div>
+  <div class="blog-detail" v-if="post">
+    <div class="banner">
+      <h1>{{ post.title }}</h1>
+      <div class="author-bar" v-if="post.authors">
+        <img :src="post.authors.avatar_url" alt="avatar" class="avatar" />
+        <div class="meta">
+          <p>{{ post.authors.name }}</p>
+          <small>{{ formatDate(post.created_at) }}</small>
         </div>
-      </div>
-  
-      <!-- Section contenu -->
-      <div class="content-container">
-        <div class="author-section">
-          <img :src="post.author.avatar_url" class="author-img" />
-          <div>
-            <h2>{{ post.author.name }}</h2>
-            <p class="bio">{{ post.author.bio }}</p>
-          </div>
-        </div>
-  
-        <div class="main-content" v-html="post.content" />
       </div>
     </div>
-  </template>
-<!--   
-  <script setup>
-  import { ref } from 'vue'
-  import { useRoute } from 'vue-router'
-  
-  const route = useRoute()
-  
-  // Donnée fictive simulée (à remplacer plus tard avec Appwrite)
-  const post = ref({
-    title: 'Visibilité en ligne : les marques face au grand bouleversement de l’IA',
-    created_at: '2025-04-07T10:00:00.000Z',
-    content: `
-      <h2>La recherche en ligne est en train de basculer</h2>
-      <p>
-        Après avoir massivement investi dans le SEO, les marques s’aventurent dans une nouvelle ère,
-        celle du <strong>GEO (Generative Engine Optimization)</strong>. C’est une révolution encore discrète, mais promise à faire grand bruit.
-      </p>
-      <p>
-        Les grands modèles de langage changent en profondeur les comportements d’achat…
-      </p>
-    `,
-    author: {
-      name: 'Maxime Girardeau',
-      bio: 'VP | Head of AI Strategy & Transformation for Southern Central Europe, Capgemini',
-      avatar_url: 'https://randomuser.me/api/portraits/men/32.jpg'
-    }
-  })
-  
-  // Fonction utilitaire
-  const formatDate = (date) =>
-    new Date(date).toLocaleDateString('fr-FR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    })
-  </script>
-   -->
-   <script setup>
-   import { ref, onMounted } from 'vue'
-   import { useRoute } from 'vue-router'
-   import { Client, Databases } from 'appwrite'
-   
-   const client = new Client()
-   client.setEndpoint('https://appwrite.ubbfy.com/v1') // ✅ Ton endpoint Appwrite
-   client.setProject('[TON_PROJECT_ID]') // ✅ Remplace avec ton vrai ID de projet
-   
-   const db = new Databases(client)
-   const databaseId = '[TON_DATABASE_ID]' // ✅ Ton ID de base de données
-   const collectionId = 'posts'
-   
-   const route = useRoute()
-   const post = ref(null)
-   const loading = ref(true)
-   
-   onMounted(async () => {
-     try {
-       const res = await db.getDocument(databaseId, collectionId, route.params.id)
-       post.value = res
-     } catch (err) {
-       console.error('Erreur de chargement :', err)
-     } finally {
-       loading.value = false
-     }
-   })
-   
-   const formatDate = (date) =>
-     new Date(date).toLocaleDateString('fr-FR', {
-       day: 'numeric',
-       month: 'long',
-       year: 'numeric'
-     })
-   </script>
-   
 
-  <style scoped>
-  .blog-detail {
+    <div class="content-container">
+      <div class="author-section" v-if="post.authors">
+        <img :src="post.authors.avatar_url" class="author-img" />
+        <div>
+          <h2>{{ post.authors.name }}</h2>
+          <p class="bio">{{ post.authors.bio }}</p>
+        </div>
+      </div> 
+
+      <div class="main-content" v-html="post.content" />
+    </div>
+  </div>
+</template>
+
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { Client, Databases } from 'appwrite'
+
+const client = new Client()
+client.setEndpoint('https://appwrite.ubbfy.com/v1')
+client.setProject('67f3ad4f00234f8ab06c')
+
+const db = new Databases(client)
+const databaseId = '67f3de5700068b483ca7'
+const collectionId = '67f3ebc80030da0f765e'
+const route = useRoute()
+const post = ref(null)
+const loading = ref(true)
+
+onMounted(async () => {
+  try {
+    const res = await db.getDocument(databaseId, collectionId, route.params.posts_id)
+    console.log(res)
+    post.value = res
+  } catch (err) {
+    console.error('Erreur de chargement :', err)
+  } finally {
+    loading.value = false
+  }
+})
+
+const formatDate = (date) =>
+  new Date(date).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  })
+</script>
+
+<style scoped>
+.blog-detail {
   font-family: var(--default-font);
   color: var(--default-color);
   background: var(--background-color);
@@ -209,6 +171,4 @@
   line-height: 1.7;
   margin-bottom: 1.2rem;
 }
-
-  </style>
-  
+</style>
