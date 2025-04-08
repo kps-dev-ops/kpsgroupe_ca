@@ -27,16 +27,16 @@
   
   <script setup>
   import { ref, onMounted } from 'vue'
-  import { Client, Databases, Query } from 'appwrite'
+  import { Client, Databases } from 'appwrite'
   import BarChart from './BarChart .vue' 
   
   const client = new Client()
-  client.setEndpoint('https://[TON_ENDPOINT]').setProject('[TON_PROJECT_ID]')
-  const databaseId = '[TON_DATABASE_ID]'
+  client.setEndpoint('https://appwrite.ubbfy.com/v1').setProject('67f3ad4f00234f8ab06c')
+  const databaseId = '67f3de5700068b483ca7'
   
   const databases = new Databases(client)
-  const postsCollection = 'posts'
-  const authorsCollection = 'authors'
+  const postsCollection = '67f3ebc80030da0f765e'
+  const authorsCollection = '67f3ebd100297452daba'
   
   const posts = ref([])
   const authors = ref([])
