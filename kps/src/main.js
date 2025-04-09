@@ -2,23 +2,46 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { createPinia } from 'pinia'
+
+// Styles généraux
 import './style.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import '@fontsource/nunito/400.css'   // Regular
-import '@fontsource/nunito/600.css'   // Semi-bold
-import '@fontsource/nunito/700.css'   // Bold
-import AOS from 'aos'
+import '@fontsource/nunito/400.css'
+import '@fontsource/nunito/600.css'
+import '@fontsource/nunito/700.css'
 import 'aos/dist/aos.css'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
-AOS.init()
-const pinia = createPinia()
+
+// Plugins et librairies
+import AOS from 'aos'
+import { QuillEditor } from '@vueup/vue-quill'
+
+// Font Awesome
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faFileAlt, faUser } from '@fortawesome/free-solid-svg-icons'
+import {
+  faUsers,
+  faFileAlt,
+  faClock,
+  faPen,
+  faTrash
+} from '@fortawesome/free-solid-svg-icons'
 
-library.add(faFileAlt, faUser)
+// Enregistrement des icônes à utiliser
+library.add(faUsers, faFileAlt, faClock, faPen, faTrash)
 
+// Création de l'app
+const app = createApp(App)
+const pinia = createPinia()
 
-// App.component('font-awesome-icon', FontAwesomeIcon)
-createApp(App).use(router).use(pinia).mount('#app')
+// Initialisation des plugins
+AOS.init()
+
+// Composants globaux
+app.component('font-awesome-icon', FontAwesomeIcon)
+app.component('QuillEditor', QuillEditor)
+
+// Montage
+app.use(router).use(pinia).mount('#app')

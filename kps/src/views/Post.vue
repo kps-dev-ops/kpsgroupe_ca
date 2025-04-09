@@ -1,17 +1,16 @@
 <template>
-  <section class="post-page">
+  <section id="Post" class="post-page" data-aos="fade-up">
     <div class="header">
-      <h2>Articles</h2>
+      <h2 class="title">Articles</h2>
       <button class="toggle-btn" @click="toggleForm">
-        {{ step > 0 ? 'Fermer' : '➕ Nouveau Post' }}
+        {{ showForm ? 'Fermer' : '➕ Nouveau Post' }}
       </button>
     </div>
 
-    <!-- Liste des posts -->
     <transition name="fade">
-      <div v-if="step === 0" class="posts-list">
+      <div v-if="!showForm" class="posts-list">
         <div class="post-card" v-for="post in posts" :key="post.$id">
-          <img :src="post.image_url" alt="cover" />
+          <img :src="post.image_url || defaultImage" alt="cover" />
           <div class="card-content">
             <h3>{{ post.title }}</h3>
             <p>{{ post.subtitle }}</p>
@@ -28,52 +27,39 @@
       </div>
     </transition>
 
-    <!-- Formulaire de création -->
     <transition name="slide-fade">
-      <div v-if="step > 0" class="form-box">
+      <div v-if="showForm" class="form-box">
         <form @submit.prevent="handleSubmit">
-          <div v-show="step === 1">
-            <div class="input-group" v-for="field in ['title', 'subtitle', 'slug']" :key="field">
-              <input v-model="form[field]" required :placeholder="labels[field]" />
-            </div>
-            <div class="input-group">
-              <textarea v-model="form.description" rows="2" placeholder="Résumé de l'article" />
-            </div>
-            <div class="input-group">
-              <input type="file" @change="uploadImage" />
-            </div>
+          <div class="input-group">
+            <input v-model="form.title" required placeholder="Titre" @input="generateSlug" />
+          </div>
+          <div class="input-group">
+            <input v-model="form.subtitle" required placeholder="Sous-titre" />
+          </div>
+          <div class="input-group">
+            <input v-model="form.slug" required placeholder="Slug (auto-généré)" disabled />
           </div>
 
-          <div v-show="step === 2">
-            <div class="input-group">
-              <textarea v-model="form.content" rows="4" placeholder="Contenu HTML ou Markdown" />
-            </div>
-            <div class="input-group">
-              <input v-model="form.categories" placeholder="Catégories (virgule)" />
-            </div>
-            <div class="input-group">
-              <input v-model="form.author.name" placeholder="Nom auteur" required />
-            </div>
-            <div class="input-group">
-              <input v-model="form.author.email" placeholder="Email de l’auteur" required />
-            </div>
-            <div class="input-group">
-              <input v-model="form.author.bio" placeholder="Bio de l’auteur" />
-            </div>
-           
-              <div class="input-group">
-            <label for="avatar-upload">Avatar de l’auteur</label>
-            <input type="file" id="avatar-upload" accept="image/*" @change="uploadAvatar" />
-            <img v-if="form.author.avatar_url" :src="form.author.avatar_url" alt="Aperçu avatar" class="avatar-preview" />
+          <div class="input-group">
+            <label>Résumé de l'article</label>
+            <quill-editor v-model:content="form.description" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
           </div>
 
-           
+          <div class="input-group">
+            <label>Contenu HTML ou Markdown</label>
+            <quill-editor v-model:content="form.content" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
+          </div>
+
+          <div class="input-group">
+            <label for="image-upload">Image de couverture</label>
+            <input type="file" id="image-upload" @change="uploadImage" />
+            <img v-if="form.image_url || defaultImage" :src="form.image_url || defaultImage" alt="Aperçu image" class="cover-preview" />
           </div>
 
           <div class="form-footer">
-            <button type="button" @click="step--" :disabled="step === 1">⬅</button>
-            <button type="button" @click="step === 2 ? handleSubmit() : step++">
-              {{ step === 2 ? (editingId ? 'Mettre à jour' : 'Publier') : 'Suivant ➡' }}
+            <button type="button" class="btn cancel" @click="toggleForm">Annuler</button>
+            <button type="submit" class="btn submit">
+              {{ editingId ? 'Mettre à jour' : 'Publier' }}
             </button>
           </div>
         </form>
@@ -82,52 +68,45 @@
   </section>
 </template>
 
-
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Client, Databases, ID, Storage } from 'appwrite'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
-const client = new Client()
-client.setEndpoint('https://appwrite.ubbfy.com/v1').setProject('67f3ad4f00234f8ab06c')
-const db = new Databases(client)
-const storage = new Storage(client)
+AOS.init()
+
+const appwriteClient = new Client()
+appwriteClient.setEndpoint('https://appwrite.ubbfy.com/v1').setProject('67f3ad4f00234f8ab06c')
+const db = new Databases(appwriteClient)
+const storage = new Storage(appwriteClient)
+
 const databaseId = '67f3de5700068b483ca7'
 const collectionId = '67f3ebc80030da0f765e'
-const authorsCollectionId = '67f3ebd100297452daba'
 const bucketId = '67f3ad7b0017d490c545'
 
 const posts = ref([])
 const editingId = ref(null)
-const step = ref(0)
+const showForm = ref(false)
+
+const defaultImage = 'https://via.placeholder.com/400x180.png?text=Aucune+image'
 
 const form = ref({
-  title: '', subtitle: '', slug: '', description: '',
-  content: '', image_url: '', categories: '',
-  author: { name: '', email: '', bio: '', avatar_url: '', created_at: '' }
+  title: '',
+  subtitle: '',
+  slug: '',
+  description: '',
+  content: '',
+  image_url: ''
 })
 
-const labels = {
-  title: 'Titre',
-  subtitle: 'Sous-titre',
-  slug: 'Slug (mon-article)'
-}
-
-const uploadAvatar = async (e) => {
-  const file = e.target.files[0]
-  if (!file) return
-
-  const uploaded = await storage.createFile(bucketId, ID.unique(), file)
-  form.value.author.avatar_url = `https://appwrite.ubbfy.com/v1/storage/buckets/${bucketId}/files/${uploaded.$id}/view?project=67f3ad4f00234f8ab06c&mode=admin`
-}
-
-
-onMounted(() => {
-  loadPosts()
-})
-
-const toggleForm = () => {
-  step.value = step.value > 0 ? 0 : 1
-  if (step.value === 1) resetForm()
+const generateSlug = () => {
+  form.value.slug = form.value.title
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
 }
 
 const loadPosts = async () => {
@@ -135,62 +114,62 @@ const loadPosts = async () => {
   posts.value = res.documents
 }
 
+const toggleForm = () => {
+  showForm.value = !showForm.value
+  if (showForm.value && !editingId.value) resetForm()
+}
+
 const handleSubmit = async () => {
-  const authorData = {
-    name: form.value.author.name,
-    email: form.value.author.email,
-    bio: form.value.author.bio || '',
-    avatar_url: form.value.author.avatar_url,
-    created_at: form.value.author.created_at || new Date().toISOString()
-  }
-
-  const authorRes = await db.createDocument(databaseId, authorsCollectionId, ID.unique(), authorData)
-  const postsId = `post-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-
   const payload = {
     ...form.value,
-    categories: form.value.categories.split(',').map(x => x.trim()),
-    authors: authorRes.$id,
-    posts_id: postsId,
+    posts_id: `post-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
     published: true,
+    created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   }
 
-  delete payload.author
+  if (!form.value.image_url) {
+    payload.image_url = defaultImage
+  }
 
   if (editingId.value) {
     await db.updateDocument(databaseId, collectionId, editingId.value, payload)
   } else {
-    payload.created_at = new Date().toISOString()
     await db.createDocument(databaseId, collectionId, ID.unique(), payload)
   }
 
   await loadPosts()
-  step.value = 0
+  toggleForm()
   resetForm()
 }
 
 const resetForm = () => {
   editingId.value = null
   form.value = {
-    title: '', subtitle: '', slug: '', description: '',
-    content: '', image_url: '', categories: '',
-    author: { name: '', email: '', bio: '', avatar_url: '', created_at: '' }
+    title: '',
+    subtitle: '',
+    slug: '',
+    description: '',
+    content: '',
+    image_url: ''
   }
 }
 
 const editPost = (post) => {
-  form.value = {
-    ...post,
-    categories: post.categories?.join(', ') || '',
-    author: post.author || { name: '', email: '', bio: '', avatar_url: '', created_at: '' }
-  }
   editingId.value = post.$id
-  step.value = 1
+  form.value = {
+    title: post.title,
+    subtitle: post.subtitle,
+    slug: post.slug,
+    description: post.description || '',
+    content: post.content || '',
+    image_url: post.image_url || ''
+  }
+  showForm.value = true
 }
 
 const deletePost = async (id) => {
-  if (confirm("Supprimer ce post ?")) {
+  if (confirm('Supprimer ce post ?')) {
     await db.deleteDocument(databaseId, collectionId, id)
     await loadPosts()
   }
@@ -198,20 +177,45 @@ const deletePost = async (id) => {
 
 const uploadImage = async (e) => {
   const file = e.target.files[0]
-  if (!file) return
+  if (!file || !file.type.startsWith('image/')) return
   const uploaded = await storage.createFile(bucketId, ID.unique(), file)
   form.value.image_url = `https://appwrite.ubbfy.com/storage/buckets/${bucketId}/files/${uploaded.$id}/view?project=67f3ad4f00234f8ab06c&mode=admin`
 }
 
+onMounted(() => {
+  loadPosts()
+})
 </script>
- 
 
 <style scoped>
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
 
 .post-page {
   padding: 2rem;
   background-color: #f3f6fa;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  margin-top: 2%;
+  position: relative;
+  display: inline-block;
+}
+
+.title::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: -6px;
+  left: 0;
+  background-color: #2aa39a;
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.3s ease-in-out;
 }
 
 .header {
@@ -233,51 +237,53 @@ const uploadImage = async (e) => {
 
 .posts-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
 .post-card {
-  background: linear-gradient(to bottom right, #ffffff, #f1f5f9);
-  border-left: 6px solid  var(--accent-color);
-  border-radius: 18px;
+  background: linear-gradient(to bottom right, #ffffff, #f8fafc);
+  border-left: 5px solid var(--accent-color);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  transition: all 0.4s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  transform: scale(1);
-  position: relative;
+  min-height: 250px;
+  max-height: 350px;
 }
 
 .post-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
 .post-card img {
   width: 100%;
-  height: 180px;
+  height: 160px;
   object-fit: cover;
   border-bottom: 1px solid #e5e7eb;
 }
 
 .card-content {
-  padding: 1.25rem;
+  padding: 1rem 1.25rem;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  justify-content: space-between;
 }
 
 .card-content h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: #1e293b;
-  margin: 0;
+  margin: 0 0 4px;
+  line-height: 1.2;
 }
 
 .card-content p {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #6b7280;
   margin: 0;
 }
@@ -285,23 +291,22 @@ const uploadImage = async (e) => {
 .actions {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 1rem;
 }
 
 .icon-btn {
-  background-color: #f1f5f9;
   border: none;
-  border-radius: 10px;
-  padding: 0.5rem 0.6rem;
-  font-size: 1.1rem;
-  color: #1f2937;
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .icon-btn.edit {
   background-color: #e0e7ff;
-  color:  var(--accent-color);
+  color: var(--accent-color);
 }
 
 .icon-btn.edit:hover {
@@ -317,13 +322,14 @@ const uploadImage = async (e) => {
   background-color: #fecaca;
 }
 
+
 .avatar-preview {
   margin-top: 0.75rem;
   width: 80px;
   height: 80px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #3b82f6;
+  border: 2px solid #2aa39a;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
 }
@@ -437,7 +443,7 @@ const uploadImage = async (e) => {
 .input-group textarea:focus,
 .input-group select:focus {
   outline: none;
-  border-color: #6366f1;
+  border-color: #2aa39a;
   background-color: white;
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
 }
@@ -455,7 +461,7 @@ const uploadImage = async (e) => {
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  background-color: #6366f1;
+  background-color: #2aa39a;
   color: white;
   transition: background 0.3s ease;
   display: flex;
@@ -469,7 +475,82 @@ const uploadImage = async (e) => {
 }
 
 .form-footer button:hover:not(:disabled) {
-  background-color: #4f46e5;
+  background-color: #2aa39a;
 }
 
-</style>
+
+
+.post-page {
+  padding: 2rem;
+  max-width: 860px;
+  margin: auto;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.input-group {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group input[type="text"],
+.input-group input[type="file"] {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.quill-editor {
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  padding: 1rem;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cover-preview {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-top: 1rem;
+  border: 1px solid #cbd5e0;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn.cancel {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.btn.submit {
+  background-color: #2aa39a;
+  color: white;
+}
+
+.btn.submit:hover {
+  background-color: #72a09d;
+}
+</style >

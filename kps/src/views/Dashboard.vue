@@ -1,64 +1,76 @@
 <template>
-  <section id="dashboard" class="dashboard-wrapper">
+  <section id="Dashboad" class="dashboard-wrapper">
     <div class="dashboard-container">
-      <!-- Titre -->
-      <h1 class="title">Tableau de bord</h1>
+      <!-- Header -->
+      <div class="dashboard-header" data-aos="fade-down">
+        <h1 class="title">Tableau de bord</h1>
+        <p class="subtitle">Suivez vos indicateurs en un coup d'œil</p>
+      </div>
 
-      <!-- Cartes KPI -->
+      <!-- Stat Cards -->
       <div class="grid-cards">
-        <div class="card kpi blue">
-          <h2>{{ posts.length }}</h2>
-          <p>Posts</p>
-          <small>Contenus publiés</small>
+        <div class="card kpi" data-aos="fade-up" data-aos-delay="100">
+          <div class="card-icon bg-blue"><font-awesome-icon icon="file-alt" /></div>
+          <div class="card-content">
+            <h2>{{ posts.length }}</h2>
+            <p>Posts</p>
+            <small>Contenus publiés</small>
+          </div>
         </div>
-        <div class="card kpi green">
-          <h2>{{ authors.length }}</h2>
-          <p>Auteurs</p>
-          <small>Contributeurs enregistrés</small>
-        </div>
-        <div class="card kpi yellow">
-          <h2>{{ lastPost?.title || 'Aucun' }}</h2>
-          <p>Dernier post</p>
-          <small>Dernier contenu publié</small>
+        <!-- <div class="card kpi" data-aos="fade-up" data-aos-delay="200">
+          <div class="card-icon bg-green"><font-awesome-icon icon="users" /></div>
+          <div class="card-content">
+            <h2>{{ authors.length }}</h2>
+            <p>Auteurs</p>
+            <small>Contributeurs enregistrés</small>
+          </div>
+        </div> -->
+       
+        <div class="card kpi" data-aos="fade-up" data-aos-delay="300">
+          <div class="card-icon bg-yellow"><font-awesome-icon icon="clock" /></div>
+          <div class="card-content">
+            <h2>{{ lastPost?.title || 'Aucun' }}</h2>
+            <p>Dernier post</p>
+            <small>Dernier contenu publié</small>
+          </div>
         </div>
       </div>
 
-      <!-- Graphiques et résumé -->
+      <!-- Graph + Résumé
       <div class="graph-summary">
-        <div class="chart-box">
+        <div class="chart-box" data-aos="zoom-in-right">
           <BarChart :data="chartData" :options="chartOptions" />
         </div>
-
-        <!-- <div class="summary-box">
-          <h3>Résumé rapide</h3>
+        <div class="summary-box" data-aos="zoom-in-left">
+          <h3><i class="fas fa-chart-pie"></i> Résumé rapide</h3>
           <ul>
-            <li><strong>Total posts :</strong> {{ posts.length }}</li>
-            <li><strong>Total auteurs :</strong> {{ authors.length }}</li>
-            <li><strong>Dernier post :</strong> {{ lastPost?.title || 'Aucun' }}</li>
+            <li><i class="fas fa-file-alt"></i> <strong>Total posts :</strong> {{ posts.length }}</li>
+            <li><i class="fas fa-user-friends"></i> <strong>Total auteurs :</strong> {{ authors.length }}</li>
+            <li><i class="fas fa-clock"></i> <strong>Dernier post :</strong> {{ lastPost?.title || 'Aucun' }}</li>
           </ul>
-        </div> -->
-        <div class="summary-box">
-  <h3>📊 Résumé rapide</h3>
-  <ul>
-    <li>
-      <i class="fas fa-file-alt"></i>
-      <strong>Total posts :</strong> {{ posts.length }}
-    </li>
-    <li>
-      <i class="fas fa-user-friends"></i>
-      <strong>Total auteurs :</strong> {{ authors.length }}
-    </li>
-    <li>
-      <i class="fas fa-clock"></i>
-      <strong>Dernier post :</strong> {{ lastPost?.title || 'Aucun' }}
-    </li>
-  </ul>
+        </div>
+      </div> -->
+
+      <div class="graph-summary">
+  <div class="circle-box" data-aos="zoom-in-right">
+    <div class="circle-content">
+      <span class="circle-number">{{ posts.length }}</span>
+      <span class="circle-label">Posts publiés</span>
+    </div>
+  </div>
+
+  <div class="summary-box" data-aos="zoom-in-left">
+    <h3><i class="fas fa-chart-pie"></i> Résumé rapide</h3>
+    <ul>
+      <li><i class="fas fa-file-alt"></i> <strong>Total posts :</strong> {{ posts.length }}</li>
+      <li><i class="fas fa-clock"></i> <strong>Dernier post :</strong> {{ lastPost?.title || 'Aucun' }}</li>
+    </ul>
+  </div>
 </div>
 
-      </div>
 
-      <!-- Tableau des posts -->
-      <div class="table-box">
+      <!-- Tableau -->
+      <div class="table-box" data-aos="fade-up">
         <h3>Aperçu des posts</h3>
         <table>
           <thead>
@@ -88,238 +100,287 @@ import { ref, onMounted, watchEffect } from 'vue'
 import { Client, Databases } from 'appwrite'
 import BarChart from './BarChart .vue'
 
+
 const client = new Client()
 client.setEndpoint('https://appwrite.ubbfy.com/v1').setProject('67f3ad4f00234f8ab06c')
 const databaseId = '67f3de5700068b483ca7'
 const databases = new Databases(client)
 
-const postsCollection = '67f3ebc80030da0f765e'
-const authorsCollection = '67f3ebd100297452daba'
-
 const posts = ref([])
 const authors = ref([])
 const lastPost = ref(null)
 
-// Chart data (réactif)
-const chartData = ref({
-  labels: ['Posts', 'Auteurs'],
-  datasets: []
-})
+const chartData = ref({ labels: ['Posts', 'Auteurs'], datasets: [] })
 
-// Mise à jour automatique du graphe quand les données changent
 watchEffect(() => {
   chartData.value = {
     labels: ['Posts', 'Auteurs'],
-    datasets: [
-      {
-        label: 'Contenu',
-        backgroundColor: ['#6C63FF', '#00C897'],
-        borderRadius: 10,
-        barThickness: 40,
-        data: [posts.value.length, authors.value.length]
-      }
-    ]
+    datasets: [{
+      label: 'Contenu',
+      backgroundColor: ['#3B82F6', '#10B981'],
+      borderRadius: 8,
+      barThickness: 32,
+      data: [posts.value.length, authors.value.length]
+    }]
   }
 })
 
-// Données à la montée du composant
 onMounted(async () => {
-  const p = await databases.listDocuments(databaseId, postsCollection)
-  const a = await databases.listDocuments(databaseId, authorsCollection)
-
+  const p = await databases.listDocuments(databaseId, '67f3ebc80030da0f765e')
+  const a = await databases.listDocuments(databaseId, '67f3ebd100297452daba')
   posts.value = p.documents
   authors.value = a.documents
   lastPost.value = p.documents.at(-1)
 })
 
-// Options du graphique
 const chartOptions = {
   responsive: true,
   plugins: {
     legend: { display: false },
-    title: { display: true, text: 'Résumé du contenu' }
+    title: { display: false }
   },
   scales: {
     y: {
       beginAtZero: true,
-      ticks: {
-        stepSize: 1
-      }
+      ticks: { stepSize: 1 }
     }
   }
 }
 </script>
 
-
 <style scoped>
 .dashboard-wrapper {
-  padding: 1rem 2rem;
+  padding: 2rem;
+  background: #f9fafb;
   font-family: 'Inter', sans-serif;
 }
-
-.title {
-  font-size: 1.8rem;
-  font-weight: bold;
+.dashboard-header {
   margin-bottom: 2rem;
-  color: #2c3e50;
+  text-align: left;
+}
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  margin-top: 6%;
+  position: relative;
+  display: inline-block;
+}
+
+.title::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: -6px;
+  left: 0;
+  background-color: #2aa39a;
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.3s ease-in-out;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #6b7280;
 }
 
 .grid-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
   gap: 1.5rem;
   margin-bottom: 2rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: #d8e7e1;
+  border: 1px solid #cbd5e0; /* bordure douce gris clair */
+  border-radius: 16px;        /* coins arrondis */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* ombre douce */
+  padding: 2rem;              /* espace interne */
 }
+
 
 .card.kpi {
-  padding: 1.2rem;
-  border-radius: 12px;
+  background: white;
+  display: flex;
+  flex-direction: column; /* pour empiler icône + texte */
+  align-items: center;     /* centrer horizontalement */
+  justify-content: center; /* centrer verticalement */
+  gap: 1.5rem;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+  max-width: 350px;
+  flex: 1 1 300px;
+}
+
+
+.card.kpi:hover {
+  transform: translateY(-6px);
+  background-color: #eef3f7;
+}
+
+.card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  font-size: 1.6rem;
+  flex-shrink: 0;
 }
 
-.card.kpi h2 {
-  font-size: 2rem;
-  margin-bottom: 0.4rem;
+.bg-blue { background: #3B82F6; }
+.bg-green { background: #10B981; }
+.bg-yellow { background: #FBBF24; }
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
 }
 
-.card.kpi p {
-  font-size: 1rem;
-  font-weight: 500;
+
+.card-content h2 {
+  font-size: 1.6rem;
+  margin: 0;
+  font-weight: bold;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.card.kpi small {
+.card-content p {
+  margin: 0;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.card-content small {
   font-size: 0.8rem;
-  opacity: 0.85;
+  color: #6b7280;
 }
-
-.card.kpi.blue { background-color: #3B82F6; }
-.card.kpi.green { background-color: #10B981; }
-.card.kpi.yellow { background-color: #FBBF24; }
-.card.kpi.red { background-color: #EF4444; }
-
+/* 
 .graph-summary {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
   margin-bottom: 2rem;
+} */
+
+.graph-summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
+
+.circle-box {
+  background: white;
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-content {
+  text-align: center;
+}
+
+.circle-number {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #3B82F6;
+  display: block;
+}
+
+.circle-label {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+
 
 .chart-box {
   flex: 2;
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-/* 
-.summary-box {
-  flex: 1;
-  background: #f9f9f9;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.summary-box h3 {
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-}
-
-.summary-box ul {
-  list-style: none;
-  padding: 0;
-}
-
-.summary-box ul li {
-  margin-bottom: 0.6rem;
-  color: #333;
-  font-size: 0.95rem;
-} */
-
-.summary-box {
-  flex: 1;
   background: #ffffff;
-  padding: 1.5rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
-  transition: transform 0.3s ease;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  min-height: 280px;
 }
-
+.summary-box {
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
 .summary-box:hover {
   transform: translateY(-4px);
 }
-
 .summary-box h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #333;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
-
 .summary-box ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-
 .summary-box li {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.95rem;
-  color: #444;
   margin-bottom: 0.75rem;
+  color: #374151;
+  font-size: 0.95rem;
 }
-
-.summary-box i {
-  color: #00b894;
-  font-size: 1rem;
-  width: 20px;
-  text-align: center;
-}
-
-
 .table-box {
-  background: #fff;
-  border-radius: 12px;
+  background: white;
   padding: 1.5rem;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-
 .table-box h3 {
   margin-bottom: 1rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
-
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.95rem;
 }
-
-table thead {
+thead {
   background: #f3f4f6;
 }
-
 th, td {
   padding: 0.75rem;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e5e7eb;
 }
-
-.status {
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  display: inline-block;
-}
-
 .status.success {
-  background-color: #d1fae5;
+  background: #dcfce7;
   color: #065f46;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  display: inline-block;
 }
 </style>
