@@ -8,6 +8,7 @@ import Secretlogin from '../views/Secretlogin.vue'
 import home from '../components/home.vue'
 import Blogs from '../views/Blogs.vue'
 import Blogdetail from '../views/blogdetail.vue'
+import Allblog from '../views/Allblog.vue'
 // import APropos from '../views/APropos.vue'
 // import Contact from '../views/Contact.vue'
 
@@ -22,7 +23,8 @@ const routes = [
     path: '/blog/:posts_id',
     name: 'BlogDetail',
     component: Blogdetail
-  }
+  },
+  {path:'/Allblog', name: 'Allblog', component: Allblog}
   
 
 ]

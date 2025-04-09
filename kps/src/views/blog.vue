@@ -2,22 +2,26 @@
   <section id="blog" class="blog-section">
     <h1>Nos derniers articles</h1>
     <div class="blog-grid">
-      <div v-for="post in displayedPosts" :key="post.$id" class="blog-card">
-        <img :src="post.image_url" alt="cover" />
-        <div class="content">
-          <h2>{{ post.title }}</h2>
-          <p>{{ post.subtitle }}</p>
-          <small v-if="post.authors">Par {{ post.authors.name }}</small>
-          <button @click="viewMore(post)">En savoir plus</button>
-        </div>
-      </div>
+      <div v-for="post in displayedPosts" :key="post.$id" class="blog-card-clean" @click="viewMore(post)">
+  <div class="card-cover">
+    <img :src="post.image_url" alt="cover" />
+  </div>
+  <div class="card-content">
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.subtitle }}</p>
+    <small v-if="post.authors">Par {{ post.authors.name }}</small>
+  </div>
+</div>
+
     </div>
-    
+
     <div v-if="!showAll" class="see-more">
-      <button @click="showAll = true">Voir plus d’articles</button>
+     <button @click="goToAllBlogs">Voir plus d’articles</button>
     </div>
+
   </section>
 </template>
+
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -39,6 +43,11 @@ const displayedPosts = computed(() =>
 const viewMore = (post) => {
   router.push({ name: 'BlogDetail', params: { posts_id: post.$id } })
 }
+
+const goToAllBlogs = () => {
+  router.push({ name: 'Allblog' }) // 'AllBlogs' doit être le nom de ta route
+}
+
 
 
 const loadPosts = async () => {
@@ -67,73 +76,65 @@ h1 {
   font-family: var(--heading-font);
 }
 
-.blog-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
-}
-
-.blog-card {
-  background-color: var(--surface-color);
+.blog-card-clean {
+  background: linear-gradient(to bottom right, #ffffff, #f8fafc);
+  border-left: 5px solid var(--accent-color);
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   overflow: hidden;
-  width: 320px;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.blog-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
-}
-
-.blog-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  background-color: var(--color-light-blue);
-}
-
-.content {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.content h2 {
-  font-size: 1.3rem;
-  color: var(--default-color);
-  font-weight: bold;
-}
-
-.content p {
-  margin: 0;
-  color: #333;
-}
-
-.content small {
-  font-size: 0.85rem;
-  color: gray;
-}
-
-.content button {
-  align-self: flex-start;
-  margin-top: 0.5rem;
-  background-color: var(--accent-color);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
   cursor: pointer;
-  transition: background 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
-.content button:hover {
-  background-color: #368c85;
+.blog-card-clean:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.card-cover {
+  width: 100%;
+  height: 160px;
+  background-color: #e0f2f1;
+  overflow: hidden;
+}
+
+.card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.card-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.card-content small {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.clickable {
+  cursor: pointer;
 }
 
 .see-more {
@@ -148,5 +149,13 @@ h1 {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: background 0.3s ease;
+  font-weight: 500;
+  font-size: 1rem;
 }
+
+.see-more button:hover {
+  background-color: #368c85;
+}
+
 </style>
