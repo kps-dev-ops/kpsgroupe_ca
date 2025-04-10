@@ -22,7 +22,7 @@
   </section>
 </template>
 
-
+<!-- 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -60,7 +60,35 @@ const loadPosts = async () => {
 }
 
 onMounted(loadPosts)
+</script> -->
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useBlogStore } from '../stores/blog'
+
+const router = useRouter()
+const blogStore = useBlogStore()
+
+const showAll = ref(false)
+
+const displayedPosts = computed(() =>
+  showAll.value ? blogStore.articles : blogStore.articles.slice(0, 2)
+)
+
+const viewMore = (post) => {
+  router.push({ name: 'BlogDetail', params: { posts_id: post.$id } })
+}
+
+const goToAllBlogs = () => {
+  router.push({ name: 'Allblog' })
+}
+
+onMounted(async () => {
+  await blogStore.fetchArticles()
+})
 </script>
+
 
 <style scoped>
 .blog-section {
