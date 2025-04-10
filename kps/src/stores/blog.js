@@ -1,19 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { databases, storage, ID } from '../lib/appwrite'
-function dataURItoBlob(dataURI) {
-    const byteString = atob(dataURI.split(',')[1])
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-  
-    const ab = new ArrayBuffer(byteString.length)
-    const ia = new Uint8Array(ab)
-  
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i)
-    }
-  
-    return new Blob([ab], { type: mimeString })
-}
+import { account, databases, storage, ID } from '../lib/appwrite'
 
 const DATABASE_ID = '67f3de5700068b483ca7'
 const COLLECTION_ID = '67f3ebc80030da0f765e'
@@ -25,6 +12,33 @@ export const useBlogStore = defineStore('blog', () => {
   const currentArticle = ref(null)
   const loading = ref(false)
   const error = ref(null)
+  const user = ref(null)
+
+  const login = async (email, password) => {
+    try {
+      await account.createEmailPasswordSession(email, password)
+      const currentUser = await account.get()
+      user.value = currentUser
+      return currentUser
+    } catch (err) {
+      error.value = err.message
+      throw err
+    }
+  }
+
+  const checkAuth = async () => {
+    try {
+      const currentUser = await account.get()
+      user.value = currentUser
+    } catch {
+      user.value = null
+    }
+  }
+
+  const logout = async () => {
+    await account.deleteSession('current')
+    user.value = null
+  }
 
   const fetchArticles = async () => {
     loading.value = true
@@ -51,41 +65,37 @@ export const useBlogStore = defineStore('blog', () => {
       loading.value = false
     }
   }
+
   const uploadImage = async (file) => {
     const allowedExtensions = ['image/jpeg', 'image/png', 'image/pdf']
-  
     if (!allowedExtensions.includes(file.type)) {
       alert("Ce type de fichier n'est pas autorisé. Veuillez télécharger une image JPEG, PNG ou PDF.")
       return null
     }
-  
+
     try {
-      const fileId = await storage.createFile(BUCKET_ID, ID.unique(), file)
-      const fileUrl = await storage.getFilePreview(BUCKET_ID, fileId.$id, 600, 400) // URL de prévisualisation de l'image
+      const fileObj = await storage.createFile(BUCKET_ID, ID.unique(), file)
+      const fileUrl = storage.getFilePreview(BUCKET_ID, fileObj.$id, 600, 400)
       return fileUrl.href
     } catch (err) {
-      console.error('Erreur lors de l\'upload de l\'image :', err)
+      console.error("Erreur lors de l'upload de l'image :", err)
       return null
     }
   }
-  
+
   const createArticle = async (post) => {
     try {
       const payload = formatPayload(post)
-      
+
       if (post.image && post.image instanceof File) {
         const imageUrl = await uploadImage(post.image)
-        if (imageUrl) {
-          payload.image_url = imageUrl
-        } else {
-          payload.image_url = DEFAULT_IMAGE_URL
-        }
+        payload.image_url = imageUrl || DEFAULT_IMAGE_URL
       } else if (post.image && post.image.startsWith('http')) {
         payload.image_url = post.image
       } else {
         payload.image_url = DEFAULT_IMAGE_URL
       }
-  
+
       const doc = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), payload)
       articles.value.push(doc)
       return doc
@@ -94,12 +104,11 @@ export const useBlogStore = defineStore('blog', () => {
       console.error('Erreur createArticle :', err)
     }
   }
-  
 
   const updateArticle = async (id, post) => {
     try {
-      const payload = formatPayload(post)
-      console.log(post.image)
+      const payload = formatPayload(post, true)
+
       if (post.image && post.image.startsWith('http')) {
         payload.image_url = post.image
       } else {
@@ -126,7 +135,6 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
- 
   const formatPayload = (payload, isUpdate = false) => {
     const now = new Date().toISOString()
     return {
@@ -142,19 +150,21 @@ export const useBlogStore = defineStore('blog', () => {
       created_at: isUpdate ? payload.created_at : now,
     }
   }
-  
-  
 
   return {
+    user,
     articles,
     currentArticle,
     loading,
     error,
+    login,
+    logout,
+    checkAuth,
     fetchArticles,
     fetchArticle,
     createArticle,
     updateArticle,
     uploadImage,
-    deleteArticle,
+    deleteArticle
   }
 })
