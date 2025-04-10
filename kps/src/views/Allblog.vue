@@ -20,16 +20,21 @@
     </div>
   
     <section class="all-blogs">
-      <div class="container">
-        <h2 class="title">Tous nos articles</h2>
-        <div class="grid">
-            <div
-  v-for="post in filteredPosts"
-  :key="post.$id"
-  class="blog-card-clean"
-  data-aos="fade-up"
-  @click="goToPost(post)"
->
+        <div class="container">
+          <h2 class="title">Tous nos articles</h2>
+          <div class="grid">
+              <div
+              v-for="post in filteredPosts"
+              :key="post.$id"
+              class="blog-card-clean"
+              data-aos="fade-up"
+              @click="goToPost(post)">
+ 
+ <div v-if="filteredPosts.length === 0" class="no-results">
+  <p>Aucun article ne correspond à votre recherche ou catégorie sélectionnée.</p>
+</div>
+
+
   <div class="card-cover">
     <img :src="post.image_url" alt="cover" />
   </div>
@@ -73,9 +78,13 @@ const loadPosts = async () => {
 }
 
 const uniqueCategories = computed(() => {
+  // const categories = posts.value.map(p => p.category).filter(Boolean)
+  // return [...new Set(categories)]
   const categories = posts.value.map(p => p.category).filter(Boolean)
   return [...new Set(categories)]
 })
+
+
 
 const filteredPosts = computed(() => {
   return posts.value.filter(post => {
@@ -83,7 +92,7 @@ const filteredPosts = computed(() => {
       post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       post.subtitle.toLowerCase().includes(searchQuery.value.toLowerCase())
     const matchCategory =
-      !selectedCategory.value || post.category === selectedCategory.value
+      !selectedCategory.value || post.subtitle === selectedCategory.value
     return matchSearch && matchCategory
   })
 })
