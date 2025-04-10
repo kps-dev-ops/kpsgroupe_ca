@@ -1,10 +1,10 @@
-import { Client, Account} from 'appwrite';
+import { Client, Account, Databases, Storage, ID } from 'appwrite'
 
-export const client = new Client();
+const client = new Client()
+client.setEndpoint('https://appwrite.ubbfy.com/v1').setProject('67f3ad4f00234f8ab06c')
 
-client
-  .setEndpoint('https://appwrite.ubbfy.com/v1')
-  .setProject('67f3ad4f00234f8ab06c');
+const account = new Account(client)
+const databases = new Databases(client)
+const storage = new Storage(client)
 
-export const account = new Account(client);
-export { ID } from 'appwrite';
+export { client, account, databases, storage, ID }
