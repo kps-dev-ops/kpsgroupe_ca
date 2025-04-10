@@ -1,9 +1,6 @@
-// src/store/blog.js
-
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { databases, storage, ID } from '../lib/appwrite'
-// import { dataURItoBlob } from '@/utils/dataUriToBlob' // si tu as une fonction à part
 function dataURItoBlob(dataURI) {
     const byteString = atob(dataURI.split(',')[1])
     const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
@@ -16,21 +13,19 @@ function dataURItoBlob(dataURI) {
     }
   
     return new Blob([ab], { type: mimeString })
-  }
-// Ids centralisés
+}
+
 const DATABASE_ID = '67f3de5700068b483ca7'
 const COLLECTION_ID = '67f3ebc80030da0f765e'
 const BUCKET_ID = '67f3ad7b0017d490c545'
 const DEFAULT_IMAGE_URL = 'default.jpg'
 
 export const useBlogStore = defineStore('blog', () => {
-  // State
   const articles = ref([])
   const currentArticle = ref(null)
   const loading = ref(false)
   const error = ref(null)
 
-  // Fetch all
   const fetchArticles = async () => {
     loading.value = true
     try {
@@ -44,7 +39,6 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
-  // Fetch one
   const fetchArticle = async (id) => {
     loading.value = true
     try {
@@ -58,7 +52,6 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
-  // Create
   const createArticle = async (post) => {
     try {
       const payload = formatPayload(post)
@@ -78,7 +71,6 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
-  // Update
   const updateArticle = async (id, post) => {
     try {
       const payload = formatPayload(post)
@@ -99,7 +91,6 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
-  // Delete
   const deleteArticle = async (id) => {
     try {
       await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id)
@@ -110,18 +101,26 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
-  // Format payload commun
-  const formatPayload = (post) => ({
-    title: post.title.trim(),
-    description: post.description.trim(),
-    category: post.category.trim(),
-    content: post.content.trim(),
-    image: post.image || DEFAULT_IMAGE_URL,
-    slug: post.title
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^\w\-]+/g, '')
-  })
+ 
+  const formatPayload = (payload, isUpdate = false) => {
+    const now = new Date().toISOString()
+  
+    return {
+      title: payload.title?.trim() || '',
+      slug: payload.slug?.trim() || '',
+      subtitle: payload.subtitle?.trim() || '',
+      description: payload.description?.trim() || '',
+      content: payload.content?.trim() || '',
+      image: payload.image || '',
+      author: payload.author || '',
+      published: payload.published ?? true,
+      categories: payload.categories || [],
+      updated_at: now,
+      created_at: isUpdate ? payload.created_at : now,
+    }
+  }
+  
+  
 
   return {
     articles,
