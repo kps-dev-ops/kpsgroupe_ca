@@ -16,6 +16,9 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterView } from 'vue-router'
 import Headers from './components/Headers.vue'
+import { useBlogStore } from './stores/blog'
+
+const blog = useBlogStore()
 
 const isVisible = ref(false)
 
@@ -29,6 +32,10 @@ const scrollToTop = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', toggleVisibility)
+})
+
+onMounted(() => {
+  blog.checkAuth()
 })
 
 onUnmounted(() => {
