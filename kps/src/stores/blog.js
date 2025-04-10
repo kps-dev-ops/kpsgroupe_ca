@@ -51,8 +51,14 @@ export const useBlogStore = defineStore('blog', () => {
       loading.value = false
     }
   }
-
   const uploadImage = async (file) => {
+    const allowedExtensions = ['image/jpeg', 'image/png', 'image/pdf']
+  
+    if (!allowedExtensions.includes(file.type)) {
+      alert("Ce type de fichier n'est pas autorisé. Veuillez télécharger une image JPEG, PNG ou PDF.")
+      return null
+    }
+  
     try {
       const fileId = await storage.createFile(BUCKET_ID, ID.unique(), file)
       const fileUrl = await storage.getFilePreview(BUCKET_ID, fileId.$id, 600, 400) // URL de prévisualisation de l'image
@@ -62,6 +68,7 @@ export const useBlogStore = defineStore('blog', () => {
       return null
     }
   }
+  
   const createArticle = async (post) => {
     try {
       const payload = formatPayload(post)
@@ -122,7 +129,6 @@ export const useBlogStore = defineStore('blog', () => {
  
   const formatPayload = (payload, isUpdate = false) => {
     const now = new Date().toISOString()
-  
     return {
       title: payload.title?.trim() || '',
       slug: payload.slug?.trim() || '',
@@ -130,7 +136,6 @@ export const useBlogStore = defineStore('blog', () => {
       description: payload.description?.trim() || '',
       content: payload.content?.trim() || '',
       image_url: payload.image_url || '',
-      // author: payload.author || '',
       published: payload.published ?? true,
       categories: payload.categories || [],
       updated_at: now,
@@ -149,6 +154,7 @@ export const useBlogStore = defineStore('blog', () => {
     fetchArticle,
     createArticle,
     updateArticle,
+    uploadImage,
     deleteArticle,
   }
 })
