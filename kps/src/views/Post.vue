@@ -54,6 +54,9 @@
             <label for="image-upload">Image de couverture</label>
             <input type="file" id="image-upload" @change="uploadImage" />
             <img v-if="form.image_url || defaultImage" :src="form.image_url || defaultImage" alt="Aperçu image" class="cover-preview" />
+            <div v-if="loading" class="loading-indicator">
+              <span>Chargement en cours...</span>
+            </div>
           </div>
 
           <div class="form-footer">
@@ -68,7 +71,7 @@
   </section>
 </template>
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import AOS from 'aos'
@@ -79,7 +82,7 @@ AOS.init()
 
 const showForm = ref(false)
 const editingId = ref(null)
-const defaultImage = 'https://via.placeholder.com/400x180.png?text=Aucune+image'
+const defaultImage = 'https://placehold.co/800?text=No+Image&font=roboto'
 
 const blog = useBlogStore()
 
@@ -126,23 +129,42 @@ const resetForm = () => {
     image: ''
   }
 }
+const loading = ref(false)
+
+const validateForm = () => {
+  if (!form.value.title || !form.value.content) {
+    alert('Le titre et le contenu sont obligatoires') // Alerte si des champs sont manquants
+    return false
+  }
+  return true
+}
+
 
 const handleSubmit = async () => {
+  if (!validateForm()) return
+
+  loading.value = true // Active l'indicateur de chargement avant la soumission
+
   const payload = {
     ...form.value,
     subtitle: form.value.subtitle || '',
   }
 
-  if (editingId.value) {
-    await blog.updateArticle(editingId.value, payload)
-  } else {
-    console.log(payload.content)
-    await blog.createArticle(payload)
+  try {
+    if (editingId.value) {
+      await blog.updateArticle(editingId.value, payload)
+    } else {
+      await blog.createArticle(payload)
+    }
+  } catch (err) {
+    console.error('Erreur de soumission du formulaire :', err)
+  } finally {
+    loading.value = false // Désactive l'indicateur de chargement après la soumission
+    showForm.value = false
+    resetForm()
   }
-
-  showForm.value = false
-  resetForm()
 }
+
 
 const deletePost = async (id) => {
   if (confirm('Supprimer ce post ?')) {
