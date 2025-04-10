@@ -36,6 +36,7 @@
   <div class="card-content">
     <h3>{{ post.title }}</h3>
     <p>{{ post.subtitle }}</p>
+    <p>{{ post.slug }}</p>
     <small v-if="post.authors">Par {{ post.authors.name }}</small>
   </div>
 </div>

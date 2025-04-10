@@ -33,9 +33,18 @@
           <div class="input-group">
             <input v-model="form.title" required placeholder="Titre" @input="generateSlug" />
           </div>
+          <!-- <div class="input-group">
+            <input v-model="form.subtitle" required placeholder="Categorie" />
+          </div> -->
           <div class="input-group">
-            <input v-model="form.subtitle" required placeholder="Sous-titre" />
+            <select v-model="form.subtitle" required>
+              <option disabled value="">Choisir une catégorie</option>
+              <option v-for="cat in categoryList" :key="cat" :value="cat">
+                {{ cat }}
+              </option>
+            </select>
           </div>
+
           <div class="input-group">
             <input v-model="form.slug" required placeholder="Slug (auto-généré)" disabled />
           </div>
@@ -69,6 +78,7 @@
       </div>
     </transition>
   </section>
+<Footer/>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -77,6 +87,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { useBlogStore } from '../stores/blog'
+import Footer from '../components/Footer.vue'
 
 AOS.init()
 
@@ -94,6 +105,18 @@ const form = ref({
   content: '',
   image: ''
 })
+
+
+const categoryList = [
+  'Data',
+  'Développement',
+  'Design',
+  'Marketing',
+  'Cybersécurité',
+  'Cloud',
+  'IA',
+  'DevOps'
+]
 
 const generateSlug = () => {
   form.value.slug = form.value.title
@@ -423,12 +446,23 @@ const toggleForm = () => {
     transform: translateY(0);
   }
 }
-
+/* 
 .input-group {
   margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
+} */
+
+.input-group select {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #333;
 }
+
 
 .input-group input,
 .input-group textarea,

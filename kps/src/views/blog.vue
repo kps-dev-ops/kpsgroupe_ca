@@ -2,13 +2,23 @@
   <section id="blog" class="blog-section">
     <h1>Nos derniers articles</h1>
     <div class="blog-grid">
-      <div v-for="post in displayedPosts" :key="post.$id" class="blog-card-clean" @click="viewMore(post)">
+      <!-- <div v-for="post in displayedPosts" :key="post.$id" class="blog-card-clean" @click="viewMore(post)">
+         --><div
+  v-for="(post, index) in displayedPosts"
+  :key="post.$id"
+  class="blog-card-clean"
+  data-aos="fade-up"
+  :data-aos-delay="index * 100"
+  @click="viewMore(post)"
+>
+
   <div class="card-cover">
     <img :src="post.image_url" alt="cover" />
   </div>
   <div class="card-content">
     <h3>{{ post.title }}</h3>
     <p>{{ post.subtitle }}</p>
+    <p>{{ post.slug }}</p>
     <small v-if="post.authors">Par {{ post.authors.name }}</small>
   </div>
 </div>
@@ -22,45 +32,6 @@
   </section>
 </template>
 
-<!-- 
-<script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { Client, Databases } from 'appwrite'
-
-const router = useRouter()
-const client = new Client()
-client.setEndpoint('https://appwrite.ubbfy.com/v1').setProject('67f3ad4f00234f8ab06c')
-
-const db = new Databases(client)
-const posts = ref([])
-const showAll = ref(false)
-
-const displayedPosts = computed(() =>
-  showAll.value ? posts.value : posts.value.slice(0, 2)
-)
-
-const viewMore = (post) => {
-  router.push({ name: 'BlogDetail', params: { posts_id: post.$id } })
-}
-
-const goToAllBlogs = () => {
-  router.push({ name: 'Allblog' }) // 'AllBlogs' doit être le nom de ta route
-}
-
-
-
-const loadPosts = async () => {
-  try {
-    const res = await db.listDocuments('67f3de5700068b483ca7', '67f3ebc80030da0f765e')
-    posts.value = res.documents.filter(post => post.published !== false)
-  } catch (error) {
-    console.error('Erreur chargement posts Appwrite', error)
-  }
-}
-
-onMounted(loadPosts)
-</script> -->
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -91,18 +62,43 @@ onMounted(async () => {
 
 
 <style scoped>
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* ou 2 pour deux par ligne */
+  gap: 0.0rem;
+ 
+}
+
 .blog-section {
   padding: 2rem;
   font-family: var(--default-font);
   background-color: var(--background-color);
+  text-align: center;
 }
-
 h1 {
   color: var(--heading-color);
   text-align: center;
   margin-bottom: 2rem;
   font-family: var(--heading-font);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  font-weight: bold;
 }
+
+h1::after {
+  content: '';
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 3px;
+  width: 40px;
+  background-color: var(--accent-color); /* ligne verte */
+  border-radius: 2px;
+}
+
 
 .blog-card-clean {
   background: linear-gradient(to bottom right, #ffffff, #f8fafc);
@@ -110,7 +106,9 @@ h1 {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  /* transition: all 0.3s ease; */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
   cursor: pointer;
   width: 100%;
   max-width: 300px;
@@ -119,9 +117,16 @@ h1 {
 }
 
 .blog-card-clean:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-10px) scale(1.01);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
+
+[data-aos] {
+  transition-property: transform, opacity;
+  transition-duration: 0.6s;
+  transition-timing-function: ease-out;
+}
+
 
 .card-cover {
   width: 100%;
