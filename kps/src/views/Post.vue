@@ -81,7 +81,6 @@ const showForm = ref(false)
 const editingId = ref(null)
 const defaultImage = 'https://via.placeholder.com/400x180.png?text=Aucune+image'
 
-// Store
 const blog = useBlogStore()
 
 const form = ref({
@@ -90,10 +89,9 @@ const form = ref({
   slug: '',
   description: '',
   content: '',
-  image: '' // correspond à image_url côté Appwrite
+  image: ''
 })
 
-// ⚙️ Slug auto
 const generateSlug = () => {
   form.value.slug = form.value.title
     .toLowerCase()
@@ -101,12 +99,9 @@ const generateSlug = () => {
     .replace(/[^a-z0-9-]/g, '')
 }
 
-// 🔄 Charger tous les articles
 onMounted(() => {
   blog.fetchArticles()
 })
-
-// 🎯 Préparer un post pour édition
 const editPost = (post) => {
   editingId.value = post.$id
   form.value = {
@@ -120,7 +115,6 @@ const editPost = (post) => {
   showForm.value = true
 }
 
-// 🧼 Reset du formulaire
 const resetForm = () => {
   editingId.value = null
   form.value = {
@@ -133,7 +127,6 @@ const resetForm = () => {
   }
 }
 
-// ✅ Ajouter ou modifier un post
 const handleSubmit = async () => {
   const payload = {
     ...form.value,
@@ -143,6 +136,7 @@ const handleSubmit = async () => {
   if (editingId.value) {
     await blog.updateArticle(editingId.value, payload)
   } else {
+    console.log(payload.content)
     await blog.createArticle(payload)
   }
 
@@ -150,19 +144,16 @@ const handleSubmit = async () => {
   resetForm()
 }
 
-// ❌ Supprimer un post
 const deletePost = async (id) => {
   if (confirm('Supprimer ce post ?')) {
     await blog.deleteArticle(id)
   }
 }
 
-// 🖼️ Uploader une image
 const uploadImage = async (e) => {
   const file = e.target.files[0]
   if (!file || !file.type.startsWith('image/')) return
 
-  // Transforme en Data URI pour le store
   const reader = new FileReader()
   reader.onload = async () => {
     form.value.image = reader.result
@@ -170,7 +161,6 @@ const uploadImage = async (e) => {
   reader.readAsDataURL(file)
 }
 
-// 🧩 Toggle form
 const toggleForm = () => {
   showForm.value = !showForm.value
   if (showForm.value && !editingId.value) resetForm()
