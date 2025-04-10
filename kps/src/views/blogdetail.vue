@@ -38,7 +38,7 @@ const post = ref(null)
 const loading = ref(true)
 
 onMounted(async () => {
-  await blogStore.fetchArticle(route.params.posts_id)
+  await blogStore.fetchArticleBySlug(route.params.slug)
   post.value = blogStore.currentArticle
   loading.value = false
 })
