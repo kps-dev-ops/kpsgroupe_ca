@@ -29,29 +29,18 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { Client, Databases } from 'appwrite'
+import { useBlogStore } from '../stores/blog'
 
-const client = new Client()
-client.setEndpoint('https://appwrite.ubbfy.com/v1')
-client.setProject('67f3ad4f00234f8ab06c')
-
-const db = new Databases(client)
-const databaseId = '67f3de5700068b483ca7'
-const collectionId = '67f3ebc80030da0f765e'
 const route = useRoute()
+const blogStore = useBlogStore()
+
 const post = ref(null)
 const loading = ref(true)
 
 onMounted(async () => {
-  try {
-    const res = await db.getDocument(databaseId, collectionId, route.params.posts_id)
-    console.log(res)
-    post.value = res
-  } catch (err) {
-    console.error('Erreur de chargement :', err)
-  } finally {
-    loading.value = false
-  }
+  await blogStore.fetchArticle(route.params.posts_id)
+  post.value = blogStore.currentArticle
+  loading.value = false
 })
 
 const formatDate = (date) =>
