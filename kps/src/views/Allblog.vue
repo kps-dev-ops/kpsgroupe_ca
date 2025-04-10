@@ -51,69 +51,54 @@
     </section>
 <Footer/>
   </template>
+
+  <script setup>
+  import { ref, computed, onMounted } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { useBlogStore } from '../stores/blog'
   
-<script setup>
- import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { Client, Databases } from 'appwrite'
-import Headers from '../components/Headers.vue'
-import Footer from '../components/Footer.vue'
-
-const router = useRouter()
-const posts = ref([])
-const searchQuery = ref('')
-const selectedCategory = ref('')
-
-const client = new Client()
-client.setEndpoint('https://appwrite.ubbfy.com/v1').setProject('67f3ad4f00234f8ab06c')
-const db = new Databases(client)
-
-const loadPosts = async () => {
-  try {
-    const res = await db.listDocuments('67f3de5700068b483ca7', '67f3ebc80030da0f765e')
-    posts.value = res.documents.filter(post => post.published !== false)
-  } catch (err) {
-    console.error('Erreur de chargement des articles', err)
-  }
-}
-
-const uniqueCategories = computed(() => {
-  // const categories = posts.value.map(p => p.category).filter(Boolean)
-  // return [...new Set(categories)]
-  const categories = posts.value.map(p => p.category).filter(Boolean)
-  return [...new Set(categories)]
-})
-
-
-
-const filteredPosts = computed(() => {
-  return posts.value.filter(post => {
-    const matchSearch =
-      post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      post.subtitle.toLowerCase().includes(searchQuery.value.toLowerCase())
-    const matchCategory =
-      !selectedCategory.value || post.subtitle === selectedCategory.value
-    return matchSearch && matchCategory
+  const router = useRouter()
+  const blogStore = useBlogStore()
+  
+  const searchQuery = ref('')
+  const selectedCategory = ref('')
+  const posts = computed(() => blogStore.articles)
+  const categories = computed(() => blogStore.articles.map(post => post.category).filter(Boolean))
+  const uniqueCategories = computed(() => [...new Set(categories.value)])
+  
+  const filteredPosts = computed(() => {
+    return posts.value.filter(post => {
+      const matchSearch =
+        post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+        post.subtitle.toLowerCase().includes(searchQuery.value.toLowerCase())
+      const matchCategory =
+        !selectedCategory.value || post.category === selectedCategory.value
+      return matchSearch && matchCategory
+    })
   })
-})
-
-const goToPost = (post) => {
-  router.push({ name: 'BlogDetail', params: { posts_id: post.$id } })
-}
-
-const categoryList = [
-  'Data',
-  'Développement',
-  'Design',
-  'Marketing',
-  'Cybersécurité',
-  'Cloud',
-  'IA',
-  'DevOps'
-]
-
-onMounted(loadPosts)
-</script>
+  
+  const goToPost = (post) => {
+    console.log(post.slug)
+    router.push({ name: 'BlogDetail', params: { slug: post.slug } })
+  }
+  
+  // Appel de fetchArticles pour récupérer les articles
+  onMounted(() => {
+    blogStore.fetchArticles()
+  })
+  
+  const categoryList = [
+    'Data',
+    'Développement',
+    'Design',
+    'Marketing',
+    'Cybersécurité',
+    'Cloud',
+    'IA',
+    'DevOps'
+  ]
+  </script>
+  
 
 <style scoped>
 .blog-card-clean {
