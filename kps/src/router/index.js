@@ -23,7 +23,7 @@ const routes = [
   { path: '/', name: 'home', component: home },
   { path: '/login', name: 'Secretlogin', component: Secretlogin, meta: { hidden: true } },
   { path: '/Blogs', name: 'Blogs', component: Blogs, beforeEnter: requireAuth },
-  { path: '/blog/:posts_id', name: 'BlogDetail', component: Blogdetail },
+  { path: '/blog/:slug', name: 'BlogDetail', component: Blogdetail },
   { path: '/Allblog', name: 'Allblog', component: Allblog }
 ]
 
