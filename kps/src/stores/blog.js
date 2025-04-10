@@ -18,7 +18,7 @@ function dataURItoBlob(dataURI) {
 const DATABASE_ID = '67f3de5700068b483ca7'
 const COLLECTION_ID = '67f3ebc80030da0f765e'
 const BUCKET_ID = '67f3ad7b0017d490c545'
-const DEFAULT_IMAGE_URL = 'default.jpg'
+const DEFAULT_IMAGE_URL = 'https://placehold.co/800?text=No+Image&font=roboto'
 
 export const useBlogStore = defineStore('blog', () => {
   const articles = ref([])
@@ -52,16 +52,33 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
+  const uploadImage = async (file) => {
+    try {
+      const fileId = await storage.createFile(BUCKET_ID, ID.unique(), file)
+      const fileUrl = await storage.getFilePreview(BUCKET_ID, fileId.$id, 600, 400) // URL de prévisualisation de l'image
+      return fileUrl.href
+    } catch (err) {
+      console.error('Erreur lors de l\'upload de l\'image :', err)
+      return null
+    }
+  }
   const createArticle = async (post) => {
     try {
       const payload = formatPayload(post)
-
-      if (post.image && !post.image.startsWith('http')) {
-        const file = new File([dataURItoBlob(post.image)], 'image.jpg', { type: 'image/jpeg' })
-        const upload = await storage.createFile(BUCKET_ID, ID.unique(), file)
-        payload.image = upload.$id
+      
+      if (post.image && post.image instanceof File) {
+        const imageUrl = await uploadImage(post.image)
+        if (imageUrl) {
+          payload.image_url = imageUrl
+        } else {
+          payload.image_url = DEFAULT_IMAGE_URL
+        }
+      } else if (post.image && post.image.startsWith('http')) {
+        payload.image_url = post.image
+      } else {
+        payload.image_url = DEFAULT_IMAGE_URL
       }
-
+  
       const doc = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), payload)
       articles.value.push(doc)
       return doc
@@ -70,15 +87,16 @@ export const useBlogStore = defineStore('blog', () => {
       console.error('Erreur createArticle :', err)
     }
   }
+  
 
   const updateArticle = async (id, post) => {
     try {
       const payload = formatPayload(post)
-
-      if (post.image && !post.image.startsWith('http')) {
-        const file = new File([dataURItoBlob(post.image)], 'image.jpg', { type: 'image/jpeg' })
-        const upload = await storage.createFile(BUCKET_ID, ID.unique(), file)
-        payload.image = upload.$id
+      console.log(post.image)
+      if (post.image && post.image.startsWith('http')) {
+        payload.image_url = post.image
+      } else {
+        payload.image_url = DEFAULT_IMAGE_URL
       }
 
       const doc = await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, payload)
@@ -111,8 +129,8 @@ export const useBlogStore = defineStore('blog', () => {
       subtitle: payload.subtitle?.trim() || '',
       description: payload.description?.trim() || '',
       content: payload.content?.trim() || '',
-      image: payload.image || '',
-      author: payload.author || '',
+      image_url: payload.image_url || '',
+      // author: payload.author || '',
       published: payload.published ?? true,
       categories: payload.categories || [],
       updated_at: now,
