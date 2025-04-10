@@ -49,16 +49,14 @@
             <label>Contenu HTML ou Markdown</label>
             <quill-editor v-model:content="form.content" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
           </div>
-
           <div class="input-group">
-            <label for="image-upload">Image de couverture</label>
-            <input type="file" id="image-upload" @change="uploadImage" />
-            <img v-if="form.image_url || defaultImage" :src="form.image_url || defaultImage" alt="Aperçu image" class="cover-preview" />
-            <div v-if="loading" class="loading-indicator">
-              <span>Chargement en cours...</span>
+              <label>Image de couverture</label>
+              <input type="file" @change="uploadImage" />
+              <img v-if="form.image_url" :src="form.image_url" alt="Aperçu image" class="cover-preview" />
+              <div v-if="loading" class="loading-indicator">
+                <span>Chargement en cours...</span>
+              </div>
             </div>
-          </div>
-
           <div class="form-footer">
             <button type="button" class="btn cancel" @click="toggleForm">Annuler</button>
             <button type="submit" class="btn submit">
@@ -133,7 +131,7 @@ const loading = ref(false)
 
 const validateForm = () => {
   if (!form.value.title || !form.value.content) {
-    alert('Le titre et le contenu sont obligatoires') // Alerte si des champs sont manquants
+    alert('Le titre et le contenu sont obligatoires')
     return false
   }
   return true
@@ -143,7 +141,7 @@ const validateForm = () => {
 const handleSubmit = async () => {
   if (!validateForm()) return
 
-  loading.value = true // Active l'indicateur de chargement avant la soumission
+  loading.value = true
 
   const payload = {
     ...form.value,
@@ -159,7 +157,7 @@ const handleSubmit = async () => {
   } catch (err) {
     console.error('Erreur de soumission du formulaire :', err)
   } finally {
-    loading.value = false // Désactive l'indicateur de chargement après la soumission
+    loading.value = false
     showForm.value = false
     resetForm()
   }
@@ -171,17 +169,29 @@ const deletePost = async (id) => {
     await blog.deleteArticle(id)
   }
 }
-
 const uploadImage = async (e) => {
-  const file = e.target.files[0]
-  if (!file || !file.type.startsWith('image/')) return
-
-  const reader = new FileReader()
-  reader.onload = async () => {
-    form.value.image = reader.result
+  const file = e.target.files[0];
+  
+  if (!file || !file.type.startsWith('image/')) {
+    alert("Veuillez télécharger une image valide.");
+    return;
   }
-  reader.readAsDataURL(file)
-}
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    form.value.image_url = reader.result;
+  };
+  reader.readAsDataURL(file);
+
+  try {
+    const imageUrl = await blog.uploadImage(file);
+    form.value.image = imageUrl;
+  } catch (err) {
+    console.error("Erreur lors de l'upload de l'image :", err);
+  }
+};
+
+
 
 const toggleForm = () => {
   showForm.value = !showForm.value
