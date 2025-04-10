@@ -22,27 +22,36 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { useAuthStore } from '../stores/authStore'
-  import { account, ID } from '../lib/appwrite.js'
-  
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/authStore'
+import { account, ID } from '../lib/appwrite.js'
+import { useBlogStore } from '../stores/blog'
+
   const email = ref('')
   const password = ref('')
   const error = ref('')
   const router = useRouter()
   const authStore = useAuthStore()
-  
+  const blog = useBlogStore()
+
   const login = async () => {
-    try {
-      await account.createEmailPasswordSession(email.value, password.value)
-      const user = await account.get()
-      authStore.setToken(user.$id)
-      router.push('/Blogs')
-    } catch (err) {
-      error.value = err.message
-    }
+  try {
+    await blog.login(email.value, password.value)
+    router.push('/Blogs')
+  } catch (err) {
+    error.value = err.message
   }
+}
+
+onMounted(async () => {
+  try {
+    const user = await account.get()
+    authStore.setToken(user.$id)
+    router.push('/Blogs')
+  } catch {
+  }
+})
   </script>
   
   <style scoped>
