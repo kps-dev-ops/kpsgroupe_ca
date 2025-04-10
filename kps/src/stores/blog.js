@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { Query } from 'appwrite'
 import { account, databases, storage, ID } from '../lib/appwrite'
 
 const DATABASE_ID = '67f3de5700068b483ca7'
@@ -52,6 +53,26 @@ export const useBlogStore = defineStore('blog', () => {
       loading.value = false
     }
   }
+
+  const fetchArticleBySlug = async (slug) => {
+    loading.value = true
+    try {
+      const { documents } = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+        Query.equal('slug', slug)
+      ])
+      if (documents.length > 0) {
+        currentArticle.value = documents[0]
+      } else {
+        currentArticle.value = null
+      }
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur fetchArticleBySlug :', err)
+    } finally {
+      loading.value = false
+    }
+  }
+  
 
   const fetchArticle = async (id) => {
     loading.value = true
@@ -165,6 +186,7 @@ export const useBlogStore = defineStore('blog', () => {
     createArticle,
     updateArticle,
     uploadImage,
+    fetchArticleBySlug,
     deleteArticle
   }
 })
