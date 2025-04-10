@@ -44,11 +44,11 @@ const blogStore = useBlogStore()
 const showAll = ref(false)
 
 const displayedPosts = computed(() =>
-  showAll.value ? blogStore.articles : blogStore.articles.slice(0, 2)
+  showAll.value ? blogStore.articles : blogStore.articles.slice(0, 4)
 )
 
 const viewMore = (post) => {
-  router.push({ name: 'BlogDetail', params: { posts_id: post.$id } })
+  router.push({ name: 'BlogDetail', params: { slug: post.slug } })
 }
 
 const goToAllBlogs = () => {
@@ -65,7 +65,7 @@ onMounted(async () => {
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* ou 2 pour deux par ligne */
-  gap: 0.0rem;
+  gap: 2.0rem;
  
 }
 

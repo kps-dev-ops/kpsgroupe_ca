@@ -16,10 +16,12 @@
             <p>{{ post.subtitle }}</p>
             <div class="actions">
               <button class="icon-btn edit" @click="editPost(post)">
-                <i class="fas fa-pen"></i>
+                <font-awesome-icon icon="pen" />
+
               </button>
               <button class="icon-btn delete" @click="deletePost(post.$id)">
-                <i class="fas fa-trash"></i>
+                <font-awesome-icon icon="trash" />
+
               </button>
             </div>
           </div>

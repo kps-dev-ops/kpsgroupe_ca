@@ -35,10 +35,10 @@
         <i class="bi bi-list" @click="adminStore.toggleMenu"></i>
       </div>
 
-      <!-- Bouton contact -->
-      <a class="btn-getstarted" :href="adminStore.contactHref">
+      <button class="btn-getstarted" @click="handleLogout">
         {{ adminStore.contactText }}
-      </a>
+      </button>
+
     </div>
   </header>
   <Dashboard/>
@@ -47,13 +47,20 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { Admminstore } from '../stores/Adminstrore'
+import { useAuthStore } from '../stores/authStore'
 import { Client, Account } from 'appwrite'
 import md5 from 'blueimp-md5'
 import Dashboard from './Dashboard.vue'
 import Post from './Post.vue'
+import { useBlogStore } from '../stores/blog'
 
+const router = useRouter()
 const adminStore = Admminstore()
+const authStore = useAuthStore()
+const blogStore = useBlogStore()
+
 const activeSection = ref(adminStore.menu[0]?.href)
 
 const client = new Client()
@@ -77,6 +84,15 @@ onMounted(async () => {
     console.error('Erreur Appwrite :', err)
   }
 })
+
+const handleLogout = async () => {
+  try {
+    await blogStore.logout()
+    router.push('/login') 
+  } catch (err) {
+    console.error('Erreur de déconnexion :', err)
+  }
+}
 </script>
 
 <style scoped>

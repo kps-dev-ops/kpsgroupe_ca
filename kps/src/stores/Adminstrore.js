@@ -10,7 +10,7 @@ export const Admminstore = defineStore('header', {
       { label: 'Cathegories', href: '#Cathegorie' },
       { label: 'blog', href: '#blog' }
     ],
-    contactText: 'Profil',
+    contactText: 'Logout',
     contactHref: '#Profil',
     isMenuOpen: false
   }),

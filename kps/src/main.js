@@ -12,6 +12,8 @@ import '@fontsource/nunito/600.css'
 import '@fontsource/nunito/700.css'
 import 'aos/dist/aos.css'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import '@fortawesome/fontawesome-free/css/all.min.css'
+
 
 
 // Plugins et librairies

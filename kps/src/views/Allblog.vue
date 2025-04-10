@@ -56,7 +56,9 @@
   import { ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { useBlogStore } from '../stores/blog'
-  
+  import Headers from '../components/Headers.vue'
+  import Footer from '../components/Footer.vue'
+
   const router = useRouter()
   const blogStore = useBlogStore()
   
@@ -72,7 +74,7 @@
         post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
         post.subtitle.toLowerCase().includes(searchQuery.value.toLowerCase())
       const matchCategory =
-        !selectedCategory.value || post.category === selectedCategory.value
+        !selectedCategory.value || post.subtitle === selectedCategory.value
       return matchSearch && matchCategory
     })
   })
