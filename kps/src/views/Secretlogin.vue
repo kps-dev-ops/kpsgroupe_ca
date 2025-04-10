@@ -25,7 +25,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
-import { account, ID } from '../lib/appwrite.js'
+import { account } from '../lib/appwrite.js'
 import { useBlogStore } from '../stores/blog'
 
   const email = ref('')
