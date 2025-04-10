@@ -9,7 +9,7 @@
 
     <transition name="fade">
       <div v-if="!showForm" class="posts-list">
-        <div class="post-card" v-for="post in posts" :key="post.$id">
+        <div class="post-card" v-for="post in blog.articles" :key="post.$id">
           <img :src="post.image_url || defaultImage" alt="cover" />
           <div class="card-content">
             <h3>{{ post.title }}</h3>
@@ -67,31 +67,22 @@
     </transition>
   </section>
 </template>
-
 <script setup>
-import { ref, onMounted } from 'vue'
-import { Client, Databases, ID, Storage } from 'appwrite'
+import { ref, onMounted, watch } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import { useBlogStore } from '../stores/blog'
 
 AOS.init()
 
-const appwriteClient = new Client()
-appwriteClient.setEndpoint('https://appwrite.ubbfy.com/v1').setProject('67f3ad4f00234f8ab06c')
-const db = new Databases(appwriteClient)
-const storage = new Storage(appwriteClient)
-
-const databaseId = '67f3de5700068b483ca7'
-const collectionId = '67f3ebc80030da0f765e'
-const bucketId = '67f3ad7b0017d490c545'
-
-const posts = ref([])
-const editingId = ref(null)
 const showForm = ref(false)
-
+const editingId = ref(null)
 const defaultImage = 'https://via.placeholder.com/400x180.png?text=Aucune+image'
+
+// Store
+const blog = useBlogStore()
 
 const form = ref({
   title: '',
@@ -99,9 +90,10 @@ const form = ref({
   slug: '',
   description: '',
   content: '',
-  image_url: ''
+  image: '' // correspond à image_url côté Appwrite
 })
 
+// ⚙️ Slug auto
 const generateSlug = () => {
   form.value.slug = form.value.title
     .toLowerCase()
@@ -109,40 +101,26 @@ const generateSlug = () => {
     .replace(/[^a-z0-9-]/g, '')
 }
 
-const loadPosts = async () => {
-  const res = await db.listDocuments(databaseId, collectionId)
-  posts.value = res.documents
+// 🔄 Charger tous les articles
+onMounted(() => {
+  blog.fetchArticles()
+})
+
+// 🎯 Préparer un post pour édition
+const editPost = (post) => {
+  editingId.value = post.$id
+  form.value = {
+    title: post.title,
+    subtitle: post.subtitle || '',
+    slug: post.slug,
+    description: post.description || '',
+    content: post.content || '',
+    image: post.image || defaultImage
+  }
+  showForm.value = true
 }
 
-const toggleForm = () => {
-  showForm.value = !showForm.value
-  if (showForm.value && !editingId.value) resetForm()
-}
-
-const handleSubmit = async () => {
-  const payload = {
-    ...form.value,
-    posts_id: `post-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    published: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
-  }
-
-  if (!form.value.image_url) {
-    payload.image_url = defaultImage
-  }
-
-  if (editingId.value) {
-    await db.updateDocument(databaseId, collectionId, editingId.value, payload)
-  } else {
-    await db.createDocument(databaseId, collectionId, ID.unique(), payload)
-  }
-
-  await loadPosts()
-  toggleForm()
-  resetForm()
-}
-
+// 🧼 Reset du formulaire
 const resetForm = () => {
   editingId.value = null
   form.value = {
@@ -151,41 +129,54 @@ const resetForm = () => {
     slug: '',
     description: '',
     content: '',
-    image_url: ''
+    image: ''
   }
 }
 
-const editPost = (post) => {
-  editingId.value = post.$id
-  form.value = {
-    title: post.title,
-    subtitle: post.subtitle,
-    slug: post.slug,
-    description: post.description || '',
-    content: post.content || '',
-    image_url: post.image_url || ''
+// ✅ Ajouter ou modifier un post
+const handleSubmit = async () => {
+  const payload = {
+    ...form.value,
+    subtitle: form.value.subtitle || '',
   }
-  showForm.value = true
+
+  if (editingId.value) {
+    await blog.updateArticle(editingId.value, payload)
+  } else {
+    await blog.createArticle(payload)
+  }
+
+  showForm.value = false
+  resetForm()
 }
 
+// ❌ Supprimer un post
 const deletePost = async (id) => {
   if (confirm('Supprimer ce post ?')) {
-    await db.deleteDocument(databaseId, collectionId, id)
-    await loadPosts()
+    await blog.deleteArticle(id)
   }
 }
 
+// 🖼️ Uploader une image
 const uploadImage = async (e) => {
   const file = e.target.files[0]
   if (!file || !file.type.startsWith('image/')) return
-  const uploaded = await storage.createFile(bucketId, ID.unique(), file)
-  form.value.image_url = `https://appwrite.ubbfy.com/storage/buckets/${bucketId}/files/${uploaded.$id}/view?project=67f3ad4f00234f8ab06c&mode=admin`
+
+  // Transforme en Data URI pour le store
+  const reader = new FileReader()
+  reader.onload = async () => {
+    form.value.image = reader.result
+  }
+  reader.readAsDataURL(file)
 }
 
-onMounted(() => {
-  loadPosts()
-})
+// 🧩 Toggle form
+const toggleForm = () => {
+  showForm.value = !showForm.value
+  if (showForm.value && !editingId.value) resetForm()
+}
 </script>
+
 
 <style scoped>
 
