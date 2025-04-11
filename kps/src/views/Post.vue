@@ -24,6 +24,13 @@
 
               </button>
             </div>
+            <span
+              class="status-badge"
+              :class="post.published ? 'published' : 'draft'"
+            >
+              {{ post.published ? 'Publié' : 'Brouillon' }}
+            </span>
+
           </div>
         </div>
       </div>
@@ -68,6 +75,14 @@
                 <span>Chargement en cours...</span>
               </div>
             </div>
+            <div class="input-group">
+          <label>Status de l'article</label>
+          <select v-model="form.published">
+            <option :value="true">Publié</option>
+            <option :value="false">Brouillon</option>
+          </select>
+        </div>
+
           <div class="form-footer">
             <button type="button" class="btn cancel" @click="toggleForm">Annuler</button>
             <button type="submit" class="btn submit">
@@ -103,7 +118,8 @@ const form = ref({
   slug: '',
   description: '',
   content: '',
-  image: ''
+  image: '',
+  published: true
 })
 
 
@@ -136,7 +152,8 @@ const editPost = (post) => {
     slug: post.slug,
     description: post.description || '',
     content: post.content || '',
-    image: post.image || defaultImage
+    image: post.image || defaultImage,
+    published: post.published !== false 
   }
   showForm.value = true
 }
@@ -149,6 +166,7 @@ const resetForm = () => {
     slug: '',
     description: '',
     content: '',
+    published: true,
     image: ''
   }
 }
@@ -227,6 +245,38 @@ const toggleForm = () => {
 
 <style scoped>
 
+.status-badge {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  display: inline-block;
+  margin-top: 0.5rem;
+  width: fit-content;
+  text-align: center;
+}
+
+.status-badge.published {
+  background-color: #d1fae5; 
+  color: #065f46;
+}
+
+.status-badge.draft {
+  background-color: #fee2e2; /* rouge clair */
+  color: #991b1b; /* rouge foncé */
+}
+
+
+
+.input-group.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.input-group.checkbox input[type='checkbox'] {
+  transform: scale(1.2);
+}
 
 .post-page {
   padding: 2rem;

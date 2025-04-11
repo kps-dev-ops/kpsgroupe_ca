@@ -76,17 +76,24 @@
           <thead>
             <tr>
               <th>Titre</th>
-              <th>Auteur</th>
               <th>Date</th>
               <th>Statut</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="post in posts.slice(0, 5)" :key="post.$id">
+            <tr v-for="post in posts.slice(0, 4)" :key="post.$id">
               <td>{{ post.title }}</td>
-              <td>{{ post.author_name }}</td>
+              <!-- <td>{{ post.author_name }}</td> -->
               <td>{{ new Date(post.$createdAt).toLocaleDateString() }}</td>
-              <td><span class="status success">Publié</span></td>
+                          <td>
+              <span
+                class="status"
+                :class="post.published ? 'success' : 'draft'"
+              >
+                {{ post.published ? 'Publié' : 'Brouillon' }}
+              </span>
+            </td>
+
             </tr>
           </tbody>
         </table>
@@ -149,6 +156,16 @@ const chartOptions = {
 </script>
 
 <style scoped>
+
+
+.status.draft {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  display: inline-block;
+}
 .dashboard-wrapper {
   padding: 2rem;
   background: #f9fafb;
