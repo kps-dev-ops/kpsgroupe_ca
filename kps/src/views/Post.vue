@@ -14,6 +14,14 @@
           <div class="card-content">
             <h3>{{ post.title }}</h3>
             <p>{{ post.subtitle }}</p>
+            <span v-if="post.featured" class="featured-badge">À la une</span>
+            <span
+              class="status-badge"
+              :class="post.published ? 'published' : 'draft'"
+            >
+              {{ post.published ? 'Publié' : 'Brouillon' }}
+            </span>
+            
             <div class="actions">
               <button class="icon-btn edit" @click="editPost(post)">
                 <font-awesome-icon icon="pen" />
@@ -24,12 +32,12 @@
 
               </button>
             </div>
-            <span
+            <!-- <span
               class="status-badge"
               :class="post.published ? 'published' : 'draft'"
             >
               {{ post.published ? 'Publié' : 'Brouillon' }}
-            </span>
+            </span> -->
 
           </div>
         </div>
@@ -89,6 +97,12 @@
               {{ editingId ? 'Mettre à jour' : 'Publier' }}
             </button>
           </div>
+
+          <div class="input-group checkbox">
+            <input type="checkbox" v-model="form.featured" id="featured">
+            <label for="featured">Mettre à la une</label>
+          </div>
+
         </form>
       </div>
     </transition>
@@ -119,7 +133,8 @@ const form = ref({
   description: '',
   content: '',
   image: '',
-  published: true
+  published: true,
+  featured: false
 })
 
 
@@ -153,7 +168,8 @@ const editPost = (post) => {
     description: post.description || '',
     content: post.content || '',
     image: post.image || defaultImage,
-    published: post.published !== false 
+    published: post.published !== false,
+    featured: post.featured || false
   }
   showForm.value = true
 }
@@ -167,7 +183,8 @@ const resetForm = () => {
     description: '',
     content: '',
     published: true,
-    image: ''
+    image: '',
+    featured: false
   }
 }
 const loading = ref(false)
@@ -244,6 +261,18 @@ const toggleForm = () => {
 
 
 <style scoped>
+
+.featured-badge {
+  background-color: #facc15;
+  color: #92400e;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
 
 .status-badge {
   font-size: 0.85rem;

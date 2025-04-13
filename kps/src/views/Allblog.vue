@@ -1,5 +1,5 @@
 <template>
-    <Headers />
+    <Headers /> 
   
     <!-- BANNIÈRE -->
     <div class="blog-banner">
@@ -38,11 +38,27 @@
   <div class="card-cover">
     <img :src="post.image_url" alt="cover" />
   </div>
-  <div class="card-content">
+  <!-- <div class="card-content">
     <h3>{{ post.title }}</h3>
     <p>{{ post.subtitle }}</p>
     <p>{{ post.slug }}</p>
+    <small class="views">{{ post.views || 0 }} vues</small>
     <small v-if="post.authors">Par {{ post.authors.name }}</small>
+  </div> -->
+
+  
+  <div class="card-content">
+    <h3>{{ post.title }}</h3>
+    <p class="categori">{{ post.subtitle }}</p>
+    
+    <div class="meta-line">
+      <span class="views">
+        👁️ {{ post.views || 0 }} vues
+      </span>
+      <span class="slug">
+        🔗 {{ post.slug }}
+      </span>
+    </div>
   </div>
 </div>
 
@@ -81,7 +97,7 @@
   
   const goToPost = (post) => {
     console.log(post.slug)
-    router.push({ name: 'BlogDetail', params: { slug: post.slug } })
+    router.push({ name: 'detailblog', params: { slug: post.slug } })
   }
   
   // Appel de fetchArticles pour récupérer les articles

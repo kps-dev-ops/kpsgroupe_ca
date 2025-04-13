@@ -1,22 +1,23 @@
 <template>
-  <header id="header" class="header fixed-top d-flex align-items-center">
+  <!-- <Headers/> -->
+   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="header-container container-fluid d-flex align-items-center justify-between px-4">
 
-      <!-- Logo -->
+   
       <a :href="adminStore.menu[0]?.href" class="logo d-flex align-items-center">
         <img :src="adminStore.logoPath" alt="Logo" class="logo-img" />
       </a>
 
-      <!-- Menu principal -->
+    
       <nav id="navmenu" class="navmenu" :class="{ open: adminStore.isMenuOpen }">
-        <!-- Bouton de fermeture -->
+     
         <i
           v-if="adminStore.isMenuOpen"
           class="close-icon bi bi-x d-xl-none"
           @click="adminStore.toggleMenu"
         ></i>
 
-        <!-- Liste des menus -->
+       
         <ul>
           <li v-for="(item, index) in adminStore.menu" :key="index">
             <a
@@ -30,7 +31,7 @@
         </ul>
       </nav>
 
-      <!-- Icône burger mobile -->
+   
       <div class="mobile-icons d-xl-none" v-if="!adminStore.isMenuOpen">
         <i class="bi bi-list" @click="adminStore.toggleMenu"></i>
       </div>
@@ -55,6 +56,7 @@ import md5 from 'blueimp-md5'
 import Dashboard from './Dashboard.vue'
 import Post from './Post.vue'
 import { useBlogStore } from '../stores/blog'
+import Headers from '../components/Headers.vue'
 
 const router = useRouter()
 const adminStore = Admminstore()

@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia'
 
-export const Admminstore = defineStore('header', {
+export const detailmenu = defineStore('header', {
   state: () => ({
     logoPath: './src/assets/img/logo2.png',
     menu: [
-      { label: 'Dashboad', href: '#Dashboad' },
-      { label: 'Post', href: '#Post' },
-      // { label: 'Statistique', href: '#Statistique' },
-      // { label: 'Cathegories', href: '#Cathegorie' },
-      // { label: 'blog', href: '#blog' }
+      { label: 'Accueil', href: '/#hero' },
+      { label: 'À propos', href: '/#about' },
+      { label: 'Expertise', href: '/#services' },
+      { label: 'Technologies', href: '/#Technologies' },
+      { label: 'blog', href: '/#blog' }
     ],
-    contactText: 'Logout',
-    contactHref: '#Profil',
+    contactText: 'Contactez-nous',
+    contactHref: '#contact',
     isMenuOpen: false
   }),
 

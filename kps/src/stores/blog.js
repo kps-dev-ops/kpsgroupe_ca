@@ -73,6 +73,29 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
   
+  const incrementViews = async (slug) => {
+    const viewed = JSON.parse(localStorage.getItem('viewedPosts') || '[]')
+    if (viewed.includes(slug)) return
+  
+    try {
+      const { documents } = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+        Query.equal('slug', slug)
+      ])
+  
+      if (documents.length === 0) return
+  
+      const doc = documents[0]
+      await databases.updateDocument(DATABASE_ID, COLLECTION_ID, doc.$id, {
+        views: (doc.views || 0) + 1
+      })
+  
+      viewed.push(slug)
+      localStorage.setItem('viewedPosts', JSON.stringify(viewed))
+    } catch (err) {
+      console.error('Erreur incrementViews :', err.message)
+    }
+  }
+  
 
   const fetchArticle = async (id) => {
     loading.value = true
@@ -187,6 +210,7 @@ export const useBlogStore = defineStore('blog', () => {
     updateArticle,
     uploadImage,
     fetchArticleBySlug,
-    deleteArticle
+    deleteArticle,
+    incrementViews
   }
 })

@@ -6,6 +6,7 @@ import home from '../components/home.vue'
 import Blogs from '../views/Blogs.vue'
 import Blogdetail from '../views/blogdetail.vue'
 import Allblog from '../views/Allblog.vue'
+import detailblog from '../views/detailblog.vue'
 
 const requireAuth = async (to, from, next) => {
   const blog = useBlogStore()
@@ -24,12 +25,22 @@ const routes = [
   { path: '/login', name: 'Secretlogin', component: Secretlogin, meta: { hidden: true } },
   { path: '/Blogs', name: 'Blogs', component: Blogs, beforeEnter: requireAuth },
   { path: '/blog/:slug', name: 'BlogDetail', component: Blogdetail },
-  { path: '/Allblog', name: 'Allblog', component: Allblog }
+  { path: '/Allblog', name: 'Allblog', component: Allblog },
+  {path: '/detailblog/:slug', name: 'detailblog', component: detailblog}
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth'
+      }
+    }
+    return { top: 0 }
+  }
 })
 
 export default router

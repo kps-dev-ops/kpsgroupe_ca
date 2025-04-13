@@ -15,12 +15,29 @@
   <div class="card-cover">
     <img :src="post.image_url" alt="cover" />
   </div>
+
   <div class="card-content">
     <h3>{{ post.title }}</h3>
-    <p>{{ post.subtitle }}</p>
-    <p>{{ post.slug }}</p>
-    <small v-if="post.authors">Par {{ post.authors.name }}</small>
+    <p class="categori">{{ post.subtitle }}</p>
+    
+    <div class="meta-line">
+      <span class="views">
+        👁️ {{ post.views || 0 }} vues
+      </span>
+      <span class="slug">
+        🔗 {{ post.slug }}
+      </span>
+      <span v-if="post.featured" class="featured-badge">À la une</span>
+
+    </div>
   </div>
+
+  <!-- <div class="card-content">
+    <h3>{{ post.title }}</h3>
+    <p class="categori" >{{ post.subtitle }}</p>
+    <small class="views">{{ post.views || 0 }} vues</small>
+    <p>{{ post.slug }}</p>
+  </div> -->
 </div>
 
     </div>
@@ -43,12 +60,23 @@ const blogStore = useBlogStore()
 
 const showAll = ref(false)
 
+// const displayedPosts = computed(() =>
+//   showAll.value ? blogStore.articles : blogStore.articles.slice(0, 4)
+// )
+
 const displayedPosts = computed(() =>
-  showAll.value ? blogStore.articles : blogStore.articles.slice(0, 4)
+  showAll.value
+    ? blogStore.articles.filter((post) => post.published)
+    : blogStore.articles.filter((post) => post.published).slice(0, 4)
 )
 
+const featuredPosts = computed(() =>
+  blog.articles.filter((post) => post.featured && post.published)
+)
+
+
 const viewMore = (post) => {
-  router.push({ name: 'BlogDetail', params: { slug: post.slug } })
+  router.push({ name: 'detailblog', params: { slug: post.slug } })
 }
 
 const goToAllBlogs = () => {
@@ -62,6 +90,30 @@ onMounted(async () => {
 
 
 <style scoped>
+
+.featured-badge {
+  background-color: #facc15;
+  color: #92400e;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+
+.views {
+  font-size: 0.85rem;
+  color: #888;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+/* img { border-radius: 12px 12px 0 0; } */
+.categori{
+  color: #363232;
+}
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* ou 2 pour deux par ligne */
@@ -135,12 +187,50 @@ h1::after {
   overflow: hidden;
 }
 
+.card-content {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.card-content h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.card-content .categori {
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0;
+}
+
+.meta-line {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.8rem;
+}
+
+.meta-line .views,
+.meta-line .slug {
+  font-size: 0.8rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+
 .card-cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
+/* 
 .card-content {
   padding: 1.2rem;
   display: flex;
@@ -164,7 +254,7 @@ h1::after {
 .card-content small {
   font-size: 0.8rem;
   color: #94a3b8;
-}
+} */
 
 .clickable {
   cursor: pointer;

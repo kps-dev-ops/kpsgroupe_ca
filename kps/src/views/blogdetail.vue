@@ -3,23 +3,11 @@
   <div class="blog-detail" v-if="post">
     <div class="banner">
       <h1>{{ post.title }}</h1>
-      <div class="author-bar" v-if="post.authors">
-        <img :src="post.authors.avatar_url" alt="avatar" class="avatar" />
-        <div class="meta">
-          <p>{{ post.authors.name }}</p>
-          <small>{{ formatDate(post.created_at) }}</small>
-        </div>
-      </div>
+     
     </div>
 
     <div class="content-container">
-      <div class="author-section" v-if="post.authors">
-        <img :src="post.authors.avatar_url" class="author-img" />
-        <div>
-          <h2>{{ post.authors.name }}</h2>
-          <p class="bio">{{ post.authors.bio }}</p>
-        </div>
-      </div> 
+      
 
       <div class="main-content" v-html="post.content" />
     </div>
@@ -30,6 +18,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+
 import { useBlogStore } from '../stores/blog'
 import Headers from '../components/Headers.vue'
 
