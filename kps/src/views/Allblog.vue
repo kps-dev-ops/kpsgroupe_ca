@@ -83,7 +83,7 @@
   const posts = computed(() => blogStore.articles)
   const categories = computed(() => blogStore.articles.map(post => post.category).filter(Boolean))
   const uniqueCategories = computed(() => [...new Set(categories.value)])
-  
+  console.log(posts.views)
   const filteredPosts = computed(() => {
     return posts.value.filter(post => {
       const matchSearch =

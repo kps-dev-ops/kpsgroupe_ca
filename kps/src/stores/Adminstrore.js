@@ -19,7 +19,7 @@ export const Admminstore = defineStore('header', {
     toggleMenu() {
       console.log('toggleMenu called!') 
       this.isMenuOpen = !this.isMenuOpen
-      console.log('isMenuOpen:', this.isMenuOpen) // ✅ T
+      console.log('isMenuOpen:', this.isMenuOpen) 
     },
 
     updateMenu(newMenu) {
