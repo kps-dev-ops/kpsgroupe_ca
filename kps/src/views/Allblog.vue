@@ -1,72 +1,59 @@
 <template>
-    <Headers /> 
-  
-    <!-- BANNIÈRE -->
-    <div class="blog-banner">
-      <h1>Blogs</h1>
-    </div>
-  
-    <!-- BARRE DE RECHERCHE ET FILTRE -->
-    <div class="search-filter">
-      <input v-model="searchQuery" type="text" placeholder="Entrez votre recherche" />
-      
-      <select v-model="selectedCategory">
-        <option value="">Toutes les catégories</option>
-        <option v-for="cat in categoryList" :key="cat" :value="cat">
-            {{ cat }}
-        </option>
-        </select>
-
-    </div>
-  
-    <section class="all-blogs">
-        <div class="container">
-          <h2 class="title">Tous nos articles</h2>
-          <div class="grid">
-              <div
-              v-for="post in filteredPosts"
-              :key="post.$id"
-              class="blog-card-clean"
-              data-aos="fade-up"
-              @click="goToPost(post)">
  
- <div v-if="filteredPosts.length === 0" class="no-results">
-  <p>Aucun article ne correspond à votre recherche ou catégorie sélectionnée.</p>
-</div>
-
-
-  <div class="card-cover">
-    <img :src="post.image_url" alt="cover" />
-  </div>
-  <!-- <div class="card-content">
-    <h3>{{ post.title }}</h3>
-    <p>{{ post.subtitle }}</p>
-    <p>{{ post.slug }}</p>
-    <small class="views">{{ post.views || 0 }} vues</small>
-    <small v-if="post.authors">Par {{ post.authors.name }}</small>
-  </div> -->
-
-  
-  <div class="card-content">
-    <h3>{{ post.title }}</h3>
-    <p class="categori">{{ post.subtitle }}</p>
-    
-    <div class="meta-line">
-      <span class="views">
-        👁️ {{ post.views || 0 }} vues
-      </span>
-      <span class="slug">
-        🔗 {{ post.slug }}
-      </span>
+  <div class="blog-header" data-aos="fade-down">
+    <div class="back-button" @click="router.push('/')">
+      <i class="bi bi-arrow-left"></i> Accueil
     </div>
   </div>
-</div>
 
+
+  <div class="blog-banner">
+    <h1>Blogs</h1>
+  </div>
+
+  
+  <div class="search-filter">
+    <input v-model="searchQuery" type="text" placeholder="Entrez votre recherche" />
+    <select v-model="selectedCategory">
+      <option value="">Toutes les catégories</option>
+      <option v-for="cat in categoryList" :key="cat" :value="cat">{{ cat }}</option>
+    </select>
+  </div>
+
+  <section class="all-blogs">
+    <div class="container">
+      <h2 class="title">Tous nos articles</h2>
+      <div class="grid">
+        <div
+          v-for="post in filteredPosts"
+          :key="post.$id"
+          class="blog-card-clean"
+          data-aos="fade-up"
+          @click="goToPost(post)"
+        >
+          <div v-if="filteredPosts.length === 0" class="no-results">
+            <p>Aucun article ne correspond à votre recherche ou catégorie sélectionnée.</p>
+          </div>
+
+          <div class="card-cover">
+            <img :src="post.image_url" alt="cover" />
+          </div>
+
+          <div class="card-content">
+            <h3>{{ post.title }}</h3>
+            <p class="categori">{{ post.subtitle }}</p>
+            <div class="meta-line">
+              <span class="slug">🔗 {{ post.slug }}</span>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
-<Footer/>
-  </template>
+    </div>
+  </section>
+
+  <Footer />
+</template>
+
 
   <script setup>
   import { ref, computed, onMounted } from 'vue'
@@ -100,7 +87,6 @@
     router.push({ name: 'detailblog', params: { slug: post.slug } })
   }
   
-  // Appel de fetchArticles pour récupérer les articles
   onMounted(() => {
     blogStore.fetchArticles()
   })
@@ -119,6 +105,41 @@
   
 
 <style scoped>
+
+.blog-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  z-index: 999;
+}
+
+.back-button {
+  cursor: pointer;
+  font-weight: 600;
+  color: #2aa39a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.back-button:hover {
+  color: #248a83;
+}
+
+.blog-banner {
+  margin-top: 80px;
+}
+
+
 .blog-card-clean {
   background: linear-gradient(to bottom right, #ffffff, #f8fafc);
   border-left: 5px solid var(--accent-color);

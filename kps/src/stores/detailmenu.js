@@ -4,11 +4,11 @@ export const detailmenu = defineStore('header', {
   state: () => ({
     logoPath: './src/assets/img/logo2.png',
     menu: [
-      { label: 'Accueil', href: '/#hero' },
-      { label: 'À propos', href: '/#about' },
-      { label: 'Expertise', href: '/#services' },
-      { label: 'Technologies', href: '/#Technologies' },
-      { label: 'blog', href: '/#blog' }
+      { label: 'Accueil', href: '/' },
+    //   { label: 'À propos', href: '/#about' },
+    //   { label: 'Expertise', href: '/#services' },
+    //   { label: 'Technologies', href: '/#Technologies' },
+    //   { label: 'blog', href: '/#blog' }
     ],
     contactText: 'Contactez-nous',
     contactHref: '#contact',
@@ -28,6 +28,9 @@ export const detailmenu = defineStore('header', {
 
     updateLogo(newPath) {
       this.logoPath = newPath
-    }
+    },
+    resetMenu() {
+        this.menu = []
+      }
   }
 })

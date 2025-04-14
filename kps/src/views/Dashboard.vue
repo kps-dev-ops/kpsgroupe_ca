@@ -76,6 +76,7 @@
           <thead>
             <tr>
               <th>Titre</th>
+              <th>Vue</th>
               <th>Date</th>
               <th>Statut</th>
             </tr>
@@ -83,7 +84,10 @@
           <tbody>
             <tr v-for="post in posts.slice(0, 4)" :key="post.$id">
               <td>{{ post.title }}</td>
-              <!-- <td>{{ post.author_name }}</td> -->
+              <td>{{ post.views }}</td>
+              <!-- <span class="views">
+        👁️ {{ post.views || 0 }} vues
+      </span> -->
               <td>{{ new Date(post.$createdAt).toLocaleDateString() }}</td>
                           <td>
               <span

@@ -21,9 +21,9 @@
     <p class="categori">{{ post.subtitle }}</p>
     
     <div class="meta-line">
-      <span class="views">
+      <!-- <span class="views">
         👁️ {{ post.views || 0 }} vues
-      </span>
+      </span> -->
       <span class="slug">
         🔗 {{ post.slug }}
       </span>
@@ -114,12 +114,18 @@ onMounted(async () => {
 .categori{
   color: #363232;
 }
-.blog-grid {
+/* .blog-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* ou 2 pour deux par ligne */
+  grid-template-columns: repeat(5, 1fr); 
   gap: 2.0rem;
  
+} */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
 }
+
 
 .blog-section {
   padding: 2rem;
@@ -230,31 +236,6 @@ h1::after {
   height: 100%;
   object-fit: cover;
 }
-/* 
-.card-content {
-  padding: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.card-content h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0;
-}
-
-.card-content p {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin: 0;
-}
-
-.card-content small {
-  font-size: 0.8rem;
-  color: #94a3b8;
-} */
 
 .clickable {
   cursor: pointer;

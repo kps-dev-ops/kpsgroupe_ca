@@ -1,83 +1,42 @@
 <template>
-    <!-- <Headers/> -->
-    <header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-
    
-      <a :href="adminStore.menu[0]?.href" class="logo d-flex align-items-center">
-        <img :src="logo" alt="Logo" class="logo-img" />
-      </a>
-
-    
-      <nav id="navmenu" class="navmenu" :class="{ open: adminStore.isMenuOpen }">
-     
-        <i
-          v-if="adminStore.isMenuOpen"
-          class="close-icon bi bi-x d-xl-none"
-          @click="adminStore.toggleMenu"
-        ></i>
-
-       
-        <ul>
-          <li v-for="(item, index) in adminStore.menu" :key="index">
-           
-            <router-link
-                :to="item.href"
-                :class="{ active: isActive(item.href) }"
-                >
-                {{ item.label }}
-            </router-link>
-
-          </li>
-        </ul>
-      </nav>
-
-   
-      <div class="mobile-icons d-xl-none" v-if="!adminStore.isMenuOpen">
-        <i class="bi bi-list" @click="adminStore.toggleMenu"></i>
-      </div>
-
-      <button class="btn-getstarted" @click="handleLogout">
-        {{ adminStore.contactText }}
-      </button>
-
+  
+   <div class="blog-detail" v-if="post">
+  <div class="blog-header" data-aos="fade-down">
+    <div class="back-button" @click="router.push('/')">
+      <i class="bi bi-arrow-left"></i> Accueil
     </div>
-  </header>
-  <div class="blog-detail" v-if="post">
-    <div class="banner">
-  <img :src="post.image_url" alt="banner" class="banner-background" />
-</div>
+  </div>
 
-<div class="banner-title">
-  <h1>{{ post.title }}</h1>
-</div>
+  <div class="banner" data-aos="fade-up">
+    <img :src="post.image_url" alt="banner" class="banner-background" />
+  </div>
 
+  <div class="banner-title" data-aos="zoom-in">
+    <h1>{{ post.title }}</h1>
+  </div>
 
-  <div class="content-container">
+  <div class="content-container" data-aos="fade-up">
     <div class="main-content" v-html="post.content" />
   </div>
 </div>
+<!-- <Footer/> -->
 
 </template>
 
-<script setup> 
-  import Headers from '../components/Headers.vue';
-import {detailmenu} from '../stores/detailmenu.js'
-import logo from '/src/assets/img/logo2.png'
-import { useRoute } from 'vue-router'
+
+<script setup>
+import { useRouter, useRoute } from 'vue-router' 
 import { ref, onMounted } from 'vue'
 
-const route = useRoute()
-
-
 import { useBlogStore } from '../stores/blog'
+import Footer from '../components/Footer.vue'
+import logo from '/src/assets/img/logo2.png'
 
-const  adminStore = detailmenu()
+const router = useRouter() 
+const route = useRoute()  
 
-const isActive = (href) => {
-  const pathOnly = href.split('#')[0]
-  return route.path === pathOnly
-}
+// const adminStore = detailmenu()
 const blogStore = useBlogStore()
 
 const post = ref(null)
@@ -89,16 +48,42 @@ onMounted(async () => {
   loading.value = false
 })
 
-const formatDate = (date) =>
-  new Date(date).toLocaleDateString('fr-FR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  })
+
 </script>
 
 
 <style scoped>
+.blog-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  z-index: 999;
+}
+
+.back-button {
+  cursor: pointer;
+  font-weight: 600;
+  color: #2aa39a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.back-button:hover {
+  color: #248a83;
+}
+
+
+
 .header {
   padding: 20px 0;
   transition: all 0.5s;
