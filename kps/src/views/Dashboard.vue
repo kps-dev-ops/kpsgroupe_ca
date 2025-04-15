@@ -22,7 +22,7 @@
          <div class="card-content card-with-thumb">
   <img v-if="lastPost?.image_url" :src="lastPost.image_url" alt="cover" class="thumb" />
   <div class="text">
-    <h2>{{ lastPost?.title || 'Aucun' }}</h2>
+    <h2>{{ lastPost?.title?.slice(0, 40) || 'Aucun' }}{{ lastPost?.title?.length > 40 ? '...' : '' }}</h2>
     <p>Dernier post</p>
     <small>Dernier contenu publié</small>
   </div>
@@ -64,7 +64,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="post in posts.slice(0, 4)" :key="post.$id">
+      <tr v-for="post in posts" :key="post.$id">
         <td class="title-cell">
   <div class="title-with-img">
     <img v-if="post.image_url" :src="post.image_url" alt="miniature" class="thumb-mini" />
@@ -220,7 +220,7 @@ const loadingFeatured = ref(null)
 const toggleFeatured = async (post) => {
   loadingFeatured.value = post.$id
   try {
-    await blog.updateArticle(post.$id, {
+    await blog.updateArticle2(post.$id, {
       featured: post.featured
     })
   } catch (error) {
@@ -290,7 +290,7 @@ const editPost = (post) => {
     slug: post.slug,
     description: post.description || '',
     content: post.content || '',
-    image: post.image || defaultImage,
+    image: post.image,
     published: post.published !== false,
     featured: post.featured || false
   }
@@ -380,6 +380,32 @@ const toggleForm = () => {
 <style scoped>
 
 scoped>
+
+.card-with-thumb {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card-with-thumb .text {
+  flex: 1;
+  overflow: hidden;
+}
+
+.card-with-thumb .text h2 {
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
 
 
 .card-with-thumb {
