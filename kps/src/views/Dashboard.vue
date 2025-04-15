@@ -22,7 +22,7 @@
          <div class="card-content card-with-thumb">
   <img v-if="lastPost?.image_url" :src="lastPost.image_url" alt="cover" class="thumb" />
   <div class="text">
-    <h2>{{ lastPost?.title?.slice(0, 40) || 'Aucun' }}{{ lastPost?.title?.length > 40 ? '...' : '' }}</h2>
+    <h2>{{ lastPost?.title?.slice(0, 25) || 'Aucun' }}{{ lastPost?.title?.length > 20 ? '...' : '' }}</h2>
     <p>Dernier post</p>
     <small>Dernier contenu publié</small>
   </div>
@@ -284,7 +284,7 @@ const editPost = (post) => {
     content: post.content || '',
     image: post.image,
     published: post.published !== false,
-    featured: post.featured
+    featured: post.featured !== false
   }
   showForm.value = true
 }
@@ -324,6 +324,7 @@ const handleSubmit = async () => {
 
   try {
     if (editingId.value) {
+      console.log('Mise à jour du post', payload)
       await blog.updateArticle(editingId.value, payload)
     } else {
       await blog.createArticle(payload)
