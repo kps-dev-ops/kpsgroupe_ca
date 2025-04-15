@@ -92,6 +92,7 @@
   }
   
   onMounted(() => {
+    blogStore.incrementViews();
     blogStore.fetchArticles()
   })
   
