@@ -72,7 +72,9 @@
   const uniqueCategories = computed(() => [...new Set(categories.value)])
   console.log(posts.views)
   const filteredPosts = computed(() => {
-    return posts.value.filter(post => {
+  return posts.value
+    .filter(post => post.published) // ✅ NE GARDER QUE LES POSTS PUBLIÉS
+    .filter(post => {
       const matchSearch =
         post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
         post.subtitle.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -80,7 +82,8 @@
         !selectedCategory.value || post.subtitle === selectedCategory.value
       return matchSearch && matchCategory
     })
-  })
+})
+
   
   const goToPost = (post) => {
     console.log(post.slug)
