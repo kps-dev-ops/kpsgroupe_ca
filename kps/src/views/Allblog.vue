@@ -73,7 +73,7 @@
   console.log(posts.views)
   const filteredPosts = computed(() => {
   return posts.value
-    .filter(post => post.published) // ✅ NE GARDER QUE LES POSTS PUBLIÉS
+    .filter(post => post.published)
     .filter(post => {
       const matchSearch =
         post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
