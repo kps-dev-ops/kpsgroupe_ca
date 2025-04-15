@@ -65,9 +65,9 @@ const blogStore = useBlogStore()
 
 const activeSection = ref(adminStore.menu[0]?.href)
 
-const client = new Client()
-client.setEndpoint('https://[TON_ENDPOINT]').setProject('[TON_PROJECT_ID]')
-const account = new Account(client)
+// const client = new Client()
+// client.setEndpoint('https://[TON_ENDPOINT]').setProject('[TON_PROJECT_ID]')
+// const account = new Account(client)
 
 const user = ref({ name: '', email: '', avatar: '' })
 
@@ -77,14 +77,14 @@ const handleMenuClick = (href) => {
 }
 
 onMounted(async () => {
-  try {
-    const current = await account.get()
-    user.value.name = current.name
-    user.value.email = current.email
-    user.value.avatar = `https://www.gravatar.com/avatar/${md5(current.email.trim().toLowerCase())}?d=identicon`
-  } catch (err) {
-    console.error('Erreur Appwrite :', err)
-  }
+  // try {
+  //   // const current = await account.get()
+  //   user.value.name = current.name
+  //   user.value.email = current.email
+  //   user.value.avatar = `https://www.gravatar.com/avatar/${md5(current.email.trim().toLowerCase())}?d=identicon`
+  // } catch (err) {
+  //   console.error('Erreur Appwrite :', err)
+  // }
 })
 
 const handleLogout = async () => {
