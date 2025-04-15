@@ -14,6 +14,9 @@ export const useBlogStore = defineStore('blog', () => {
   const loading = ref(false)
   const error = ref(null)
   const user = ref(null)
+  const posts = ref([])
+  const authors = ref([])
+  const lastPost = ref(null)
 
   const login = async (email, password) => {
     try {
@@ -96,6 +99,20 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
   
+  const fetchArticlesList = async () => {
+    try {
+      const p = await databases.listDocuments(DATABASE_ID, COLLECTION_ID)
+      const a = await databases.listDocuments(DATABASE_ID, COLLECTION_ID)
+      posts.value = p.documents
+      authors.value = a.documents
+      lastPost.value = p.documents.at(-1)
+    } catch (err) {
+      console.error('Erreur lors de la récupération des articles :', err)
+    } finally {
+      loading.value = false
+    }
+  }
+
 
   const fetchArticle = async (id) => {
     loading.value = true
@@ -149,16 +166,16 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
-  const updateArticle = async (id, post) => {
+  const updateArticle = async (id, updates) => {
     try {
-      const payload = formatPayload(post, true)
-
-      if (post.image && post.image.startsWith('http')) {
-        payload.image_url = post.image
-      } else {
-        payload.image_url = DEFAULT_IMAGE_URL
-      }
-
+      const payload = typeof updates === 'object' ? updates : formatPayload(updates, true)
+  
+      // if (payload.image && payload.image.startsWith('http')) {
+      //   payload.image_url = payload.image
+      // } else if (payload.image_url === undefined) {
+      //   payload.image_url = DEFAULT_IMAGE_URL
+      // }
+  
       const doc = await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, payload)
       const index = articles.value.findIndex((a) => a.$id === id)
       if (index !== -1) articles.value[index] = doc
@@ -201,6 +218,9 @@ export const useBlogStore = defineStore('blog', () => {
     currentArticle,
     loading,
     error,
+    posts,
+    authors,
+    lastPost,
     login,
     logout,
     checkAuth,
@@ -209,6 +229,7 @@ export const useBlogStore = defineStore('blog', () => {
     createArticle,
     updateArticle,
     uploadImage,
+    fetchArticlesList,
     fetchArticleBySlug,
     deleteArticle,
     incrementViews
