@@ -122,7 +122,7 @@ AOS.init()
 
 const showForm = ref(false)
 const editingId = ref(null)
-const defaultImage = 'https://placehold.co/800?text=No+Image&font=roboto'
+const defaultImage = 'https://appwrite.ubbfy.com/v1/storage/buckets/67f3ad7b0017d490c545/files/new_cover/view?project=67f3ad4f00234f8ab06c&project=67f3ad4f00234f8ab06c&mode=admin'
 
 const blog = useBlogStore()
 

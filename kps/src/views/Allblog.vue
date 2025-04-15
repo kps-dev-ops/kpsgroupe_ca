@@ -87,6 +87,7 @@
   
   const goToPost = (post) => {
     console.log(post.slug)
+    blogStore.incrementViews(post.slug)
     router.push({ name: 'detailblog', params: { slug: post.slug } })
   }
   

@@ -6,7 +6,7 @@ import { account, databases, storage, ID } from '../lib/appwrite'
 const DATABASE_ID = '67f3de5700068b483ca7'
 const COLLECTION_ID = '67f3ebc80030da0f765e'
 const BUCKET_ID = '67f3ad7b0017d490c545'
-const DEFAULT_IMAGE_URL = 'https://placehold.co/800?text=No+Image&font=roboto'
+const DEFAULT_IMAGE_URL = 'https://appwrite.ubbfy.com/v1/storage/buckets/67f3ad7b0017d490c545/files/new_cover/view?project=67f3ad4f00234f8ab06c&project=67f3ad4f00234f8ab06c&mode=admin'
 
 export const useBlogStore = defineStore('blog', () => {
   const articles = ref([])
