@@ -80,19 +80,13 @@
           </span>
         </td>
         <td>
-          <input
-  type="checkbox"
-  :disabled="loadingFeatured === post.$id"
-  v-model="post.featured"
-  @change="toggleFeatured(post)"
-/>
-
+          <input type="checkbox" :disabled="loadingFeatured === post.$id" v-model="post.featured" @change="toggleFeatured(post)"/>
         </td>
         <td>
           <div class="actions">
             <button class="icon-btn edit" @click="editPost(post)" title="Modifier l'article">
-  <font-awesome-icon icon="pen" />
-</button>
+              <font-awesome-icon icon="pen" />
+            </button>
             <button class="icon-btn delete" @click="deletePost(post.$id)">
               <font-awesome-icon icon="trash" />
             </button>
@@ -102,14 +96,6 @@
     </tbody>
   </table>
 </div>
-<section id="Post" class="post-page" data-aos="fade-up">
-    <div class="header">
-      <h2 class="title">Articles</h2>
-      <button class="toggle-btn" @click="toggleForm">
-        {{ showForm ? 'Fermer' : '➕ Nouveau Post' }}
-      </button>
-    </div>
-  </section>
 
 <transition name="slide-fade">
       <div v-if="showForm" class="form-box">
@@ -154,6 +140,12 @@
             <option :value="false">Brouillon</option>
           </select>
         </div>
+        
+        <div class="input-group checkbox">
+  <input type="checkbox" v-model="form.featured" :checked="form.featured" id="featured">
+  <label for="featured">Mettre à la une</label>
+</div>
+<p>Featured : {{ form.featured }}</p>
 
           <div class="form-footer">
             <button type="button" class="btn cancel" @click="toggleForm">Annuler</button>
@@ -162,17 +154,22 @@
             </button>
           </div>
 
-          <div class="input-group checkbox">
-            <input type="checkbox" v-model="form.featured" id="featured">
-            <label for="featured">Mettre à la une</label>
-          </div>
-
         </form>
       </div>
     </transition>
 
     </div>
   </section>
+
+  <section id="Post" class="post-page" data-aos="fade-up">
+    <div class="header">
+      <h2 class="title">Articles</h2>
+      <button class="toggle-btn" @click="toggleForm">
+        {{ showForm ? 'Fermer' : '➕ Nouveau Post' }}
+      </button>
+    </div>
+  </section>
+
   <Footer/>
 
 </template>
@@ -180,8 +177,6 @@
 <script setup>
 import { ref, onMounted, watchEffect } from 'vue'
 import { storeToRefs } from 'pinia'
-import { Client, Databases } from 'appwrite'
-import BarChart from './BarChart .vue'
 import { useBlogStore } from '../stores/blog'
 const blog = useBlogStore()
 import Footer from '../components/Footer.vue'
@@ -190,9 +185,6 @@ const { posts, authors, lastPost} = storeToRefs(blog)
 
 const showForm = ref(false)
 const editingId = ref(null)
-const defaultImage = 'https://appwrite.ubbfy.com/v1/storage/buckets/67f3ad7b0017d490c545/files/new_cover/view?project=67f3ad4f00234f8ab06c&project=67f3ad4f00234f8ab06c&mode=admin'
-
-// const blog = useBlogStore()
 
 const form = ref({
   title: '',
@@ -292,7 +284,7 @@ const editPost = (post) => {
     content: post.content || '',
     image: post.image,
     published: post.published !== false,
-    featured: post.featured || false
+    featured: post.featured
   }
   showForm.value = true
 }
