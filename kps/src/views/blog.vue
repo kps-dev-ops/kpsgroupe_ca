@@ -121,6 +121,7 @@ const goToAllBlogs = () => {
 }
 
 const viewMore = (post) => {
+  blogStore.incrementViews()
   router.push({ name: 'detailblog', params: { slug: post.slug } })
 }
 
