@@ -166,15 +166,32 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
-  const updateArticle = async (id, updates) => {
+  const updateArticle = async (id, post) => {
+    try {
+      const payload = formatPayload(post, true)
+  
+      const existingDoc = await databases.getDocument(DATABASE_ID, COLLECTION_ID, id)
+  
+      if (post.image && post.image.startsWith('http')) {
+        payload.image_url = post.image
+      } else {
+        payload.image_url = existingDoc.image_url || DEFAULT_IMAGE_URL
+      }
+  
+      const doc = await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, payload)
+      const index = articles.value.findIndex((a) => a.$id === id)
+      if (index !== -1) articles.value[index] = doc
+  
+      return doc
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur updateArticle :', err)
+    }
+  }
+  
+  const updateArticle2 = async (id, updates) => {
     try {
       const payload = typeof updates === 'object' ? updates : formatPayload(updates, true)
-  
-      // if (payload.image && payload.image.startsWith('http')) {
-      //   payload.image_url = payload.image
-      // } else if (payload.image_url === undefined) {
-      //   payload.image_url = DEFAULT_IMAGE_URL
-      // }
   
       const doc = await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, payload)
       const index = articles.value.findIndex((a) => a.$id === id)
@@ -228,6 +245,7 @@ export const useBlogStore = defineStore('blog', () => {
     fetchArticle,
     createArticle,
     updateArticle,
+    updateArticle2,
     uploadImage,
     fetchArticlesList,
     fetchArticleBySlug,
