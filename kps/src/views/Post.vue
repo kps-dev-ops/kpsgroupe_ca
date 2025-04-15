@@ -1,13 +1,13 @@
 <template>
-  <section id="Post" class="post-page" data-aos="fade-up">
-    <div class="header">
+  <!-- <section id="Post" class="post-page" data-aos="fade-up"> -->
+    <!-- <div class="header">
       <h2 class="title">Articles</h2>
       <button class="toggle-btn" @click="toggleForm">
         {{ showForm ? 'Fermer' : '➕ Nouveau Post' }}
       </button>
-    </div>
+    </div> -->
 
-    <transition name="fade">
+    <!-- <transition name="fade">
       <div v-if="!showForm" class="posts-list">
         <div class="post-card" v-for="post in blog.articles" :key="post.$id">
           <img :src="post.image_url || defaultImage" alt="cover" />
@@ -32,46 +32,46 @@
 
               </button>
             </div>
-            <!-- <span
+            <<span
               class="status-badge"
               :class="post.published ? 'published' : 'draft'"
             >
               {{ post.published ? 'Publié' : 'Brouillon' }}
             </span> -->
 
-          </div>
+          <!-- </div>
         </div>
       </div>
-    </transition>
+    </transition> --> 
 
-    <transition name="slide-fade">
+    <!-- <transition name="slide-fade">
       <div v-if="showForm" class="form-box">
         <form @submit.prevent="handleSubmit">
           <div class="input-group">
             <input v-model="form.title" required placeholder="Titre" @input="generateSlug" />
-          </div>
+          </div> -->
           <!-- <div class="input-group">
             <input v-model="form.subtitle" required placeholder="Categorie" />
           </div> -->
-          <div class="input-group">
+          <!-- <div class="input-group">
             <select v-model="form.subtitle" required>
               <option disabled value="">Choisir une catégorie</option>
               <option v-for="cat in categoryList" :key="cat" :value="cat">
                 {{ cat }}
               </option>
             </select>
-          </div>
+          </div> -->
 
-          <div class="input-group">
+          <!-- <div class="input-group">
             <input v-model="form.slug" required placeholder="Slug (auto-généré)" disabled />
           </div>
 
           <div class="input-group">
             <label>Résumé de l'article</label>
             <quill-editor v-model:content="form.description" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
-          </div>
+          </div> -->
 
-          <div class="input-group">
+          <!-- <div class="input-group">
             <label>Contenu HTML ou Markdown</label>
             <quill-editor v-model:content="form.content" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
           </div>
@@ -89,10 +89,10 @@
             <option :value="true">Publié</option>
             <option :value="false">Brouillon</option>
           </select>
-        </div>
+        </div> -->
 
-          <div class="form-footer">
-            <button type="button" class="btn cancel" @click="toggleForm">Annuler</button>
+          <!-- <div class="form-footer"> -->
+            <!-- <button type="button" class="btn cancel" @click="toggleForm">Annuler</button>
             <button type="submit" class="btn submit">
               {{ editingId ? 'Mettre à jour' : 'Publier' }}
             </button>
@@ -101,13 +101,13 @@
           <div class="input-group checkbox">
             <input type="checkbox" v-model="form.featured" id="featured">
             <label for="featured">Mettre à la une</label>
-          </div>
-
+          </div> -->
+<!-- 
         </form>
       </div>
     </transition>
-  </section>
-<Footer/>
+  </section> -->
+<!-- <Footer/> -->
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -224,11 +224,7 @@ const handleSubmit = async () => {
 }
 
 
-const deletePost = async (id) => {
-  if (confirm('Supprimer ce post ?')) {
-    await blog.deleteArticle(id)
-  }
-}
+
 const uploadImage = async (e) => {
   const file = e.target.files[0];
   
