@@ -24,9 +24,9 @@ const routes = [
   { path: '/', name: 'home', component: home },
   { path: '/login', name: 'Secretlogin', component: Secretlogin, meta: { hidden: true } },
   { path: '/Blogs', name: 'Blogs', component: Blogs, beforeEnter: requireAuth },
-  { path: '/blog/:slug', name: 'BlogDetail', component: Blogdetail },
-  { path: '/Allblog', name: 'Allblog', component: Allblog },
-  {path: '/detailblog/:slug', name: 'detailblog', component: detailblog}
+  // { path: '/blog/:slug', name: 'BlogDetail', component: Blogdetail },
+  { path: '/blog', name: 'Allblog', component: Allblog },
+  {path: '/blog/:slug', name: 'detailblog', component: detailblog}
 ]
 
 const router = createRouter({
