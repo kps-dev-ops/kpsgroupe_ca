@@ -177,7 +177,7 @@ export const useBlogStore = defineStore('blog', () => {
       } else {
         payload.image_url = existingDoc.image_url || DEFAULT_IMAGE_URL
       }
-  
+      console.log('Mise à jour du post', payload)
       const doc = await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, payload)
       const index = articles.value.findIndex((a) => a.$id === id)
       if (index !== -1) articles.value[index] = doc
@@ -224,6 +224,7 @@ export const useBlogStore = defineStore('blog', () => {
       image_url: payload.image_url || '',
       published: payload.published ?? true,
       categories: payload.categories || [],
+      featured: payload.featured,
       updated_at: now,
       created_at: isUpdate ? payload.created_at : now,
     }
