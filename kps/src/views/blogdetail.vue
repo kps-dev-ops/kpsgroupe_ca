@@ -53,7 +53,7 @@ const formatDate = (date) =>
    Bannière
 -------------------- */
 .banner {
-  background: linear-gradient(135deg, #368c85, #007cc7);
+  background: linear-gradient(135deg, #C5A070, #007cc7);
   color: white;
   padding: 4rem 2rem 3rem;
   text-align: left;

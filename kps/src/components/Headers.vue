@@ -79,7 +79,7 @@ a {
 
 /* Style actif (texte) */
 a.active {
-  color:#2aa39a;
+  color:#C5A070;
   font-weight: bold;
 }
 
@@ -91,7 +91,7 @@ a::after {
   bottom: 0;
   height: 2px;
   width: 0;
-  background-color: #2aa39a;
+  background-color: #C5A070;
   transition: width 0.4s ease-in-out;
 }
 
@@ -103,7 +103,7 @@ a.active::after {
 
 /* Lien actif */
 .active {
-  color: #2aa39a;
+  color: #C5A070;
   font-weight: normal;
   border: none;
   text-decoration: none;
@@ -186,7 +186,7 @@ a.active::after {
   }
 
   body.mobile-nav-active .navmenu a.active {
-    color: #2aa39a;
+    color: #C5A070;
     font-weight: 600;
     border: none;
     text-decoration: none;

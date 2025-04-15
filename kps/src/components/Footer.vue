@@ -30,7 +30,7 @@
             <div class="footer-contact pt-2">
               <p>{{ store.contact.adresse }}</p>
               <p class="mt-3"><strong>Téléphone:</strong> <span>{{ store.contact.tel }}</span></p>
-              <p><strong>Email:</strong> <span><a style="color:cadetblue; text-decoration: none;" :href="`mailto:${store.contact.email}`">{{ store.contact.email }}</a></span></p>
+              <p><strong>Email:</strong> <span><a style="color:#C5A070; text-decoration: none;" :href="`mailto:${store.contact.email}`">{{ store.contact.email }}</a></span></p>
             </div>
           </div>
         </div>

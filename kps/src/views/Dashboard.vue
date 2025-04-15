@@ -503,7 +503,7 @@ scoped>
   height: 3px;
   bottom: -6px;
   left: 0;
-  background-color: #2aa39a;
+  background-color: #C5A070;
   transform: scaleX(1);
   transform-origin: left;
   transition: transform 0.3s ease-in-out;
@@ -620,7 +620,7 @@ scoped>
   height: 80px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #2aa39a;
+  border: 2px solid #C5A070;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
 }
@@ -676,7 +676,7 @@ scoped>
 .input-group textarea:focus,
 .input-group select:focus {
   outline: none;
-  border-color: #2aa39a;
+  border-color: #C5A070;
   background-color: white;
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
 }
@@ -694,7 +694,7 @@ scoped>
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  background-color: #2aa39a;
+  background-color: #C5A070;
   color: white;
   transition: background 0.3s ease;
   display: flex;
@@ -708,7 +708,7 @@ scoped>
 }
 
 .form-footer button:hover:not(:disabled) {
-  background-color: #2aa39a;
+  background-color: #C5A070;
 }
 
 
@@ -779,7 +779,7 @@ scoped>
 }
 
 .btn.submit {
-  background-color: #2aa39a;
+  background-color: #C5A070;
   color: white;
 }
 
@@ -820,7 +820,7 @@ scoped>
   height: 3px;
   bottom: -6px;
   left: 0;
-  background-color: #2aa39a;
+  background-color: #C5A070;
   transform: scaleX(1);
   transform-origin: left;
   transition: transform 0.3s ease-in-out;
@@ -862,11 +862,11 @@ scoped>
   margin-bottom: 2rem;
   justify-content: space-between;
   flex-wrap: wrap;
-  background-color: #d8e7e1;
-  border: 1px solid #cbd5e0; /* bordure douce gris clair */
-  border-radius: 16px;        /* coins arrondis */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* ombre douce */
-  padding: 2rem;              /* espace interne */
+  background-color: #e2c9a9;
+  border: 1px solid #cbd5e0; 
+  border-radius: 16px;       
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+  padding: 2rem;             
 }
 
 

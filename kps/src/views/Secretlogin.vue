@@ -109,7 +109,7 @@ onMounted(async () => {
   }
   
   input:focus {
-    border-color: #4CA18B;
+    border-color: #C5A070;
     box-shadow: 0 0 0 2px rgba(76, 161, 139, 0.3);
   }
   
@@ -124,7 +124,7 @@ onMounted(async () => {
     padding: 0.9rem;
     border: none;
     border-radius: 10px;
-    background-color: #4CA18B;
+    background-color: #C5A070;
     color: white;
     font-size: 1.1rem;
     font-weight: bold;
@@ -133,7 +133,7 @@ onMounted(async () => {
   }
   
   button:hover {
-    background-color: #3d8571;
+    background-color: #e3d4c0;
   }
   
   .error {

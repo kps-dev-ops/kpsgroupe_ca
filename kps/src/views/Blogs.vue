@@ -145,13 +145,13 @@ const handleLogout = async () => {
 }
 .navmenu a:hover,
 .navmenu a.active {
-  background-color: #2aa39a;
+  background-color: #C5A070;
   color: white;
   transform: translateY(-2px);
 }
 
 .btn-getstarted {
-  background-color: #2aa39a;
+  background-color: #C5A070;
   color: white;
   font-weight: 500;
   padding: 0.5rem 1rem;
@@ -160,7 +160,7 @@ const handleLogout = async () => {
   transition: background 0.3s ease;
 }
 .btn-getstarted:hover {
-  background-color: #248a83;
+  background-color: #866840;
 }
 
 .mobile-icons {
@@ -224,7 +224,7 @@ const handleLogout = async () => {
 
   .navmenu li a:hover,
   .navmenu li a.active {
-    background-color: #2aa39a;
+    background-color: #C5A070;
     color: white;
   }
 

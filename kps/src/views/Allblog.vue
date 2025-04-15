@@ -42,9 +42,9 @@
           <div class="card-content">
             <h3>{{ post.title }}</h3>
             <p class="categori">{{ post.subtitle }}</p>
-            <div class="meta-line">
+            <!-- <div class="meta-line">
               <span class="slug">🔗 {{ post.slug }}</span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -128,7 +128,7 @@
 .back-button {
   cursor: pointer;
   font-weight: 600;
-  color: #2aa39a;
+  color: #C5A070;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -137,7 +137,7 @@
 }
 
 .back-button:hover {
-  color: #248a83;
+  color: #ead1b0;
 }
 
 .blog-banner {
@@ -204,7 +204,7 @@
 
 
 .blog-banner {
-  background: linear-gradient(135deg, #368c85, #007cc7);
+  background: linear-gradient(135deg, #C5A070, #007cc7);
   color: white;
   padding: 4rem 2rem 3rem;
   text-align: left;

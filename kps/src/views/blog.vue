@@ -18,9 +18,9 @@
       <div class="card-content">
         <h3>{{ post.title }}</h3>
         <p class="categori">{{ post.subtitle }}</p>
-        <div class="meta-line">
+        <!-- <div class="meta-line">
           <span class="slug">🔗 {{ post.slug }}</span>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -400,7 +400,7 @@ h1::after {
 }
 
 .see-more button:hover {
-  background-color: #368c85;
+  background-color: #eacba6;
 }
 
 </style>

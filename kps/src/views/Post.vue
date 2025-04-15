@@ -1,114 +1,4 @@
-<template>
-  <!-- <section id="Post" class="post-page" data-aos="fade-up"> -->
-    <!-- <div class="header">
-      <h2 class="title">Articles</h2>
-      <button class="toggle-btn" @click="toggleForm">
-        {{ showForm ? 'Fermer' : '➕ Nouveau Post' }}
-      </button>
-    </div> -->
 
-    <!-- <transition name="fade">
-      <div v-if="!showForm" class="posts-list">
-        <div class="post-card" v-for="post in blog.articles" :key="post.$id">
-          <img :src="post.image_url || defaultImage" alt="cover" />
-          <div class="card-content">
-            <h3>{{ post.title }}</h3>
-            <p>{{ post.subtitle }}</p>
-            <span v-if="post.featured" class="featured-badge">À la une</span>
-            <span
-              class="status-badge"
-              :class="post.published ? 'published' : 'draft'"
-            >
-              {{ post.published ? 'Publié' : 'Brouillon' }}
-            </span>
-            
-            <div class="actions">
-              <button class="icon-btn edit" @click="editPost(post)">
-                <font-awesome-icon icon="pen" />
-
-              </button>
-              <button class="icon-btn delete" @click="deletePost(post.$id)">
-                <font-awesome-icon icon="trash" />
-
-              </button>
-            </div>
-            <<span
-              class="status-badge"
-              :class="post.published ? 'published' : 'draft'"
-            >
-              {{ post.published ? 'Publié' : 'Brouillon' }}
-            </span> -->
-
-          <!-- </div>
-        </div>
-      </div>
-    </transition> --> 
-
-    <!-- <transition name="slide-fade">
-      <div v-if="showForm" class="form-box">
-        <form @submit.prevent="handleSubmit">
-          <div class="input-group">
-            <input v-model="form.title" required placeholder="Titre" @input="generateSlug" />
-          </div> -->
-          <!-- <div class="input-group">
-            <input v-model="form.subtitle" required placeholder="Categorie" />
-          </div> -->
-          <!-- <div class="input-group">
-            <select v-model="form.subtitle" required>
-              <option disabled value="">Choisir une catégorie</option>
-              <option v-for="cat in categoryList" :key="cat" :value="cat">
-                {{ cat }}
-              </option>
-            </select>
-          </div> -->
-
-          <!-- <div class="input-group">
-            <input v-model="form.slug" required placeholder="Slug (auto-généré)" disabled />
-          </div>
-
-          <div class="input-group">
-            <label>Résumé de l'article</label>
-            <quill-editor v-model:content="form.description" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
-          </div> -->
-
-          <!-- <div class="input-group">
-            <label>Contenu HTML ou Markdown</label>
-            <quill-editor v-model:content="form.content" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
-          </div>
-          <div class="input-group">
-              <label>Image de couverture</label>
-              <input type="file" @change="uploadImage" />
-              <img v-if="form.image_url" :src="form.image_url" alt="Aperçu image" class="cover-preview" />
-              <div v-if="loading" class="loading-indicator">
-                <span>Chargement en cours...</span>
-              </div>
-            </div>
-            <div class="input-group">
-          <label>Status de l'article</label>
-          <select v-model="form.published">
-            <option :value="true">Publié</option>
-            <option :value="false">Brouillon</option>
-          </select>
-        </div> -->
-
-          <!-- <div class="form-footer"> -->
-            <!-- <button type="button" class="btn cancel" @click="toggleForm">Annuler</button>
-            <button type="submit" class="btn submit">
-              {{ editingId ? 'Mettre à jour' : 'Publier' }}
-            </button>
-          </div>
-
-          <div class="input-group checkbox">
-            <input type="checkbox" v-model="form.featured" id="featured">
-            <label for="featured">Mettre à la une</label>
-          </div> -->
-<!-- 
-        </form>
-      </div>
-    </transition>
-  </section> -->
-<!-- <Footer/> -->
-</template>
 <script setup>
 import { ref, onMounted } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
@@ -325,7 +215,7 @@ const toggleForm = () => {
   height: 3px;
   bottom: -6px;
   left: 0;
-  background-color: #2aa39a;
+  background-color: #C5A070;
   transform: scaleX(1);
   transform-origin: left;
   transition: transform 0.3s ease-in-out;
@@ -442,7 +332,7 @@ const toggleForm = () => {
   height: 80px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #2aa39a;
+  border: 2px solid #C5A070;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
 }
@@ -567,7 +457,7 @@ const toggleForm = () => {
 .input-group textarea:focus,
 .input-group select:focus {
   outline: none;
-  border-color: #2aa39a;
+  border-color: #C5A070;
   background-color: white;
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
 }
@@ -585,7 +475,7 @@ const toggleForm = () => {
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  background-color: #2aa39a;
+  background-color: #C5A070;
   color: white;
   transition: background 0.3s ease;
   display: flex;
@@ -599,7 +489,7 @@ const toggleForm = () => {
 }
 
 .form-footer button:hover:not(:disabled) {
-  background-color: #2aa39a;
+  background-color: #C5A070;
 }
 
 
@@ -670,11 +560,11 @@ const toggleForm = () => {
 }
 
 .btn.submit {
-  background-color: #2aa39a;
+  background-color: #C5A070;
   color: white;
 }
 
 .btn.submit:hover {
-  background-color: #72a09d;
+  background-color: #C5A070;
 }
 </style >

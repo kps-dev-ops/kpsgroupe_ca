@@ -75,7 +75,7 @@
   }
   
   .nav-pills .nav-link.active {
-    background-color: #45A79E;
+    background-color: #C5A070;
     color: white;
   }
   </style>
