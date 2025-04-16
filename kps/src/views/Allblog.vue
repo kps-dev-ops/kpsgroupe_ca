@@ -6,7 +6,7 @@
   </div>
 
   <div class="blog-banner">
-    <h1>Blog</h1>
+    <h1>Blog </h1>
     <p>Retrouvez nos derniers articles autour de la Data, du Digital et du Consulting, rédigés par des experts du domaine.</p>
   </div>
 
@@ -20,26 +20,38 @@
 
   <section class="all-blogs">
     <div class="container">
-      <div class="grid">
-        <div
-          v-for="post in filteredPosts"
-          :key="post.$id"
-          class="blog-card"
-          @click="goToPost(post)"
-        >
-          <div class="blog-image">
-            <img :src="post.image_url" alt="cover" />
-            <span class="badge top-right">{{ post.subtitle || 'ACTUALITÉ' }}</span>
+      <div class="grid-with-sidebar">
+        <div class="grid">
+          <div
+            v-for="post in filteredPosts"
+            :key="post.$id"
+            class="blog-card"
+            @click="goToPost(post)"
+          >
+            <div class="blog-image">
+              <img :src="post.image_url" alt="cover" />
+              <span class="badge top-right">{{ post.subtitle || 'ACTUALITÉ' }}</span>
+            </div>
+            <div class="blog-content">
+              <h3>{{ post.title }}</h3>
+              <p>{{ post.subtitle }}</p>
+            </div>
           </div>
-          <div class="blog-content">
-            <h3>{{ post.title }}</h3>
-            <p>{{ post.subtitle }}</p>
+
+          <div v-if="filteredPosts.length === 0" class="no-results">
+            <p>Aucun article ne correspond à votre recherche.</p>
           </div>
         </div>
 
-        <div v-if="filteredPosts.length === 0" class="no-results">
-          <p>Aucun article ne correspond à votre recherche.</p>
-        </div>
+        <aside class="sidebar">
+          <h3>Articles récents</h3>
+          <div class="recent-article" v-for="post in recentPosts" :key="post.$id" @click="goToPost(post)">
+            <img :src="post.image_url" alt="" />
+            <div class="info">
+              <p class="title">{{ post.title }}</p>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   </section>
@@ -71,6 +83,10 @@ const filteredPosts = computed(() => {
     })
 })
 
+const recentPosts = computed(() => {
+  return posts.value.filter(post => post.published).slice(0, 6)
+})
+
 const goToPost = (post) => {
   blogStore.incrementViews(post.slug)
   router.push({ name: 'detailblog', params: { slug: post.slug } })
@@ -80,14 +96,14 @@ onMounted(() => {
   blogStore.fetchArticles()
 })
 
-
 const categoryList = [
   'Dentition',
   'Hygiène',
   'Esthétique',
   'Orthodontie',
   'Conseils',
-  'Actualité', 'Data',
+  'Actualité',
+  'Data',
   'Intelligence Artificielle'
 ]
 </script>
@@ -145,7 +161,7 @@ const categoryList = [
 
 .search-filter {
   background-color: white;
-  padding: 2rem 1rem;
+  padding: 2rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -169,6 +185,13 @@ const categoryList = [
   max-width: 1200px;
   margin: 0 auto;
 }
+
+.grid-with-sidebar {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 2rem;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -237,5 +260,42 @@ const categoryList = [
   font-style: italic;
   color: #888;
   padding: 2rem;
+}
+
+.sidebar {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+.sidebar h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--heading-color);
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+}
+.recent-article {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.recent-article img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.recent-article .info {
+  flex: 1;
+}
+.recent-article .title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+  line-height: 1.2;
 }
 </style>
