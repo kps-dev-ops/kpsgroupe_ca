@@ -16,7 +16,7 @@
             </p>
             <div class="hero-buttons d-flex flex-wrap gap-3">
               <a :href="store.contactHref" class="btn-primary-filled">{{ store.contactText }}</a>
-              <a :href="store.videoUrl" class="btn-outline">
+              <a :href="store.videoUrl" class="btn-outline glightbox">
                 <i class="bi bi-play-circle me-1"></i>
                 {{ store.videoText }}
               </a>
@@ -44,12 +44,20 @@
     </div>
 
     <!-- Encadré avec icônes et textes -->
-    <div class="feature-box-wrapper">
+    <div class="feature-box-wrapper"
+         data-aos="fade-up"
+         data-aos-duration="1000"
+         data-aos-offset="120"
+         data-aos-easing="ease-in-out">
       <div class="feature-box">
         <div
           v-for="(stat, index) in store.stats"
           :key="index"
           class="feature-item"
+          :data-aos="'zoom-in'"
+          :data-aos-delay="index * 150"
+          data-aos-duration="900"
+          data-aos-easing="ease-out-cubic"
         >
           <div class="feature-icon">
             <i :class="stat.icon"></i>
@@ -69,19 +77,29 @@ import { onMounted } from 'vue'
 import { useAccueilStore } from '../stores/useAccueilStore'
 import GLightbox from 'glightbox'
 import 'glightbox/dist/css/glightbox.min.css'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 const store = useAccueilStore()
 
 onMounted(() => {
+  AOS.init({
+    once: true,
+    offset: 120,
+    duration: 800,
+    easing: 'ease-in-out'
+  })
+
   GLightbox({ selector: '.glightbox' })
 })
 </script>
+
 
 <style scoped>
 :root {
   --color-light-blue: #d6e7fd;
   --color-teal: #45A79E;
-  --color-dark-brown: #5E5325;
+  --color-dark-brown: #45A79E;
   --color-cream: #fdf7ef;
 }
 
@@ -128,8 +146,8 @@ onMounted(() => {
 
 .btn-outline {
   background-color: transparent;
-  color: var(--color-dark-brown);
-  border: 2px solid var(--color-dark-brown);
+  color: #45A79E;
+  border: 2px solid #45A79E;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   text-decoration: none;
@@ -138,7 +156,7 @@ onMounted(() => {
 }
 
 .btn-outline:hover {
-  background-color: var(--color-dark-brown);
+  background-color: #45A79E;
   color: white;
 }
 
