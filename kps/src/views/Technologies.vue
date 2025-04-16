@@ -7,20 +7,23 @@
   
       <div class="container">
         <!-- Ajout du wrapper stylé -->
-        <div class="nav-wrapper d-flex justify-content-center">
-          <ul class="nav nav-pills" data-aos="fade-up" data-aos-delay="100">
-            <li class="nav-item" v-for="tab in store.tabs" :key="tab.id">
-              <a
-                class="nav-link"
-                :class="{ active: store.activeTab === tab.id }"
-                href="#"
-                @click.prevent="store.activeTab = tab.id"
-              >
-                <h4>{{ tab.title }}</h4>
-              </a>
-            </li>
-          </ul>
-        </div>
+        <div class="d-flex justify-content-center">
+  <div class="nav-wrapper">
+    <ul class="nav nav-pills">
+      <li class="nav-item" v-for="tab in store.tabs" :key="tab.id">
+        <a
+          class="nav-link"
+          :class="{ active: store.activeTab === tab.id }"
+          href="#"
+          @click.prevent="store.activeTab = tab.id"
+        >
+          {{ tab.title }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
   
         <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
           <div
@@ -56,27 +59,46 @@
   </script>
   
   <style scoped>
-  /* Wrapper avec forme circulaire */
   .nav-wrapper {
-    background: #f8f9fa;
-    border-radius: 60px;
-    padding: 10px 20px;
-    display: inline-block;
-  }
-  
-  /* Style des onglets */
-  .nav-pills .nav-link {
-    border-radius: 50px;
-    padding: 10px 20px;
-    color: #4e342e;
-    font-weight: bold;
-    transition: 0.3s ease;
-    background-color: transparent;
-  }
-  
-  .nav-pills .nav-link.active {
-    background-color: #C5A070;
-    color: white;
-  }
+  background: #f8f9fa;
+  border-radius: 60px;
+  padding: 6px 16px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* léger relief si tu veux */
+}
+
+/* Onglets */
+.nav-pills {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.nav-pills .nav-item {
+  list-style: none;
+}
+
+.nav-pills .nav-link {
+  border-radius: 50px;
+  padding: 8px 18px;
+  color: #4e342e;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  background-color: transparent;
+  white-space: nowrap;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #45A79E;
+  color: white;
+}
+.nav-pills .nav-link:hover {
+  background-color: #71bab3;
+}
+
   </style>
   

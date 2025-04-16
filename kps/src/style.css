@@ -4,8 +4,8 @@
   --nav-font: "Inter", sans-serif;
 
   /* Palette de couleurs */
-  --color-light-blue: #FDF3E6;  /* RVB : 207-226-255, CJMN : 18.82-11.37-0-0 */
-  --color-teal:  #C5A070;    /* RVB : 69-167-158, CJMN : 58.68-0-5.39-34.51 */
+  --color-light-blue: #CFE2FF;  /* RVB : 207-226-255, CJMN : 18.82-11.37-0-0 */
+  --color-teal: #45A79E;       /* RVB : 69-167-158, CJMN : 58.68-0-5.39-34.51 */
   --color-white: #FFFFFF;       /* RVB : 255-255-255, CJMN : 0-0-0-0 */
   --color-cream: #FDF3E6;       /* RVB : 253-243-230, CJMN : 0-3.95-9.09-0.78 */
   --color-dark-brown: #5E5325;  /* RVB : 94-83-37, CJMN : 0-11.7-60.64-63.14 */
@@ -17,7 +17,6 @@
   --accent-color: var(--color-teal);
   --surface-color: var(--color-white);
   --contrast-color: var(--color-light-blue);
-  --color-light-green: #FDF3E6;
 }
 
 /* Navigation */
@@ -190,7 +189,6 @@ h1, h2, h3, h4, h5, h6 {
 
   .navmenu li {
     position: relative;
-    text-decoration: none;
   }
 
   .navmenu a,
@@ -835,7 +833,7 @@ section,
   margin-top: 5rem;
   background-color: var(--surface-color);
   border-radius: 20px;
-  /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); */
+  /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); */
   padding-bottom: 2rem;
 }
 

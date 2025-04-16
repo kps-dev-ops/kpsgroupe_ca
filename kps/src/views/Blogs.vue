@@ -145,13 +145,13 @@ const handleLogout = async () => {
 }
 .navmenu a:hover,
 .navmenu a.active {
-  background-color: #C5A070;
+  background-color: #45A79E;
   color: white;
   transform: translateY(-2px);
 }
 
 .btn-getstarted {
-  background-color: #C5A070;
+  background-color: #45A79E;
   color: white;
   font-weight: 500;
   padding: 0.5rem 1rem;
@@ -224,7 +224,7 @@ const handleLogout = async () => {
 
   .navmenu li a:hover,
   .navmenu li a.active {
-    background-color: #C5A070;
+    background-color: #45A79E;
     color: white;
   }
 

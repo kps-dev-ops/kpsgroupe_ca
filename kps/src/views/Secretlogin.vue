@@ -109,7 +109,7 @@ onMounted(async () => {
   }
   
   input:focus {
-    border-color: #C5A070;
+    border-color: #45A79E;
     box-shadow: 0 0 0 2px rgba(76, 161, 139, 0.3);
   }
   
@@ -124,7 +124,7 @@ onMounted(async () => {
     padding: 0.9rem;
     border: none;
     border-radius: 10px;
-    background-color: #C5A070;
+    background-color: #45A79E;
     color: white;
     font-size: 1.1rem;
     font-weight: bold;

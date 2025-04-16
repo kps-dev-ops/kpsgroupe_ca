@@ -128,7 +128,7 @@
 .back-button {
   cursor: pointer;
   font-weight: 600;
-  color: #C5A070;
+  color: #45A79E;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -137,7 +137,7 @@
 }
 
 .back-button:hover {
-  color: #ead1b0;
+  color:#71bab3 ;
 }
 
 .blog-banner {
@@ -204,7 +204,7 @@
 
 
 .blog-banner {
-  background: linear-gradient(135deg, #C5A070, #007cc7);
+  background: linear-gradient(135deg, #45A79E, #007cc7);
   color: white;
   padding: 4rem 2rem 3rem;
   text-align: left;

@@ -7,7 +7,7 @@
               <div style="font-weight: normal" class="company-badge mb-4" >
                 {{ store.intro }}
               </div>
-              <h2 class="mb-4" style="color: #C5A070">
+              <h2 class="mb-4" style="color: #45A79E">
                 {{ store.titre }}
               </h2>
               <p class="mb-4 mb-md-5" style="font-size: 20px;">
@@ -156,7 +156,7 @@ onMounted(() => {
 
 .stat-icon i {
   font-size: 24px;
-  color: #C5A070; /* ou une autre couleur de ta palette */
+  color:  #45A79E; /* ou une autre couleur de ta palette */
 }
 
 
@@ -187,7 +187,7 @@ onMounted(() => {
 .hero {
   position: relative;
   background: var(--color-light-blue);
-  padding: 200px 0 140px; /* ➕ plus de padding bas pour laisser la place au SVG */
+  padding: 0px 0 10px; /* ➕ plus de padding bas pour laisser la place au SVG */
   padding-bottom: 0;
   margin-bottom: 0;
 }
@@ -196,7 +196,7 @@ onMounted(() => {
 .hero-title {
   font-size: 2.8rem;
   font-weight: bold;
-  color: var(--color-teal); /* #C5A070 */
+  color: var(--color-teal); /* #45A79E */
 }
 
 .hero-description {
@@ -224,7 +224,7 @@ onMounted(() => {
 }
 
 .btn-primary-filled:hover {
-  background-color: #b88c54;
+  background-color: #71bab3;
 }
 
 .btn-outline {

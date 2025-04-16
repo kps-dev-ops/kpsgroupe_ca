@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useHeaderStore = defineStore('header', {
   state: () => ({
-    logoPath: './src/assets/img/logo.png',
+    logoPath: './src/assets/img/logo2.png',
     menu: [
       { label: 'Accueil', href: '#hero' },
       { label: 'À propos', href: '#about' },

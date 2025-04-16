@@ -400,7 +400,7 @@ h1::after {
 }
 
 .see-more button:hover {
-  background-color: #eacba6;
+  background-color: #71bab3;
 }
 
 </style>

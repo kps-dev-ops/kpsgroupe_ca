@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useFooterStore = defineStore('footer', {
   state: () => ({
-    logo: './src/assets/img/logo.png',
+    logo: './src/assets/img/logo2.png',
     citation: `“Nous mettons en œuvre une solution sur mesure pour renforcer votre efficacité et piloter votre activité en temps réel.”`,
     navLinks: [
       { label: 'Accueil', href: '#hero' },

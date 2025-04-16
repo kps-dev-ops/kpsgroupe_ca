@@ -503,7 +503,7 @@ scoped>
   height: 3px;
   bottom: -6px;
   left: 0;
-  background-color: #C5A070;
+  background-color: #45A79E;
   transform: scaleX(1);
   transform-origin: left;
   transition: transform 0.3s ease-in-out;
@@ -620,7 +620,7 @@ scoped>
   height: 80px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #C5A070;
+  border: 2px solid #45A79E;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
 }
@@ -676,7 +676,7 @@ scoped>
 .input-group textarea:focus,
 .input-group select:focus {
   outline: none;
-  border-color: #C5A070;
+  border-color: #45A79E;
   background-color: white;
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
 }
@@ -694,7 +694,7 @@ scoped>
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  background-color: #C5A070;
+  background-color: #45A79E;
   color: white;
   transition: background 0.3s ease;
   display: flex;
@@ -708,7 +708,7 @@ scoped>
 }
 
 .form-footer button:hover:not(:disabled) {
-  background-color: #C5A070;
+  background-color: #45A79E;
 }
 
 
@@ -779,7 +779,7 @@ scoped>
 }
 
 .btn.submit {
-  background-color: #C5A070;
+  background-color: #45A79E;
   color: white;
 }
 
@@ -820,7 +820,7 @@ scoped>
   height: 3px;
   bottom: -6px;
   left: 0;
-  background-color: #C5A070;
+  background-color: #45A79E;
   transform: scaleX(1);
   transform-origin: left;
   transition: transform 0.3s ease-in-out;
@@ -862,7 +862,7 @@ scoped>
   margin-bottom: 2rem;
   justify-content: space-between;
   flex-wrap: wrap;
-  background-color: #e2c9a9;
+  background-color: #45A79E;
   border: 1px solid #cbd5e0; 
   border-radius: 16px;       
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 

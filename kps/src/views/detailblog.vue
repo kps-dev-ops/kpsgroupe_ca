@@ -70,7 +70,7 @@ onMounted(async () => {
 .back-button {
   cursor: pointer;
   font-weight: 600;
-  color: #C5A070;
+  color: #45A79E;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -157,13 +157,13 @@ onMounted(async () => {
 }
 .navmenu a:hover,
 .navmenu a.active {
-  background-color: #C5A070;
+  background-color: #45A79E;
   color: white;
   transform: translateY(-2px);
 }
 
 .btn-getstarted {
-  background-color: #C5A070;
+  background-color: #45A79E;
   color: white;
   font-weight: 500;
   padding: 0.5rem 1rem;
@@ -172,7 +172,7 @@ onMounted(async () => {
   transition: background 0.3s ease;
 }
 .btn-getstarted:hover {
-  background-color: #C5A070;
+  background-color: #45A79E;
 }
 
 .mobile-icons {
@@ -236,7 +236,7 @@ onMounted(async () => {
 
   .navmenu li a:hover,
   .navmenu li a.active {
-    background-color: #C5A070;
+    background-color: #45A79E;
     color: white;
   }
 
@@ -300,7 +300,7 @@ onMounted(async () => {
 }
 
 .banner-title h1 {
-  background: linear-gradient(135deg, #0569a1, #C5A070);
+  background: linear-gradient(135deg, #0569a1, #45A79E);
   color: white;
   font-size: 2.5rem;
   font-weight: 700;
