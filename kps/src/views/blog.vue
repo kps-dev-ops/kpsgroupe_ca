@@ -1,5 +1,5 @@
 <template>
-  <section id="blog" class="blog-section">
+  <!-- <section id="blog" class="blog-section">
     <h1>Nos derniers articles</h1>
     <div class="blog-carousel-wrapper">
   <button class="carousel-btn left" @click="scrollCarousel('left')">❮</button>
@@ -18,9 +18,7 @@
       <div class="card-content">
         <h3>{{ post.title }}</h3>
         <p class="categori">{{ post.subtitle }}</p>
-        <!-- <div class="meta-line">
-          <span class="slug">🔗 {{ post.slug }}</span>
-        </div> -->
+       
       </div>
     </div>
   </div>
@@ -33,7 +31,35 @@
      <button @click="goToAllBlogs">Voir plus d’articles</button>
     </div>
 
-  </section>
+  </section> -->
+
+  <section id="blog" class="blog-section">
+  <h1>Nos derniers articles</h1>
+
+  <div class="blog-grid">
+    <div
+      v-for="post in displayedPosts"
+      :key="post.$id"
+      class="blog-card"
+      @click="viewMore(post)"
+    >
+    <div class="blog-image">
+  <img :src="post.image_url" alt="cover" />
+  <span class="badge top-right">{{ post.subtitle|| 'ACTUALITÉ' }}</span>
+  <div class="blog-overlay">
+    <h3>{{ post.title }}</h3>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+  <div class="see-more">
+    <button @click="goToAllBlogs">Voir plus d’articles</button>
+  </div>
+</section>
+
+
 </template>
 
 <!-- 
@@ -85,9 +111,10 @@ let autoScrollInterval = null
 const showAll = ref(false)
 const displayedPosts = computed(() =>
   showAll.value
-    ? blogStore.articles.filter((post) => post.published)
-    : blogStore.articles.filter((post) => post.published).slice(0, 5)
+    ? blogStore.articles.filter((post) => post.published && post.featured)
+    : blogStore.articles.filter((post) => post.published && post.featured).slice(0, 5)
 )
+
 
 const scrollCarousel = (direction) => {
   const cardWidth = 300 + 20 // carte + espace
@@ -128,260 +155,138 @@ const viewMore = (post) => {
 </script>
 
 <style scoped>
-
-
-.blog-carousel-wrapper {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  padding: 2rem 0;
+:root {
+  --color-teal: #45A79E;
+  --color-dark-brown: #5E5325;
+  --color-cream: #fdf7ef;
+  --accent-color: #45A79E;
+  --heading-color: #5E5325;
+  --background-color: #ffffff;
 }
 
-.blog-carousel {
-  display: flex;
-  gap: 1.2rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 1rem 2rem;
-  scrollbar-width: none;
-}
-.blog-carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.blog-card-clean {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-  min-width: 280px;
-  max-width: 280px;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-  flex-shrink: 0;
-  opacity: 0.5;
-  transform: scale(0.9);
-  cursor: pointer;
-}
-
-.blog-card-clean.active {
-  transform: scale(1.05);
-  opacity: 1;
-  z-index: 2;
-}
-
-.card-cover {
-  width: 100%;
-  height: 160px;
-  overflow: hidden;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-}
-
-.card-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-/* 
-.card-content {
-  padding: 1.2rem;
-  text-align: center;
-} */
-
-.card-content h3 {
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin-bottom: 0.4rem;
-}
-
-.categori {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin-bottom: 0.5rem;
-}
-
-.meta-line {
-  font-size: 0.75rem;
-  color: #9ca3af;
-}
-
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  border: none;
-  font-size: 1.8rem;
-  border-radius: 50%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  z-index: 10;
-  padding: 0.6rem 1rem;
-}
-
-.carousel-btn.left {
-  left: 5px;
-}
-
-.carousel-btn.right {
-  right: 5px;
-}
-
-
-.featured-badge {
-  background-color: #facc15;
-  color: #92400e;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 0.3rem 0.8rem;
-  border-radius: 999px;
-  display: inline-block;
-  margin-top: 0.5rem;
-}
-
-
-.views {
-  font-size: 0.85rem;
-  color: #888;
-  display: inline-block;
-  margin-top: 0.5rem;
-}
-
-/* 
-.categori{
-  color: #363232;
-}
-
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 4fr));
-  gap: 1rem;
-}
- */
-
+/* Section blog */
 .blog-section {
   padding: 2rem;
-  font-family: var(--default-font);
   background-color: var(--background-color);
-  text-align: center;
+  font-family: var(--default-font);
 }
+
 h1 {
   color: var(--heading-color);
-  text-align: center ;
-  margin-bottom: 2rem;
-  font-family: var(--heading-font);
-  position: relative;
-  display: inline-block;
-  padding-bottom: 0.5rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
+  position: relative;
 }
 
 h1::after {
   content: '';
-  position: absolute;
-  text-align: center;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 3px;
-  width: 40px;
-  background-color: var(--accent-color); /* ligne verte */
-  border-radius: 2px;
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: var(--accent-color);
+  border-radius: 4px;
+  margin: 0.5rem auto 0;
 }
 
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.8rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-/* .blog-card-clean {
-  background: linear-gradient(to bottom right, #ffffff, #f8fafc);
-  border-left: 5px solid var(--accent-color);
+/* Carte article */
+.blog-card {
+  position: relative;
+  overflow: hidden;
   border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
   cursor: pointer;
-  width: 100%;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-} */
-
-.blog-card-clean:hover {
-  transform: translateY(-10px) scale(1.01);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  background-color: white;
 }
 
-[data-aos] {
-  transition-property: transform, opacity;
-  transition-duration: 0.6s;
-  transition-timing-function: ease-out;
+.blog-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15);
 }
 
-
-.card-cover {
+.blog-image {
+  position: relative;
   width: 100%;
-  height: 160px;
-  background-color: #e0f2f1;
+  height: 360px;
   overflow: hidden;
-}
-/* 
-.card-content {
-  padding: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-} */
-.card-content {
-  padding: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* ➕ centre horizontalement les enfants */
-  justify-content: center; /* ➕ centre verticalement si utile */
-  gap: 0.6rem;
-  text-align: center; /* ➕ centre le texte */
+  border-radius: 16px;
 }
 
-
-
-.card-content h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0;
-}
-
-.card-content .categori {
-  font-size: 0.95rem;
-  color: #64748b;
-  font-weight: 500;
-  margin: 0;
-}
-
-.meta-line {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  margin-top: 0.8rem;
-}
-
-.meta-line .views,
-.meta-line .slug {
-  font-size: 0.8rem;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-
-.card-cover img {
+.blog-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.6s ease;
 }
 
-.clickable {
-  cursor: pointer;
+.blog-card:hover img {
+  transform: scale(1.1);
 }
 
+/* Overlay sombre + contenu */
+.blog-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent 65%);
+  z-index: 1;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: white;
+}
+
+/* .blog-overlay .badge {
+  background-color: var(--accent-color);
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 0.6rem;
+  display: inline-block;
+} */
+
+.badge {
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.badge.top-right {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+.blog-overlay h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #ffffff;
+}
+
+/* Bouton voir plus */
 .see-more {
   text-align: center;
   margin-top: 2rem;
@@ -390,13 +295,13 @@ h1::after {
 .see-more button {
   background-color: var(--accent-color);
   color: white;
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.5rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
   transition: background 0.3s ease;
-  font-weight: 500;
-  font-size: 1rem;
 }
 
 .see-more button:hover {

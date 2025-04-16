@@ -1,19 +1,17 @@
 <template>
- 
   <div class="blog-header" data-aos="fade-down">
     <div class="back-button" @click="router.push('/')">
       <i class="bi bi-arrow-left"></i> Accueil
     </div>
   </div>
 
-
   <div class="blog-banner">
-    <h1>Blogs</h1>
+    <h1>Blog</h1>
+    <p>Retrouvez nos derniers articles autour de la Data, du Digital et du Consulting, rédigés par des experts du domaine.</p>
   </div>
 
-  
   <div class="search-filter">
-    <input v-model="searchQuery" type="text" placeholder="Entrez votre recherche" />
+    <input v-model="searchQuery" type="text" placeholder="Rechercher un article..." />
     <select v-model="selectedCategory">
       <option value="">Toutes les catégories</option>
       <option v-for="cat in categoryList" :key="cat" :value="cat">{{ cat }}</option>
@@ -22,30 +20,25 @@
 
   <section class="all-blogs">
     <div class="container">
-      <h2 class="title">Tous nos articles</h2>
       <div class="grid">
         <div
           v-for="post in filteredPosts"
           :key="post.$id"
-          class="blog-card-clean"
-          data-aos="fade-up"
+          class="blog-card"
           @click="goToPost(post)"
         >
-          <div v-if="filteredPosts.length === 0" class="no-results">
-            <p>Aucun article ne correspond à votre recherche ou catégorie sélectionnée.</p>
-          </div>
-
-          <div class="card-cover">
+          <div class="blog-image">
             <img :src="post.image_url" alt="cover" />
+            <span class="badge top-right">{{ post.subtitle || 'ACTUALITÉ' }}</span>
           </div>
-
-          <div class="card-content">
+          <div class="blog-content">
             <h3>{{ post.title }}</h3>
-            <p class="categori">{{ post.subtitle }}</p>
-            <!-- <div class="meta-line">
-              <span class="slug">🔗 {{ post.slug }}</span>
-            </div> -->
+            <p>{{ post.subtitle }}</p>
           </div>
+        </div>
+
+        <div v-if="filteredPosts.length === 0" class="no-results">
+          <p>Aucun article ne correspond à votre recherche.</p>
         </div>
       </div>
     </div>
@@ -54,62 +47,56 @@
   <Footer />
 </template>
 
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useBlogStore } from '../stores/blog'
+import Footer from '../components/Footer.vue'
 
-  <script setup>
-  import { ref, computed, onMounted } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { useBlogStore } from '../stores/blog'
-  import Headers from '../components/Headers.vue'
-  import Footer from '../components/Footer.vue'
+const router = useRouter()
+const blogStore = useBlogStore()
 
-  const router = useRouter()
-  const blogStore = useBlogStore()
-  
-  const searchQuery = ref('')
-  const selectedCategory = ref('')
-  const posts = computed(() => blogStore.articles)
-  const categories = computed(() => blogStore.articles.map(post => post.category).filter(Boolean))
-  const uniqueCategories = computed(() => [...new Set(categories.value)])
-  console.log(posts.views)
-  const filteredPosts = computed(() => {
+const searchQuery = ref('')
+const selectedCategory = ref('')
+
+const posts = computed(() => blogStore.articles)
+
+const filteredPosts = computed(() => {
   return posts.value
     .filter(post => post.published)
     .filter(post => {
-      const matchSearch =
-        post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-        post.subtitle.toLowerCase().includes(searchQuery.value.toLowerCase())
-      const matchCategory =
-        !selectedCategory.value || post.subtitle === selectedCategory.value
-      return matchSearch && matchCategory
+      const searchMatch = post.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+      const categoryMatch = !selectedCategory.value || post.subtitle === selectedCategory.value
+      return searchMatch && categoryMatch
     })
 })
 
-  
-  const goToPost = (post) => {
-    console.log(post.slug)
-    blogStore.incrementViews(post.slug)
-    router.push({ name: 'detailblog', params: { slug: post.slug } })
-  }
-  
-  onMounted(() => {
-    blogStore.incrementViews();
-    blogStore.fetchArticles()
-  })
-  
-  const categoryList = [
-    'Data',
-    'Développement',
-    'Design',
-    'Marketing',
-    'Cybersécurité',
-    'Cloud',
-    'IA',
-    'DevOps'
-  ]
-  </script>
-  
+const goToPost = (post) => {
+  blogStore.incrementViews(post.slug)
+  router.push({ name: 'detailblog', params: { slug: post.slug } })
+}
+
+onMounted(() => {
+  blogStore.fetchArticles()
+})
+
+
+const categoryList = [
+  'Dentition',
+  'Hygiène',
+  'Esthétique',
+  'Orthodontie',
+  'Conseils',
+  'Actualité', 'Data',
+  'Intelligence Artificielle'
+]
+</script>
 
 <style scoped>
+:root {
+  --accent-color: #45A79E;
+  --heading-color: #5E5325;
+}
 
 .blog-header {
   position: fixed;
@@ -128,197 +115,127 @@
 .back-button {
   cursor: pointer;
   font-weight: 600;
-  color: #45A79E;
+  color: var(--accent-color);
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 16px;
   transition: color 0.3s ease;
 }
-
 .back-button:hover {
-  color:#71bab3 ;
+  color: #71bab3;
 }
 
 .blog-banner {
   margin-top: 80px;
-}
-
-
-.blog-card-clean {
-  background: linear-gradient(to bottom right, #ffffff, #f8fafc);
-  border-left: 5px solid var(--accent-color);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  width: 100%;
-  max-width: 340px;
-  display: flex;
-  flex-direction: column;
-}
-
-.blog-card-clean:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-}
-
-.card-cover {
-  width: 100%;
-  height: 180px;
-  background-color: #e0f2f1;
-  overflow: hidden;
-}
-
-.card-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-content {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.card-content h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0;
-}
-
-.card-content p {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin: 0;
-}
-
-.card-content small {
-  font-size: 0.8rem;
-  color: #94a3b8;
-}
-
-
-.blog-banner {
   background: linear-gradient(135deg, #45A79E, #007cc7);
   color: white;
   padding: 4rem 2rem 3rem;
-  text-align: left;
-  position: relative;
-  margin-top: 60px;
+  text-align: center;
 }
 
 .blog-banner h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin: 0;
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+}
+.blog-banner p {
+  font-size: 1.1rem;
+  opacity: 0.9;
 }
 
 .search-filter {
   background-color: white;
-  padding: 2rem;
+  padding: 2rem 1rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
   justify-content: center;
-  align-items: center;
+  gap: 1rem;
   border-bottom: 1px solid #eee;
 }
-
-.search-filter input {
-  flex: 1;
-  min-width: 240px;
-  padding: 0.8rem 1rem;
-  border-radius: 30px;
-  border: none;
-  background-color: #eee;
-  font-size: 1rem;
-}
-
+.search-filter input,
 .search-filter select {
   padding: 0.8rem 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
-  background-color: #eee;
+  background-color: #f1f5f9;
   font-size: 1rem;
-  min-width: 200px;
 }
 
 .all-blogs {
   padding: 2rem 1rem;
   background-color: #f9f9f9;
 }
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
 }
-
-.title {
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: var(--heading-color);
-  margin-bottom: 2rem;
-}
-
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 
 .blog-card {
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
 }
-
 .blog-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
 }
 
 .blog-image {
+  position: relative;
+  height: 160px;
+  background: #e0e0e0;
+}
+.blog-image img {
   width: 100%;
-  height: 140px;
+  height: 100%;
   object-fit: cover;
-  background-color: #e0eefe;
+  display: block;
+}
+
+.badge.top-right {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .blog-content {
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.4rem;
 }
-
 .blog-content h3 {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--default-color);
+  color: #1e293b;
   margin: 0;
 }
-
 .blog-content p {
   font-size: 0.9rem;
   color: #555;
   margin: 0;
 }
 
-.blog-content small {
-  font-size: 0.8rem;
+.no-results {
+  text-align: center;
+  grid-column: 1 / -1;
+  font-style: italic;
   color: #888;
+  padding: 2rem;
 }
-
-  
-  </style>
+</style>
