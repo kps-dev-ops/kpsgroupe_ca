@@ -1,13 +1,16 @@
 <template>
-  <section id="Dashboad" class="dashboard-wrapper">
+  <section id="Dashboard" class="dashboard-wrapper">
     <div class="dashboard-container">
-      <!-- Header -->
+
+      <!-- 📌 En-tête -->
       <div class="dashboard-header" data-aos="fade-down">
         <h1 class="title">Tableau de bord</h1>
         <p class="subtitle">Suivez vos indicateurs en un coup d'œil</p>
       </div>
-     
+
+      <!-- 📊 Cartes KPI -->
       <div class="grid-cards">
+        <!-- Nombre de posts -->
         <div class="card kpi" data-aos="fade-up" data-aos-delay="100">
           <div class="card-icon bg-blue"><font-awesome-icon icon="file-alt" /></div>
           <div class="card-content">
@@ -16,116 +19,78 @@
             <small>Contenus publiés</small>
           </div>
         </div>
-  
+
+        <!-- Dernier post -->
         <div class="card kpi" data-aos="fade-up" data-aos-delay="300">
           <div class="card-icon bg-yellow"><font-awesome-icon icon="clock" /></div>
-         <div class="card-content card-with-thumb">
-  <img v-if="lastPost?.image_url" :src="lastPost.image_url" alt="cover" class="thumb" />
-  <div class="text">
-    <h2>{{ lastPost?.title?.slice(0, 25) || 'Aucun' }}{{ lastPost?.title?.length > 20 ? '...' : '' }}</h2>
-    <p>Dernier post</p>
-    <small>Dernier contenu publié</small>
-  </div>
-</div>
+          <div class="card-content card-with-thumb">
+            <img v-if="lastPost?.image_url" :src="lastPost.image_url" alt="cover" class="thumb" />
+            <div class="text">
+              <h2>{{ lastPost?.title?.slice(0, 25) || 'Aucun' }}{{ lastPost?.title?.length > 20 ? '...' : '' }}</h2>
+              <p>Dernier post</p>
+              <small>Dernier contenu publié</small>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- 📈 Résumé et Graph -->
       <div class="graph-summary">
-  <div class="circle-box" data-aos="zoom-in-right">
-    <div class="circle-content">
-      <span class="circle-number">{{ posts.length }}</span>
-      <span class="circle-label">Posts publiés</span>
-    </div>
-  </div>
+        <div class="circle-box" data-aos="zoom-in-right">
+          <div class="circle-content">
+            <span class="circle-number">{{ posts.length }}</span>
+            <span class="circle-label">Posts publiés</span>
+          </div>
+        </div>
 
-  <div class="summary-box" data-aos="zoom-in-left">
-    <h3><i class="fas fa-chart-pie"></i> Résumé rapide</h3>
-    <ul>
-      <li><i class="fas fa-file-alt"></i> <strong>Total posts :</strong> {{ posts.length }}</li>
-      <li><i class="fas fa-clock"></i> <strong>Dernier post :</strong> {{ lastPost?.title || 'Aucun' }}</li>
-    </ul>
-  </div>
-</div>
+        <div class="summary-box" data-aos="zoom-in-left">
+          <h3><i class="fas fa-chart-pie"></i> Résumé rapide</h3>
+          <ul>
+            <li><i class="fas fa-file-alt"></i> <strong>Total posts :</strong> {{ posts.length }}</li>
+            <li><i class="fas fa-clock"></i> <strong>Dernier post :</strong> {{ lastPost?.title || 'Aucun' }}</li>
+          </ul>
+        </div>
+      </div>
 
-
-      <!-- Tableau -->
-    <!-- Tableau des posts -->
-<div class="table-box" data-aos="fade-up">
+      <!-- 🗂️ Tableau des posts -->
+      <div class="table-box" data-aos="fade-up">
+        <div class="table-header">
   <h3>Aperçu des posts</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Titre & Image</th>
-        <th>Vue</th>
-        <th>Date</th>
-        <th>Statut</th>
-        <th>À la une</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="post in posts" :key="post.$id">
-        <td class="title-cell">
-  <div class="title-with-img">
-    <img v-if="post.image_url" :src="post.image_url" alt="miniature" class="thumb-mini" />
-    <span>{{ post.title }}</span>
-  </div>
-</td>
-
-        <td>{{ post.views }}</td>
-        <td>{{ new Date(post.$createdAt).toLocaleDateString() }}</td>
-        <td>
-          <span class="status" :class="post.published ? 'success' : 'draft'">
-            {{ post.published ? 'Publié' : 'Brouillon' }}
-          </span>
-        </td>
-        <td>
-          <input type="checkbox" :disabled="loadingFeatured === post.$id" v-model="post.featured" @change="toggleFeatured(post)"/>
-        </td>
-        <td>
-          <div class="actions">
-            <button class="icon-btn edit" @click="editPost(post)" title="Modifier l'article">
-              <font-awesome-icon icon="pen" />
-            </button>
-            <button class="icon-btn delete" @click="deletePost(post.$id)">
-              <font-awesome-icon icon="trash" />
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <button class="toggle-btn" @click="toggleForm">
+    {{ showForm ? 'Fermer' : '➕ Nouveau Post' }}
+  </button>
 </div>
-
 <transition name="slide-fade">
-      <div v-if="showForm" class="form-box">
-        <form @submit.prevent="handleSubmit">
-          <div class="input-group">
-            <input v-model="form.title" required placeholder="Titre" @input="generateSlug" />
-          </div>
-          <div class="input-group">
-            <select v-model="form.subtitle" required>
-              <option disabled value="">Choisir une catégorie</option>
-              <option v-for="cat in categoryList" :key="cat" :value="cat">
-                {{ cat }}
-              </option>
-            </select>
-          </div>
+        <div v-if="showForm" class="form-box">
+          <form @submit.prevent="handleSubmit">
+            <div class="input-group">
+              <input v-model="form.title" required placeholder="Titre" @input="generateSlug" />
+            </div>
 
-          <div class="input-group">
-            <input v-model="form.slug" required placeholder="Slug (auto-généré)" disabled />
-          </div>
+            <div class="input-group">
+              <select v-model="form.subtitle" required>
+                <option disabled value="">Choisir une catégorie</option>
+                <option v-for="cat in categoryList" :key="cat" :value="cat">
+                  {{ cat }}
+                </option>
+              </select>
+            </div>
 
-          <div class="input-group">
-            <label>Résumé de l'article</label>
-            <quill-editor v-model:content="form.description" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
-          </div>
+            <div class="input-group">
+              <input v-model="form.slug" required placeholder="Slug (auto-généré)" disabled />
+            </div>
 
-          <div class="input-group">
-            <label>Contenu HTML ou Markdown</label>
-            <quill-editor v-model:content="form.content" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
-          </div>
-          <div class="input-group">
+            <div class="input-group">
+              <label>Résumé de l'article</label>
+              <quill-editor v-model:content="form.description" contentType="html" theme="snow" class="quill-editor" />
+            </div>
+
+            <div class="input-group">
+              <label>Contenu HTML ou Markdown</label>
+              <quill-editor v-model:content="form.content" contentType="html" theme="snow" class="quill-editor" />
+            </div>
+
+            <div class="input-group">
               <label>Image de couverture</label>
               <input type="file" @change="uploadImage" />
               <img v-if="form.image_url" :src="form.image_url" alt="Aperçu image" class="cover-preview" />
@@ -133,55 +98,152 @@
                 <span>Chargement en cours...</span>
               </div>
             </div>
+
             <div class="input-group">
-          <label>Status de l'article</label>
-          <select v-model="form.published">
-            <option :value="true">Publié</option>
-            <option :value="false">Brouillon</option>
-          </select>
+              <label>Status de l'article</label>
+              <select v-model="form.published">
+                <option :value="true">Publié</option>
+                <option :value="false">Brouillon</option>
+              </select>
+            </div>
+
+            <div class="input-group checkbox">
+              <input type="checkbox" v-model="form.featured" id="featured">
+              <label for="featured">Mettre à la une</label>
+            </div>
+
+            <div class="form-footer">
+              <button type="button" class="btn cancel" @click="toggleForm">Annuler</button>
+              <button type="submit" class="btn submit">
+                {{ editingId ? 'Mettre à jour' : 'Publier' }}
+              </button>
+            </div>
+          </form>
         </div>
-        
-        <div class="input-group checkbox">
-  <input type="checkbox" v-model="form.featured" :checked="form.featured" id="featured">
-  <label for="featured">Mettre à la une</label>
-</div>
-<p>Featured : {{ form.featured }}</p>
+      </transition>
 
-          <div class="form-footer">
-            <button type="button" class="btn cancel" @click="toggleForm">Annuler</button>
-            <button type="submit" class="btn submit">
-              {{ editingId ? 'Mettre à jour' : 'Publier' }}
-            </button>
-          </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Titre & Image</th>
+              <th>Vue</th>
+              <th>Date</th>
+              <th>Statut</th>
+              <th>À la une</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="post in paginatedPosts" :key="post.$id">
+              <td class="title-cell">
+                <div class="title-with-img">
+                  <img v-if="post.image_url" :src="post.image_url" alt="miniature" class="thumb-mini" />
+                  <span>{{ post.title }}</span>
+                </div>
+              </td>
+              <td>{{ post.views }}</td>
+              <td>{{ new Date(post.$createdAt).toLocaleDateString() }}</td>
+              <td>
+                <span class="status" :class="post.published ? 'success' : 'draft'">
+                  {{ post.published ? 'Publié' : 'Brouillon' }}
+                </span>
+              </td>
+              <td>
+                <input type="checkbox" :disabled="loadingFeatured === post.$id" v-model="post.featured" @change="toggleFeatured(post)" />
+              </td>
+              <td>
+                <div class="actions">
+                  <button class="icon-btn edit" @click="editPost(post)" title="Modifier l'article">
+                    <font-awesome-icon icon="pen" />
+                  </button>
+                  <button class="icon-btn delete" @click="deletePost(post.$id)">
+                    <font-awesome-icon icon="trash" />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-        </form>
+        <!-- 🔢 Pagination -->
+        <div class="pagination-container centered">
+          <button @click="currentPage--" :disabled="currentPage === 1">←</button>
+          <button
+            v-for="page in totalPages"
+            :key="page"
+            @click="currentPage = page"
+            :class="{ active: currentPage === page }"
+          >
+            {{ page }}
+          </button>
+          <button @click="currentPage++" :disabled="currentPage === totalPages">→</button>
+        </div>
       </div>
-    </transition>
+
+      <!-- 📝 Formulaire Création / Édition -->
+      
 
     </div>
   </section>
 
-  <section id="Post" class="post-page" data-aos="fade-up">
-    <div class="header">
-      <h2 class="title">Articles</h2>
-      <button class="toggle-btn" @click="toggleForm">
-        {{ showForm ? 'Fermer' : '➕ Nouveau Post' }}
-      </button>
-    </div>
-  </section>
-
-  <Footer/>
-
+  <Footer />
 </template>
 
+
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue'
+import { ref, onMounted, watchEffect, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useBlogStore } from '../stores/blog'
+import { useBlogStore }   from '../stores/blog'
 const blog = useBlogStore()
 import Footer from '../components/Footer.vue'
 const { posts, authors, lastPost} = storeToRefs(blog)
 
+const currentPage = ref(1)
+const itemsPerPage = ref(5)
+
+const quillModules = {
+  toolbar: [
+    [{ header: [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    ['blockquote', 'code-block'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ script: 'sub' }, { script: 'super' }],
+    [{ indent: '-1' }, { indent: '+1' }],
+    [{ direction: 'rtl' }],
+    [{ color: [] }, { background: [] }],
+    [{ font: [] }],
+    [{ align: [] }],
+    ['link', 'image', 'video'],
+    ['clean']
+  ]
+}
+
+const fullQuillModules = {
+  toolbar: [
+    [{ header: [1, 2, 3, 4, 5, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ color: [] }, { background: [] }],
+    [{ font: [] }],
+    [{ script: 'sub' }, { script: 'super' }],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ indent: '-1' }, { indent: '+1' }],
+    [{ align: [] }],
+    ['blockquote', 'code-block'],
+    ['link', 'image', 'video'],
+    ['clean'],
+  ]
+}
+
+
+
+const paginatedPosts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  return posts.value.slice(start, start + itemsPerPage.value)
+})
+
+const totalPages = computed(() => {
+  return Math.ceil(posts.value.length / itemsPerPage.value)
+})
 
 const showForm = ref(false)
 const editingId = ref(null)
@@ -372,7 +434,62 @@ const toggleForm = () => {
 
 <style scoped>
 
-scoped>
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+
+.pagination-container.centered {
+  justify-content: center;
+  padding-right: 0;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center; /* centrer horizontalement */
+  column-gap: 10px;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+  padding: 0; /* plus besoin de padding à droite */
+}
+
+.pagination-container button {
+  height: 40px;
+  width: 40px;
+  background-color: #f5f6fa;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.pagination-container button:hover:not(:disabled) {
+  background-color: #45A79E;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.2);
+}
+
+.pagination-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-container button.active {
+  background-color: #45A79E;
+  color: white;
+  border-color: #007bff;
+}
+
 
 .card-with-thumb {
   display: flex;
