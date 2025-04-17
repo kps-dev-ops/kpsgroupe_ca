@@ -79,16 +79,15 @@
             <div class="input-group">
               <input v-model="form.slug" required placeholder="Slug (auto-généré)" disabled />
             </div>
-
             <div class="input-group">
-              <label>Résumé de l'article</label>
-              <quill-editor v-model:content="form.description" contentType="html" theme="snow" class="quill-editor" />
-            </div>
+            <label>Résumé de l'article</label>
+            <quill-editor v-model:content="form.description" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
+          </div>
 
-            <div class="input-group">
-              <label>Contenu HTML ou Markdown</label>
-              <quill-editor v-model:content="form.content" contentType="html" theme="snow" class="quill-editor" />
-            </div>
+          <div class="input-group">
+            <label>Contenu HTML ou Markdown</label>
+            <quill-editor v-model:content="form.content" contentType="html" theme="snow" class="quill-editor" toolbar="full" />
+          </div>
 
             <div class="input-group">
               <label>Image de couverture</label>
@@ -200,39 +199,6 @@ const { posts, authors, lastPost} = storeToRefs(blog)
 
 const currentPage = ref(1)
 const itemsPerPage = ref(5)
-
-const quillModules = {
-  toolbar: [
-    [{ header: [1, 2, 3, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    ['blockquote', 'code-block'],
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    [{ script: 'sub' }, { script: 'super' }],
-    [{ indent: '-1' }, { indent: '+1' }],
-    [{ direction: 'rtl' }],
-    [{ color: [] }, { background: [] }],
-    [{ font: [] }],
-    [{ align: [] }],
-    ['link', 'image', 'video'],
-    ['clean']
-  ]
-}
-
-const fullQuillModules = {
-  toolbar: [
-    [{ header: [1, 2, 3, 4, 5, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ color: [] }, { background: [] }],
-    [{ font: [] }],
-    [{ script: 'sub' }, { script: 'super' }],
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    [{ indent: '-1' }, { indent: '+1' }],
-    [{ align: [] }],
-    ['blockquote', 'code-block'],
-    ['link', 'image', 'video'],
-    ['clean'],
-  ]
-}
 
 
 
