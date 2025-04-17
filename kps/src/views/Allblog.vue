@@ -97,7 +97,7 @@ const totalPages = computed(() => {
 const changePage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page
-    blogStore.fetchArticles(page, limit)
+    blogStore.fetchArticles(page, limit, selectedCategory.value)
   }
 }
 
@@ -122,7 +122,12 @@ onMounted(async () => {
 })
 
 watch(currentPage, (newPage) => {
-  blogStore.fetchArticles(newPage, limit)
+  blogStore.fetchArticles(newPage, limit, selectedCategory.value)
+})
+
+watch(selectedCategory, (newCategory) => {
+  currentPage.value = 1
+  blogStore.fetchArticles(currentPage.value, limit, newCategory)
 })
 
 const categoryList = [
