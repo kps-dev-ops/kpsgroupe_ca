@@ -4,10 +4,10 @@ export const useHeaderStore = defineStore('header', {
   state: () => ({
     logoPath: './src/assets/img/logo2.png',
     menu: [
-      { label: 'Accueil', href: '#hero' },
-      { label: 'À propos', href: '#about' },
-      { label: 'Expertise', href: '#services' },
-      { label: 'Technologies', href: '#Technologies' },
+      { label: 'Accueil', href: '/#hero' },
+      { label: 'À propos', href: '/#about' },
+      { label: 'Expertise', href: '/#services' },
+      { label: 'Technologies', href: '/#Technologies' },
       { label: 'blog', href: '#blog' }
     ],
     contactText: 'Contactez-nous',

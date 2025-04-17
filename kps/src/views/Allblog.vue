@@ -1,8 +1,7 @@
 <template>
+  <Headers/>
   <div class="blog-header" data-aos="fade-down">
-    <div class="back-button" @click="router.push('/')">
-      <i class="bi bi-arrow-left"></i> Accueil
-    </div>
+   
   </div>
 
   <div class="blog-banner">
@@ -78,6 +77,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBlogStore } from '../stores/blog'
 import Footer from '../components/Footer.vue'
+import Headers from '../components/Headers.vue'
 
 const router = useRouter()
 const blogStore = useBlogStore()
@@ -88,7 +88,7 @@ const selectedCategory = ref('')
 
 const posts = computed(() => blogStore.articles)
 const currentPage = ref(1)
-const limit = 6
+const limit = 5
 
 const totalPages = computed(() => {
   return Math.ceil(blogStore.totalCount / limit)
@@ -280,18 +280,18 @@ const categoryList = [
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
 } */
-.grid {
+/* .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
-  justify-content: center; /* Centrer les éléments */
-  max-width: 900px; /* Largeur max si peu d'éléments */
-  margin: 0 auto; /* Centrage horizontal */
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto; 
   align-items: start;
  
-}
+} */
 
-.blog-card {
+/* .blog-card {
   background-color: white;
   border-radius: 12px;
   overflow: hidden;
@@ -350,7 +350,93 @@ const categoryList = [
   font-size: 0.9rem;
   color: #555;
   margin: 0;
+} */
+.blog-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  min-height: 260px;
+  max-width: 360px;
+  max-height: 100px;
+  margin: 0 auto;
 }
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.blog-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.blog-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+}
+
+/* Badge */
+.badge.top-right {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  text-transform: uppercase;
+}
+
+/* Titre dans l'image */
+.blog-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent 60%);
+  width: 100%;
+  color: white;
+  border-radius: 0 0 16px 16px;
+}
+
+.blog-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: white;
+}
+
+.blog-content p {
+  display: none; /* cache le sous-titre ici, si tu veux le garder ajoute du style */
+}
+/* .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+} */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px; /* Plus large que 900px */
+}
+
 
 .no-results {
   text-align: center;
