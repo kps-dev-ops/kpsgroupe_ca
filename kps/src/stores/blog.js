@@ -194,9 +194,9 @@ export const useBlogStore = defineStore('blog', () => {
   }
 
   const uploadImage = async (file) => {
-    const allowedExtensions = ['image/jpeg', 'image/png', 'image/pdf']
+    const allowedExtensions = ['image/jpeg', 'image/png', 'image/jpg']
     if (!allowedExtensions.includes(file.type)) {
-      alert("Ce type de fichier n'est pas autorisé. Veuillez télécharger une image JPEG, PNG ou PDF.")
+      alert("Ce type de fichier n'est pas autorisé. Veuillez télécharger une image JPEG, PNG ou JPG.")
       return null
     }
 
