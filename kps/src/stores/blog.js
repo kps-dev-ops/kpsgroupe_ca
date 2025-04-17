@@ -171,7 +171,7 @@ export const useBlogStore = defineStore('blog', () => {
       const a = await databases.listDocuments(DATABASE_ID, COLLECTION_ID)
       posts.value = p.documents
       authors.value = a.documents
-      lastPost.value = p.documents.at(-1)
+      lastPost.value = p.documents.at(0)
     } catch (err) {
       console.error('Erreur lors de la récupération des articles :', err)
     } finally {
