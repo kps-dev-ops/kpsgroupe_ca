@@ -94,7 +94,7 @@ const selectedCategory = ref('')
 
 const posts = computed(() => blogStore.articles)
 const currentPage = ref(1)
-const limit = 6
+const limit = 5
 
 const totalPages = computed(() => {
   return Math.ceil(blogStore.totalCount / limit)
@@ -281,13 +281,32 @@ const categoryList = [
   gap: 1rem;
   border-bottom: 1px solid #eee;
 }
-.search-filter input,
+.search-filter input:focus {
+  outline: none;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(69, 167, 158, 0.3); /* couleur d'accent */
+  border: 1px solid var(--accent-color);
+}
+
 .search-filter select {
   padding: 0.8rem 1rem;
   border-radius: 8px;
   border: none;
   background-color: #f1f5f9;
   font-size: 1rem;
+}
+
+.search-filter input {
+  flex: 1; /* ⭐️ prend toute la place possible */
+  min-width: 300px; /* largeur minimale */
+  max-width: 600px; /* largeur maximale */
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  background-color: #f1f5f9;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .all-blogs {
@@ -496,12 +515,14 @@ const categoryList = [
   padding: 2rem;
 }
 .sidebar {
-  background: white;
+  /* background: white; */
   border-radius: 16px;
   padding: 1.5rem;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   border-left: 5px solid var(--accent-color);
   transition: all 0.3s ease-in-out;
+  align-self: start;
+  /* height: auto; */
 }
 
 .sidebar h3 {
