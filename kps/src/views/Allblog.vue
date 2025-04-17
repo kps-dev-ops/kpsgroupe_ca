@@ -53,6 +53,20 @@
           </div>
         </aside>
       </div>
+      <div class="pagination-container centered">
+  <button @click="currentPage--" :disabled="currentPage === 1">←</button>
+
+  <button
+    v-for="page in totalPages"
+    :key="page"
+    @click="currentPage = page"
+    :class="{ active: currentPage === page }"
+  >
+    {{ page }}
+  </button>
+
+  <button @click="currentPage++" :disabled="currentPage === totalPages">→</button>
+</div>
     </div>
   </section>
 
@@ -60,22 +74,36 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBlogStore } from '../stores/blog'
 import Footer from '../components/Footer.vue'
 
 const router = useRouter()
 const blogStore = useBlogStore()
+const recentPosts = ref([])
 
 const searchQuery = ref('')
 const selectedCategory = ref('')
 
 const posts = computed(() => blogStore.articles)
+const currentPage = ref(1)
+const limit = 6
+
+const totalPages = computed(() => {
+  return Math.ceil(blogStore.totalCount / limit)
+})
+
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+    blogStore.fetchArticles(page, limit)
+  }
+}
+
 
 const filteredPosts = computed(() => {
   return posts.value
-    .filter(post => post.published)
     .filter(post => {
       const searchMatch = post.title.toLowerCase().includes(searchQuery.value.toLowerCase())
       const categoryMatch = !selectedCategory.value || post.subtitle === selectedCategory.value
@@ -83,28 +111,29 @@ const filteredPosts = computed(() => {
     })
 })
 
-const recentPosts = computed(() => {
-  return posts.value.filter(post => post.published).slice(0, 6)
-})
-
 const goToPost = (post) => {
   blogStore.incrementViews(post.slug)
   router.push({ name: 'detailblog', params: { slug: post.slug } })
 }
 
-onMounted(() => {
-  blogStore.fetchArticles()
+onMounted(async () => {
+  recentPosts.value = await blogStore.fetchArticlesLast()
+  await blogStore.fetchArticles(currentPage.value, limit)
+})
+
+watch(currentPage, (newPage) => {
+  blogStore.fetchArticles(newPage, limit)
 })
 
 const categoryList = [
-  'Dentition',
-  'Hygiène',
-  'Esthétique',
-  'Orthodontie',
-  'Conseils',
-  'Actualité',
   'Data',
-  'Intelligence Artificielle'
+  'Développement',
+  'Design',
+  'Marketing',
+  'Cybersécurité',
+  'Cloud',
+  'IA',
+  'DevOps'
 ]
 </script>
 
@@ -113,6 +142,56 @@ const categoryList = [
   --accent-color: #45A79E;
   --heading-color: #5E5325;
 }
+
+
+.pagination-container.centered {
+  justify-content: center;
+  padding-right: 0;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center; /* centrer horizontalement */
+  column-gap: 10px;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+  padding: 0; /* plus besoin de padding à droite */
+}
+
+.pagination-container button {
+  height: 40px;
+  width: 40px;
+  background-color: #f5f6fa;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.pagination-container button:hover:not(:disabled) {
+  background-color: #45A79E;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.2);
+}
+
+.pagination-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-container button.active {
+  background-color: #45A79E;
+  color: white;
+  border-color: #007bff;
+}
+
 
 .blog-header {
   position: fixed;
