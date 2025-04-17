@@ -17,11 +17,11 @@
   </div>
 
   <div class="search-filter">
-    <!-- <input v-model="searchQuery" type="text" placeholder="Rechercher un article..." /> -->
-    <select v-model="selectedCategory">
+    <input v-model="searchQuery" type="text" placeholder="Rechercher un article..." />
+    <!-- <select v-model="selectedCategory">
       <option value="">Toutes les catégories</option>
       <option v-for="cat in categoryList" :key="cat" :value="cat">{{ cat }}</option>
-    </select>
+    </select> -->
   </div>
 
   <section class="all-blogs">
@@ -94,7 +94,7 @@ const selectedCategory = ref('')
 
 const posts = computed(() => blogStore.articles)
 const currentPage = ref(1)
-const limit = 5
+const limit = 6
 
 const totalPages = computed(() => {
   return Math.ceil(blogStore.totalCount / limit)

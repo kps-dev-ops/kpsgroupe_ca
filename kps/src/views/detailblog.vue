@@ -1,7 +1,7 @@
 <template>
+  <Headers/>
   <div class="blog-detail" v-if="post">
     <!-- Header -->
-     <Headers/>
     <div class="blog-header" data-aos="fade-down">
       <!-- <div class="back-button" @click="router.push('/')">
         <i class="bi bi-arrow-left"></i> Accueil
@@ -41,7 +41,8 @@
   </div>
 </div>
 
-  </div>
+</div>
+<Footer/>
 </template>
 
 <script setup>
@@ -49,6 +50,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { useBlogStore } from '../stores/blog'
 import Headers from '../components/Headers.vue'
+import Footer from '../components/Footer.vue'
 
 const router = useRouter()
 
