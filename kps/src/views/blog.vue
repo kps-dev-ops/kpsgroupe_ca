@@ -134,7 +134,7 @@ const scrollCarousel = (direction) => {
 }
 
 onMounted(async () => {
-  await blogStore.fetchArticles()
+  await blogStore.fetchArticlesFeatured()
   autoScrollInterval = setInterval(() => scrollCarousel('right'), 7000)
 })
 
