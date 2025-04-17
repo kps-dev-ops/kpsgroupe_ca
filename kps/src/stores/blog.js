@@ -87,21 +87,28 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
-  const fetchArticles = async (page = 1, limit = 5) => {
+  const fetchArticles = async (page = 1, limit = 5, category = '') => {
     loading.value = true
     const offset = (page - 1) * limit
   
     try {
+      const queries = [
+        Query.equal("published", true),
+        Query.limit(limit),
+        Query.offset(offset),
+        Query.orderDesc('$createdAt')
+      ]
+  
+      if (category) {
+        queries.push(Query.equal("subtitle", category))
+      }
+  
       const response = await databases.listDocuments(
         DATABASE_ID,
         COLLECTION_ID,
-        [
-          Query.equal("published", true),
-          Query.limit(limit),
-          Query.offset(offset),
-          Query.orderDesc('$createdAt')
-        ]
+        queries
       )
+  
       articles.value = response.documents
       totalCount.value = response.total
     } catch (err) {
@@ -111,6 +118,7 @@ export const useBlogStore = defineStore('blog', () => {
       loading.value = false
     }
   }
+  
   
   const fetchArticlesFeatured = async () => {
     loading.value = true
