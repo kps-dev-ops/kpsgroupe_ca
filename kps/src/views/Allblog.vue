@@ -106,8 +106,7 @@ const filteredPosts = computed(() => {
   return posts.value
     .filter(post => {
       const searchMatch = post.title.toLowerCase().includes(searchQuery.value.toLowerCase())
-      const categoryMatch = !selectedCategory.value || post.subtitle === selectedCategory.value
-      return searchMatch && categoryMatch
+      return searchMatch 
     })
 })
 
