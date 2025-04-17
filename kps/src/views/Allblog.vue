@@ -4,13 +4,20 @@
    
   </div>
 
-  <div class="blog-banner">
+  <!-- <div class="blog-banner">
     <h1>Blog </h1>
     <p>Retrouvez nos derniers articles autour de la Data, du Digital et du Consulting, rédigés par des experts du domaine.</p>
+  </div> -->
+  <div class="blog-hero">
+    <div class="overlay"></div>
+    <div class="container">
+      <h1>Bienvenue sur notre Blog</h1>
+      <p>Explorez nos articles autour de la Data, du Digital et du Consulting, rédigés avec passion.</p>
+    </div>
   </div>
 
   <div class="search-filter">
-    <input v-model="searchQuery" type="text" placeholder="Rechercher un article..." />
+    <!-- <input v-model="searchQuery" type="text" placeholder="Rechercher un article..." /> -->
     <select v-model="selectedCategory">
       <option value="">Toutes les catégories</option>
       <option v-for="cat in categoryList" :key="cat" :value="cat">{{ cat }}</option>
@@ -22,20 +29,19 @@
       <div class="grid-with-sidebar">
         <div class="grid">
           <div
-            v-for="post in filteredPosts"
-            :key="post.$id"
-            class="blog-card"
-            @click="goToPost(post)"
-          >
-            <div class="blog-image">
-              <img :src="post.image_url" alt="cover" />
-              <span class="badge top-right">{{ post.subtitle || 'ACTUALITÉ' }}</span>
-            </div>
-            <div class="blog-content">
-              <h3>{{ post.title }}</h3>
-              <p>{{ post.subtitle }}</p>
-            </div>
-          </div>
+  v-for="post in filteredPosts"
+  :key="post.$id"
+  class="featured-blog-card"
+  @click="goToPost(post)"
+>
+  <img :src="post.image_url" alt="cover" class="featured-image" />
+
+  <div class="featured-overlay">
+    <span class="badge top-right">{{ post.subtitle || 'ACTUALITÉ' }}</span>
+    <h2 class="featured-title">{{ post.title }}</h2>
+  </div>
+</div>
+
 
           <div v-if="filteredPosts.length === 0" class="no-results">
             <p>Aucun article ne correspond à votre recherche.</p>
@@ -147,6 +153,30 @@ const categoryList = [
   --heading-color: #5E5325;
 }
 
+.blog-hero {
+  position:relative;
+  background: url('./src/assets/img/blogg.jpg') center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 17rem 2rem 2rem;
+  margin-top: 80px;
+  border-radius: 0 0 40px 40px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+
+.blog-hero .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* Couleur + opacité */
+  z-index: 0;
+}
+
+.blog-hero .container {
+  position: relative;
+  z-index: 1;
+}
 
 .pagination-container.centered {
   justify-content: center;
@@ -274,83 +304,7 @@ const categoryList = [
   grid-template-columns: 3fr 1fr;
   gap: 2rem;
 }
-/* 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-} */
-/* .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  justify-content: center;
-  max-width: 900px;
-  margin: 0 auto; 
-  align-items: start;
- 
-} */
 
-/* .blog-card {
-  background-color: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  min-height: 130px;
-}
-.blog-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-}
-
-.blog-image {
-  position: relative;
-  height: 160px;
-  background: #e0e0e0;
-}
-.blog-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.badge.top-right {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background-color: var(--accent-color);
-  color: white;
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.blog-content {
-  flex-grow: 1;
- 
-  padding: 3px;
-  flex-direction: column;
-  display: flex;
-  justify-content: space-between;
-  
-}
-
-.blog-content h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0;
-}
-.blog-content p {
-  font-size: 0.9rem;
-  color: #555;
-  margin: 0;
-} */
 .blog-card {
   position: relative;
   overflow: hidden;
@@ -421,22 +375,118 @@ const categoryList = [
 .blog-content p {
   display: none; /* cache le sous-titre ici, si tu veux le garder ajoute du style */
 }
-/* .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  justify-content: center;
-} */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  justify-content: center;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 1200px; /* Plus large que 900px */
+
+.featured-blog-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 260px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
 }
 
+.featured-blog-card:hover {
+  transform: scale(1.01);
+}
+
+.featured-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.featured-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 60%);
+  color: white;
+}
+
+.featured-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+}
+
+.badge.top-right {
+  align-self: flex-end;
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  text-transform: uppercase;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.featured-blog-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 260px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.featured-blog-card:hover {
+  transform: scale(1.01);
+}
+
+.featured-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.featured-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 60%);
+  color: white;
+}
+
+.featured-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+}
+
+.badge.top-right {
+  align-self: flex-end;
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  text-transform: uppercase;
+}
 
 .no-results {
   text-align: center;
@@ -445,41 +495,58 @@ const categoryList = [
   color: #888;
   padding: 2rem;
 }
-
 .sidebar {
-  background: #fff;
-  border-radius: 12px;
+  background: white;
+  border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid var(--accent-color);
+  transition: all 0.3s ease-in-out;
 }
+
 .sidebar h3 {
   font-size: 1.2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: var(--heading-color);
   border-bottom: 2px solid var(--accent-color);
   padding-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
+
 .recent-article {
   display: flex;
-  gap: 0.6rem;
   align-items: center;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
   cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
 }
+
+.recent-article:hover {
+  background-color: #f1f5f9;
+}
+
 .recent-article img {
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
 .recent-article .info {
   flex: 1;
 }
+
 .recent-article .title {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #333;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
   margin: 0;
   line-height: 1.2;
 }
+
 </style>
