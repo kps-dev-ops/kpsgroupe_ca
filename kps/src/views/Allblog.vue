@@ -274,11 +274,21 @@ const categoryList = [
   grid-template-columns: 3fr 1fr;
   gap: 2rem;
 }
-
+/* 
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
+} */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  justify-content: center; /* Centrer les éléments */
+  max-width: 900px; /* Largeur max si peu d'éléments */
+  margin: 0 auto; /* Centrage horizontal */
+  align-items: start;
+ 
 }
 
 .blog-card {
@@ -288,6 +298,7 @@ const categoryList = [
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   cursor: pointer;
+  min-height: 130px;
 }
 .blog-card:hover {
   transform: translateY(-6px);
@@ -320,11 +331,15 @@ const categoryList = [
 }
 
 .blog-content {
-  padding: 1rem;
-  display: flex;
+  flex-grow: 1;
+ 
+  padding: 3px;
   flex-direction: column;
-  gap: 0.4rem;
+  display: flex;
+  justify-content: space-between;
+  
 }
+
 .blog-content h3 {
   font-size: 1.1rem;
   font-weight: 600;
