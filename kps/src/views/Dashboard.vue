@@ -64,7 +64,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="post in posts" :key="post.$id">
+      <tr v-for="post in paginatedPosts" :key="post.$id">
         <td class="title-cell">
   <div class="title-with-img">
     <img v-if="post.image_url" :src="post.image_url" alt="miniature" class="thumb-mini" />
@@ -95,6 +95,20 @@
       </tr>
     </tbody>
   </table>
+  <div class="pagination-container centered">
+  <button @click="currentPage--" :disabled="currentPage === 1">←</button>
+
+  <button
+    v-for="page in totalPages"
+    :key="page"
+    @click="currentPage = page"
+    :class="{ active: currentPage === page }"
+  >
+    {{ page }}
+  </button>
+
+  <button @click="currentPage++" :disabled="currentPage === totalPages">→</button>
+</div>
 </div>
 
 <transition name="slide-fade">
@@ -145,7 +159,6 @@
   <input type="checkbox" v-model="form.featured" :checked="form.featured" id="featured">
   <label for="featured">Mettre à la une</label>
 </div>
-<p>Featured : {{ form.featured }}</p>
 
           <div class="form-footer">
             <button type="button" class="btn cancel" @click="toggleForm">Annuler</button>
@@ -175,13 +188,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue'
+import { ref, onMounted, watchEffect, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBlogStore } from '../stores/blog'
 const blog = useBlogStore()
 import Footer from '../components/Footer.vue'
 const { posts, authors, lastPost} = storeToRefs(blog)
 
+const currentPage = ref(1)
+const itemsPerPage = ref(5)
+
+const paginatedPosts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  return posts.value.slice(start, start + itemsPerPage.value)
+})
+
+const totalPages = computed(() => {
+  return Math.ceil(posts.value.length / itemsPerPage.value)
+})
 
 const showForm = ref(false)
 const editingId = ref(null)
@@ -373,6 +397,55 @@ const toggleForm = () => {
 <style scoped>
 
 scoped>
+
+.pagination-container.centered {
+  justify-content: center;
+  padding-right: 0;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center; /* centrer horizontalement */
+  column-gap: 10px;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+  padding: 0; /* plus besoin de padding à droite */
+}
+
+.pagination-container button {
+  height: 40px;
+  width: 40px;
+  background-color: #f5f6fa;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.pagination-container button:hover:not(:disabled) {
+  background-color: #45A79E;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.2);
+}
+
+.pagination-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-container button.active {
+  background-color: #45A79E;
+  color: white;
+  border-color: #007bff;
+}
+
 
 .card-with-thumb {
   display: flex;
