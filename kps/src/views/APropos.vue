@@ -41,3 +41,109 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+.about {
+  padding: 4rem 1rem;
+  background: white;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .about-meta {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #45A79E;
+    margin-bottom: 1rem;
+  }
+
+  .about-description {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .feature-list-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    p {
+      flex: 1 1 100%;
+      background-color: #fff;
+      border-left: 4px solid;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  .image-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+
+    .images {
+      position: relative;
+
+      .main-image {
+        width: 100%;
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      /* .small-image {
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        width: 150px;
+        border: 4px solid #fff;
+        border-radius: 1rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      } */
+    }
+
+    /* .experience-badge {
+      position: flex;
+      top: -30px;
+      left: -30px;
+      background: linear-gradient(135deg, #45A79E, #40a096);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      max-width: 250px;
+      h3 {
+        font-size: 2rem;
+        margin: 0;
+        span {
+          font-size: 1rem;
+          font-weight: 400;
+        }
+      }
+      p {
+        font-size: 0.9rem;
+        margin: 0.5rem 0 0 0;
+      }
+    } */
+  }
+
+  @media (max-width: 768px) {
+    .images .small-image {
+      display: none;
+    }
+
+    .experience-badge {
+      position: static;
+      margin-top: 1rem;
+    }
+  }
+}
+
+
+</style>
