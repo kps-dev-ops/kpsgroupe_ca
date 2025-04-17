@@ -24,20 +24,15 @@
     <div class="main-content" v-html="post.content" />
 
     <!-- Sidebar -->
-    <aside class="sidebar">
-      <h3>Articles récents</h3>
-      <div
-        class="recent-article"
-        v-for="article in blogStore.articles.slice(0, 5)"
-        :key="article.$id"
-        @click="goToPost(article)"
-      >
-        <img :src="article.image_url" alt="" />
-        <div class="info">
-          <p class="title">{{ article.title }}</p>
-        </div>
-      </div>
-    </aside>
+        <aside class="sidebar">
+          <h3>Articles récents</h3>
+          <div class="recent-article" v-for="post in recentPosts" :key="post.$id" @click="goToPost(post)">
+            <img :src="post.image_url" alt="" />
+            <div class="info">
+              <p class="title">{{ post.title }}</p>
+            </div>
+          </div>
+        </aside>
   </div>
 </div>
 
@@ -59,16 +54,27 @@ const blogStore = useBlogStore()
 
 const post = ref(null)
 const loading = ref(true)
+const recentPosts = ref([])
 
 const goToPost = (article) => {
   router.push({ name: 'detailblog', params: { slug: article.slug } })
 }
 
+
+// const goToPost = (post) => {
+//   blogStore.incrementViews(post.slug)
+//   router.push({ name: 'detailblog', params: { slug: post.slug } })
+// }
+
+
 onMounted(async () => {
   await blogStore.fetchArticleBySlug(route.params.slug)
   post.value = blogStore.currentArticle
+
+  recentPosts.value = await blogStore.fetchArticlesLast() // 👈 ajoute cette ligne
   loading.value = false
 })
+
 </script>
 
 <style scoped>
