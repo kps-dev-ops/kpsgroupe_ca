@@ -10,6 +10,7 @@ const DEFAULT_IMAGE_URL = 'https://appwrite.ubbfy.com/v1/storage/buckets/67f3ad7
 
 export const useBlogStore = defineStore('blog', () => {
   const articles = ref([])
+  const totalCount = ref(0)
   const currentArticle = ref(null)
   const loading = ref(false)
   const error = ref(null)
@@ -43,20 +44,7 @@ export const useBlogStore = defineStore('blog', () => {
     await account.deleteSession('current')
     user.value = null
   }
-
-  const fetchArticles = async () => {
-    loading.value = true
-    try {
-      const { documents } = await databases.listDocuments(DATABASE_ID, COLLECTION_ID)
-      articles.value = documents
-    } catch (err) {
-      error.value = err.message
-      console.error('Erreur fetchArticles :', err)
-    } finally {
-      loading.value = false
-    }
-  }
-
+  
   const fetchArticleBySlug = async (slug) => {
     loading.value = true
     try {
@@ -79,29 +67,99 @@ export const useBlogStore = defineStore('blog', () => {
   const incrementViews = async (slug) => {
     const viewed = JSON.parse(localStorage.getItem('viewedPosts') || '[]')
     if (viewed.includes(slug)) return
-  
+    
     try {
       const { documents } = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
         Query.equal('slug', slug)
       ])
-  
+      
       if (documents.length === 0) return
-  
+      
       const doc = documents[0]
       await databases.updateDocument(DATABASE_ID, COLLECTION_ID, doc.$id, {
         views: (doc.views || 0) + 1
       })
-  
+      
       viewed.push(slug)
       localStorage.setItem('viewedPosts', JSON.stringify(viewed))
     } catch (err) {
       console.error('Erreur incrementViews :', err.message)
     }
   }
+
+  const fetchArticles = async (page = 1, limit = 5) => {
+    loading.value = true
+    const offset = (page - 1) * limit
   
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        COLLECTION_ID,
+        [
+          Query.equal("published", true),
+          Query.limit(limit),
+          Query.offset(offset),
+          Query.orderDesc('$createdAt')
+        ]
+      )
+      articles.value = response.documents
+      totalCount.value = response.total
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur fetchArticles :', err)
+    } finally {
+      loading.value = false
+    }
+  }
+  
+  const fetchArticlesFeatured = async () => {
+    loading.value = true
+  
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        COLLECTION_ID,
+        [
+          Query.equal("featured", true),
+          Query.orderDesc('$createdAt')
+        ]
+      )
+      articles.value = response.documents
+      totalCount.value = response.total
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur fetchArticles :', err)
+    } finally {
+      loading.value = false
+    }
+  }
+  
+  const fetchArticlesLast = async (last = 6) => {
+    loading.value = true
+  
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        COLLECTION_ID,
+        [
+          Query.equal("published", true),
+          Query.limit(last),
+          Query.orderDesc('$createdAt')
+        ]
+      )
+      return response.documents
+    } catch (err) {
+      console.error('Erreur lors de la récupération des derniers articles :', err)
+      return []
+    }
+  }
+
   const fetchArticlesList = async () => {
     try {
-      const p = await databases.listDocuments(DATABASE_ID, COLLECTION_ID)
+      const p = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+        // Query.equal("published", true),
+        Query.orderDesc('$createdAt')
+      ])
       const a = await databases.listDocuments(DATABASE_ID, COLLECTION_ID)
       posts.value = p.documents
       authors.value = a.documents
@@ -238,6 +296,7 @@ export const useBlogStore = defineStore('blog', () => {
     error,
     posts,
     authors,
+    totalCount,
     lastPost,
     login,
     logout,
@@ -247,9 +306,11 @@ export const useBlogStore = defineStore('blog', () => {
     createArticle,
     updateArticle,
     updateArticle2,
+    fetchArticlesFeatured,
     uploadImage,
     fetchArticlesList,
     fetchArticleBySlug,
+    fetchArticlesLast,
     deleteArticle,
     incrementViews
   }
