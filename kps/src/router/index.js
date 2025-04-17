@@ -26,7 +26,13 @@ const routes = [
   { path: '/Blogs', name: 'Blogs', component: Blogs, beforeEnter: requireAuth },
   // { path: '/blog/:slug', name: 'BlogDetail', component: Blogdetail },
   { path: '/blog', name: 'Allblog', component: Allblog },
-  {path: '/blog/:slug', name: 'detailblog', component: detailblog}
+  {path: '/blog/:slug', name: 'detailblog', component: detailblog},
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../views/NotFound.vue'),
+  }
+  
 ]
 
 const router = createRouter({
