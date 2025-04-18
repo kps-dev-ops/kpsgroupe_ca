@@ -119,6 +119,7 @@ onMounted(async () => {
 
 watch(currentPage, (newPage) => {
   blogStore.fetchArticles(newPage, limit, selectedCategory.value)
+  window.scrollTo({ top: 200, behavior: 'smooth' })
 })
 
 watch(selectedCategory, (newCategory) => {
