@@ -3,7 +3,7 @@ import { useBlogStore } from '../stores/blog'
 
 import Secretlogin from '../views/Secretlogin.vue'
 import home from '../components/home.vue'
-import Blogs from '../views/Blogs.vue'
+import Dashboard from '../views/Blogs.vue'
 import Blogdetail from '../views/blogdetail.vue'
 import Allblog from '../views/Allblog.vue'
 import detailblog from '../views/detailblog.vue'
@@ -23,7 +23,7 @@ const requireAuth = async (to, from, next) => {
 const routes = [
   { path: '/', name: 'home', component: home },
   { path: '/login', name: 'Secretlogin', component: Secretlogin, meta: { hidden: true } },
-  { path: '/Blogs', name: 'Blogs', component: Blogs, beforeEnter: requireAuth },
+  { path: '/dashboard', name: 'Dashboard', component: Dashboard, beforeEnter: requireAuth },
   // { path: '/blog/:slug', name: 'BlogDetail', component: Blogdetail },
   { path: '/blog', name: 'Allblog', component: Allblog },
   {path: '/blog/:slug', name: 'detailblog', component: detailblog},
