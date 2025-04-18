@@ -143,10 +143,6 @@ a.active::after {
 
 /* Menu mobile */
 @media (max-width: 1199px) {
-  .navmenu ul {
-    display: none;
-  }
-
   body.mobile-nav-active .navmenu {
     position: fixed;
     top: 0;
@@ -164,47 +160,51 @@ a.active::after {
     display: flex;
     flex-direction: column;
     background: white;
-    border-radius: 12px;
-    padding: 30px 20px 20px;
+    border-radius: 20px;
+    padding: 24px 16px;
     width: 80%;
     max-width: 300px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
     position: relative;
+    gap: 0.8rem; /* 🔥 Espacement réduit */
   }
 
   body.mobile-nav-active .navmenu li {
-    margin-bottom: 1.5rem;
     text-align: center;
   }
 
   body.mobile-nav-active .navmenu a {
-    font-size: 18px;
-    font-weight: normal;
-    color: #111;
+    font-size: 17px;
+    font-weight: 500;
+    color: #333;
     text-decoration: none;
-    transition: color 0.2s ease-in-out;
+    padding: 10px 16px;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    background: #f8f9fa;
+  }
+
+  body.mobile-nav-active .navmenu a:hover {
+    background-color: #e2f4f3;
+    color: #45A79E;
   }
 
   body.mobile-nav-active .navmenu a.active {
-    color: #45A79E;
+    color: #ffffff;
+    background-color: #45A79E;
     font-weight: 600;
-    border: none;
-    text-decoration: none;
   }
 
-  body.mobile-nav-active .navmenu a.active::after {
-    display: none !important;
-  }
-
-  body.mobile-nav-active .navmenu a.active:focus,
-  body.mobile-nav-active .navmenu a.active:visited {
-    outline: none;
-    box-shadow: none;
-    border: none;
-  }
-
-  body.mobile-nav-active {
-    overflow: hidden;
+  .close-icon {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    z-index: 10001;
   }
 }
+
+  
 </style>

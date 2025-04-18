@@ -4,7 +4,7 @@
       <div class="row gy-4 align-items-center justify-content-between">
         <div class="col-xl-5" data-aos="fade-up" data-aos-delay="200">
           <span class="about-meta" style="font-size: 32px;">{{ aProposStore.title }}</span>
-          <h2 class="about-title"></h2>
+          <h2 class="about-title" ></h2>
           <p class="about-description">{{ aProposStore.description }}</p>
 
           <div class="row feature-list-wrapper">

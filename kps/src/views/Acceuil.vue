@@ -43,32 +43,35 @@
       </svg>
     </div>
 
-    <!-- Encadré avec icônes et textes -->
-    <div class="feature-box-wrapper"
-         data-aos="fade-up"
-         data-aos-duration="1000"
-         data-aos-offset="120"
-         data-aos-easing="ease-in-out">
-      <div class="feature-box">
-        <div
-          v-for="(stat, index) in store.stats"
-          :key="index"
-          class="feature-item"
-          :data-aos="'zoom-in'"
-          :data-aos-delay="index * 150"
-          data-aos-duration="900"
-          data-aos-easing="ease-out-cubic"
-        >
-          <div class="feature-icon">
-            <i :class="stat.icon"></i>
-          </div>
-          <div class="feature-text">
-            <h5>{{ stat.title }}</h5>
-            <p>{{ stat.description }}</p>
-          </div>
+   <!-- Encadré avec icônes et textes -->
+<div class="container my-5"
+     data-aos="fade-up"
+     data-aos-duration="1000"
+     data-aos-offset="120"
+     data-aos-easing="ease-in-out">
+  <div class="row">
+    <div
+      v-for="(stat, index) in store.stats"
+      :key="index"
+      class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 text-center"
+      :data-aos="'zoom-in'"
+      :data-aos-delay="index * 150"
+      data-aos-duration="900"
+      data-aos-easing="ease-out-cubic"
+    >
+      <div class="p-4 bg-white shadow rounded h-100 d-flex flex-column align-items-center justify-content-center">
+        <div class="feature-icon mb-3">
+          <i :class="stat.icon" style="color:#45A79E"></i>
+        </div>
+        <div class="feature-text">
+          <h5 class="fw-bold">{{ stat.title }}</h5>
+          <p class="text-muted small">{{ stat.description }}</p>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
   </section>
 </template>
 
@@ -121,7 +124,9 @@ onMounted(() => {
   color: #555;
   max-width: 500px;
 }
-
+/* .fs-1 text-primary{
+  color:#45A79E;
+} */
 .company-badge {
   font-weight: 600;
   color: var(--color-dark-brown);
@@ -143,7 +148,9 @@ onMounted(() => {
 .btn-primary-filled:hover {
   background-color: #71bab3;
 }
-
+.stat.icon{
+  color:#71bab3;
+}
 .btn-outline {
   background-color: transparent;
   color: #45A79E;
@@ -233,6 +240,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
 }
 
 .feature-icon i {

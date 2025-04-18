@@ -247,5 +247,56 @@ onMounted(async () => {
   margin: 0;
   line-height: 1.2;
 }
+
+@media (max-width: 768px) {
+  .blog-hero {
+    height: 320px;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+    padding: 0 1rem;
+  }
+
+  .content-container {
+    padding: 2rem 1rem;
+  }
+
+  .content-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main-content {
+    padding: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .main-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .sidebar {
+    padding: 1.2rem;
+    border-left: none;
+    border-top: 4px solid var(--accent-color);
+    margin-top: 2rem;
+  }
+
+  .recent-article {
+    gap: 0.8rem;
+  }
+
+  .recent-article img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .recent-article .title {
+    font-size: 0.9rem;
+  }
+}
+
  
 </style>
+

@@ -1,44 +1,43 @@
 <template>
     <footer id="footer" class="footer">
-      <div class="container footer-top">
-        <div class="row gy-4">
-          <!-- Logo & Citation -->
-          <div class="col-md-6 footer-about">
-            <a href="#hero" class="logo d-flex align-items-center">
-              <img :src="store.logo" alt="KPS Consulting Analytics">
-            </a>
-            <p>{{ store.citation }}</p>
-            <div class="social-links">
-              <a v-for="(link, index) in store.socialLinks" :key="index" :href="link.href" target="_blank">
-                <i :class="link.icon"></i>
-              </a>
-            </div>
-          </div>
-  
-          <!-- Navigation Links -->
-          <div class="col-md-3 footer-links">
-            <h4 style="color:#5E5325;">Navigation</h4>
-            <ul>
-              <li v-for="(item, index) in store.navLinks" :key="index">
-                <a :href="item.href" style="text-decoration: none;">{{ item.label }}</a>
-              </li>
-            </ul>
-          </div>
-  
-          <!-- Contact -->
-          <div class="col-md-3 footer-links">
-            <div class="footer-contact pt-2">
-              <p>{{ store.contact.adresse }}</p>
-              <p class="mt-3"><strong>Téléphone:</strong> <span>{{ store.contact.tel }}</span></p>
-              <p><strong>Email:</strong> <span><a style="color:#45A79E; text-decoration: none;" :href="`mailto:${store.contact.email}`">{{ store.contact.email }}</a></span></p>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <div class="container copyright text-center mt-4">
-        <p>© <span>Copyright</span> <strong class="px-1 sitename">KPS CONSULTING ANALYTICS</strong> <span>Tous droits réservés</span></p>
-      </div>
+      <div class="row gy-4 justify-content-center text-center text-md-start">
+
+<!-- Bloc logo & citation -->
+<div class="col-12 col-md-6 col-lg-5 footer-about">
+  <a href="#hero" class="logo d-flex justify-content-center justify-content-md-start mb-3">
+    <img :src="store.logo" alt="Logo" class="img-fluid" style="max-height: 50px;" />
+  </a>
+  <p>{{ store.citation }}</p>
+  <div class="social-links d-flex justify-content-center justify-content-md-start gap-3 mt-3">
+    <a v-for="(link, index) in store.socialLinks" :key="index" :href="link.href" target="_blank">
+      <i :class="link.icon" class="fs-5"></i>
+    </a>
+  </div>
+</div>
+
+<!-- Bloc navigation centré sur mobile -->
+<div class="col-12 col-md-3 footer-links text-center text-md-start">
+  <h5 class="fw-bold mb-3" style="color:#5E5325;">Navigation</h5>
+  <ul class="list-unstyled d-flex flex-column align-items-center align-items-md-start">
+    <li v-for="(item, index) in store.navLinks" :key="index" class="mb-2">
+      <a :href="item.href" class="text-decoration-none text-dark">{{ item.label }}</a>
+    </li>
+  </ul>
+</div>
+
+
+<!-- Bloc contact centré aussi -->
+<div class="col-12 col-md-3 footer-links text-center text-md-start">
+  <h5 class="fw-bold mb-3">Contact</h5>
+  <p>{{ store.contact.adresse }}</p>
+  <p class="mt-2"><strong>Téléphone:</strong> <span>{{ store.contact.tel }}</span></p>
+  <p><strong>Email:</strong> 
+    <a :href="`mailto:${store.contact.email}`" class="text-decoration-none" style="color:#45A79E;">{{ store.contact.email }}</a>
+  </p>
+</div>
+
+</div>
+
     </footer>
   </template>
   

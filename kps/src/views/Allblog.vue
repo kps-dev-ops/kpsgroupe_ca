@@ -4,10 +4,7 @@
    
   </div>
 
-  <!-- <div class="blog-banner">
-    <h1>Blog </h1>
-    <p>Retrouvez nos derniers articles autour de la Data, du Digital et du Consulting, rédigés par des experts du domaine.</p>
-  </div> -->
+  
   <div class="blog-hero">
     <div class="overlay"></div>
     <div class="container">
@@ -18,10 +15,7 @@
 
   <div class="search-filter">
     <input v-model="searchQuery" type="text" placeholder="Rechercher un article..." />
-    <!-- <select v-model="selectedCategory">
-      <option value="">Toutes les catégories</option>
-      <option v-for="cat in categoryList" :key="cat" :value="cat">{{ cat }}</option>
-    </select> -->
+   
   </div>
 
   <section class="all-blogs">
@@ -284,7 +278,7 @@ const categoryList = [
 .search-filter input:focus {
   outline: none;
   background-color: #fff;
-  box-shadow: 0 0 0 3px rgba(69, 167, 158, 0.3); /* couleur d'accent */
+  box-shadow: 0 0 0 3px rgba(69, 167, 158, 0.3);
   border: 1px solid var(--accent-color);
 }
 
@@ -569,5 +563,115 @@ const categoryList = [
   margin: 0;
   line-height: 1.2;
 }
+
+@media (max-width: 991px) {
+  .grid-with-sidebar {
+    grid-template-columns: 1fr; /* une seule colonne */
+  }
+
+  .sidebar {
+    margin-top: 2rem;
+    width: 100%;
+    border-left: none;
+    border-top: 5px solid var(--accent-color);
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .featured-title {
+    font-size: 1.2rem;
+  }
+
+  .featured-overlay {
+    padding: 1.2rem;
+  }
+
+  .recent-article {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 576px) {
+  .search-filter {
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+  }
+
+  .search-filter input {
+    width: 100%;
+  }
+
+  .featured-blog-card {
+    height: 220px;
+  }
+
+  .featured-title {
+    font-size: 1rem;
+  }
+
+  .badge.top-right {
+    font-size: 0.6rem;
+    padding: 4px 10px;
+  }
+}
+
+@media (max-width: 880px) {
+  .grid-with-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .featured-blog-card {
+    height: auto;
+    min-height: 240px;
+    border-radius: 12px;
+  }
+
+  .featured-title {
+    font-size: 1.2rem;
+  }
+
+  .featured-overlay {
+    padding: 1rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 1.2rem;
+    border-left: none;
+    border-top: 4px solid var(--accent-color);
+  }
+
+  .recent-article {
+    gap: 0.8rem;
+  }
+
+  .recent-article img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .search-filter {
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+  }
+
+  .search-filter input {
+    min-width: 90%;
+    max-width: 100%;
+  }
+}
+
 
 </style>
