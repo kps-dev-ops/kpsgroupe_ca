@@ -1,38 +1,4 @@
 <template>
-  <!-- <section id="blog" class="blog-section">
-    <h1>Nos derniers articles</h1>
-    <div class="blog-carousel-wrapper">
-  <button class="carousel-btn left" @click="scrollCarousel('left')">❮</button>
-
-  <div class="blog-carousel" ref="carousel">
-    <div
-      v-for="(post, index) in displayedPosts"
-      :key="post.$id"
-      class="blog-card-clean"
-      :class="{ active: activeIndex === index }"
-      @click="viewMore(post)"
-    >
-      <div class="card-cover">
-        <img :src="post.image_url" alt="cover" />
-      </div>
-      <div class="card-content">
-        <h3>{{ post.title }}</h3>
-        <p class="categori">{{ post.subtitle }}</p>
-       
-      </div>
-    </div>
-  </div>
-
-  <button class="carousel-btn right" @click="scrollCarousel('right')">❯</button>
-</div>
-
-
-    <div v-if="!showAll" class="see-more">
-     <button @click="goToAllBlogs">Voir plus d’articles</button>
-    </div>
-
-  </section> -->
-
   <section id="blog" class="blog-section">
   <h1>Nos derniers articles</h1>
 
@@ -62,40 +28,6 @@
 
 </template>
 
-<!-- 
-<script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useBlogStore } from '../stores/blog'
-
-const router = useRouter()
-const blogStore = useBlogStore()
-
-const showAll = ref(false)
-
-const displayedPosts = computed(() =>
-  showAll.value
-    ? blogStore.articles.filter((post) => post.published)
-    : blogStore.articles.filter((post) => post.published).slice(0, 4)
-)
-
-const featuredPosts = computed(() =>
-  blog.articles.filter((post) => post.featured && post.published)
-)
-
-
-const viewMore = (post) => {
-  router.push({ name: 'detailblog', params: { slug: post.slug } })
-}
-
-const goToAllBlogs = () => {
-  router.push({ name: 'Allblog' })
-}
-
-onMounted(async () => {
-  await blogStore.fetchArticles()
-})
-</script> -->
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'

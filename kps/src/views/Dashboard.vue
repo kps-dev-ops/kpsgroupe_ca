@@ -2,39 +2,14 @@
   <section id="Dashboard" class="dashboard-wrapper">
     <div class="dashboard-container">
 
-      <!-- 📌 En-tête -->
+      <!-- En-tête -->
       <div class="dashboard-header" data-aos="fade-down">
         <h1 class="title">Tableau de bord</h1>
         <p class="subtitle">Suivez vos indicateurs en un coup d'œil</p>
       </div>
 
-      <!-- 📊 Cartes KPI
-      <div class="grid-cards">
-        Nombre de posts
-        <div class="card kpi" data-aos="fade-up" data-aos-delay="100">
-          <div class="card-icon bg-blue"><font-awesome-icon icon="file-alt" /></div>
-          <div class="card-content">
-            <h2>{{ posts.length }}</h2>
-            <p>Posts</p>
-            <small>Contenus publiés</small>
-          </div>
-        </div>
 
-        <!-- Dernier post -->
-        <!-- <div class="card kpi" data-aos="fade-up" data-aos-delay="300">
-          <div class="card-icon bg-yellow"><font-awesome-icon icon="clock" /></div>
-          <div class="card-content card-with-thumb">
-            <img v-if="lastPost?.image_url" :src="lastPost.image_url" alt="cover" class="thumb" />
-            <div class="text">
-              <h2>{{ lastPost?.title?.slice(0, 25) || 'Aucun' }}{{ lastPost?.title?.length > 20 ? '...' : '' }}</h2>
-              <p>Dernier post</p>
-              <small>Dernier contenu publié</small>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- 📈 Résumé et Graph -->
+      <!-- Résumé et Graph -->
       <div class="graph-summary">
         <div class="circle-box" data-aos="zoom-in-right">
           <div class="circle-content">
@@ -52,7 +27,7 @@
         </div>
       </div>
 
-      <!-- 🗂️ Tableau des posts -->
+      <!-- Tableau des posts -->
       <div class="table-box" data-aos="fade-up">
         <div class="table-header">
   <h3>Aperçu des posts</h3>
@@ -324,7 +299,7 @@ const deletePost = async (id) => {
 }
 
 const previewPost = async (post) => {
-  const url = `${window.location.origin}/blog/${post.slug}`; // ou une route absolue genre `${window.location.origin}/preview/${post.$id}`
+  const url = `${window.location.origin}/blog/${post.slug}`;
   window.open(url, '_blank');
 }
 

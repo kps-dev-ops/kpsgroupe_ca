@@ -340,70 +340,6 @@ const toggleForm = () => {
 .avatar-preview:hover {
   transform: scale(1.05);
 }
-
-
-/* .post-card {
-  background: white;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.05);
-  transition: transform 0.3s;
-  display: flex;
-  flex-direction: column;
-}
-
-.post-card:hover {
-  transform: translateY(-5px);
-}
-
-.post-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-}
-
-.card-content {
-  padding: 1rem;
-}
-
-.card-content h3 {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #1f2937;
-  margin: 0;
-}
-
-.card-content p {
-  color: #6b7280;
-  font-size: 0.95rem;
-  margin-top: 0.25rem;
-}
-
-.actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
-.icon-btn {
-  background: #f3f4f6;
-  border: none;
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.icon-btn.edit:hover {
-  background-color: #dbeafe;
-  color: #2563eb;
-}
-
-.icon-btn.delete:hover {
-  background-color: #fee2e2;
-  color: #dc2626;
-} */
 .form-box {
   margin-top: 2rem;
   background: linear-gradient(to bottom right, #ffffff, #f3f4f6);
@@ -423,12 +359,7 @@ const toggleForm = () => {
     transform: translateY(0);
   }
 }
-/* 
-.input-group {
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-} */
+
 
 .input-group select {
   width: 100%;

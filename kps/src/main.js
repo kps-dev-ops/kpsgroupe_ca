@@ -15,7 +15,6 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 
-// import '@fortawesome/fontawesome-free/css/all.min.css'
 
 
 

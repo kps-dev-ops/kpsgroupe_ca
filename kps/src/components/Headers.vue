@@ -9,7 +9,7 @@
 
       <!-- Menu dynamique -->
       <nav id="navmenu" class="navmenu">
-        <!-- CROIX (×) en haut à droite du menu mobile -->
+       
         <i
           v-if="store.isMenuOpen"
           class="close-icon bi bi-x d-xl-none"
@@ -47,15 +47,9 @@ import { ref, onMounted, watch } from 'vue'
 import { useHeaderStore } from '../stores/headerStore'
 
 const store = useHeaderStore()
-// const activeSection = ref(window.location.hash || '#hero')
+
 const activeSection = ref(window.location.pathname + window.location.hash)
 
-
-// onMounted(() => {
-//   window.addEventListener('hashchange', () => {
-//     activeSection.value = window.location.hash
-//   })
-// })
 
 onMounted(() => {
   const updateActive = () => {
@@ -178,7 +172,7 @@ a.active::after {
     max-width: 300px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
     position: relative;
-    gap: 0.8rem; /* 🔥 Espacement réduit */
+    gap: 0.8rem; 
   }
 
   body.mobile-nav-active .navmenu li {

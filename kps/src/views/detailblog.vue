@@ -56,11 +56,6 @@ const goToPost = (article) => {
 }
 
 
-// const goToPost = (post) => {
-//   blogStore.incrementViews(post.slug)
-//   router.push({ name: 'detailblog', params: { slug: post.slug } })
-// }
-
 
 onMounted(async () => {
   await blogStore.fetchArticleBySlug(route.params.slug)

@@ -161,7 +161,7 @@ const categoryList = [
 .blog-hero .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4); /* Couleur + opacité */
+  background: rgba(0, 0, 0, 0.4);
   z-index: 0;
 }
 
@@ -179,12 +179,12 @@ const categoryList = [
 
 .pagination-container {
   display: flex;
-  justify-content: center; /* centrer horizontalement */
+  justify-content: center; 
   column-gap: 10px;
   align-items: center;
   gap: 0.5rem;
   margin-top: 2.5rem;
-  padding: 0; /* plus besoin de padding à droite */
+  padding: 0; 
 }
 
 .pagination-container button {
