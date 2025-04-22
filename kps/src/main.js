@@ -32,22 +32,20 @@ import {
   faFileAlt,
   faClock,
   faPen,
-  faTrash
+  faTrash,
+  faEye,
+  faMagnifyingGlass,
+  faScroll
 } from '@fortawesome/free-solid-svg-icons'
 
-// Enregistrement des icônes à utiliser
-library.add(faUsers, faFileAlt, faClock, faPen, faTrash)
+library.add(faUsers, faFileAlt, faClock, faPen, faTrash, faEye, faMagnifyingGlass, faScroll)
 
-// Création de l'app
 const app = createApp(App)
 const pinia = createPinia()
 
-// Initialisation des plugins
 AOS.init()
 
-// Composants globaux
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('QuillEditor', QuillEditor)
 
-// Montage
 app.use(router).use(pinia).mount('#app')

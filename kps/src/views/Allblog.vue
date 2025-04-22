@@ -1,9 +1,6 @@
 <template>
   <Headers/>
-  <div class="blog-header" data-aos="fade-down">
-   
-  </div>
-
+ 
   
   <div class="blog-hero">
     <div class="overlay"></div>
@@ -122,6 +119,7 @@ onMounted(async () => {
 
 watch(currentPage, (newPage) => {
   blogStore.fetchArticles(newPage, limit, selectedCategory.value)
+  window.scrollTo({ top: 200, behavior: 'smooth' })
 })
 
 watch(selectedCategory, (newCategory) => {
@@ -152,8 +150,8 @@ const categoryList = [
   background: url('./src/assets/img/blogg.jpg') center/cover no-repeat;
   color: white;
   text-align: center;
-  padding: 17rem 2rem 2rem;
-  margin-top: 80px;
+  padding: 17rem 0rem 3rem;
+  padding-top: 300px;
   border-radius: 0 0 40px 40px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -168,6 +166,8 @@ const categoryList = [
 }
 
 .blog-hero .container {
+  justify-content: center;
+  align-items: center;
   position: relative;
   z-index: 1;
 }

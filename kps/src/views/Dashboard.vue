@@ -8,9 +8,9 @@
         <p class="subtitle">Suivez vos indicateurs en un coup d'œil</p>
       </div>
 
-      <!-- 📊 Cartes KPI -->
+      <!-- 📊 Cartes KPI
       <div class="grid-cards">
-        <!-- Nombre de posts -->
+        Nombre de posts
         <div class="card kpi" data-aos="fade-up" data-aos-delay="100">
           <div class="card-icon bg-blue"><font-awesome-icon icon="file-alt" /></div>
           <div class="card-content">
@@ -21,7 +21,7 @@
         </div>
 
         <!-- Dernier post -->
-        <div class="card kpi" data-aos="fade-up" data-aos-delay="300">
+        <!-- <div class="card kpi" data-aos="fade-up" data-aos-delay="300">
           <div class="card-icon bg-yellow"><font-awesome-icon icon="clock" /></div>
           <div class="card-content card-with-thumb">
             <img v-if="lastPost?.image_url" :src="lastPost.image_url" alt="cover" class="thumb" />
@@ -32,7 +32,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- 📈 Résumé et Graph -->
       <div class="graph-summary">
@@ -43,7 +43,7 @@
           </div>
         </div>
 
-        <div class="summary-box" data-aos="zoom-in-left">
+       <div class="summary-box" data-aos="zoom-in-left">
           <h3><i class="fas fa-chart-pie"></i> Résumé rapide</h3>
           <ul>
             <li><i class="fas fa-file-alt"></i> <strong>Total posts :</strong> {{ posts.length }}</li>
@@ -60,16 +60,86 @@
     {{ showForm ? 'Fermer' : '➕ Nouveau Post' }}
   </button>
 </div>
-<transition name="slide-fade">
-        <div v-if="showForm" class="form-box">
-          <form @submit.prevent="handleSubmit">
-            <div class="input-group">
-              <input v-model="form.title" required placeholder="Titre" @input="generateSlug" />
-            </div>
 
-            <div class="input-group">
-              <select v-model="form.subtitle" required>
-                <option disabled value="">Choisir une catégorie</option>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Titre & Image</th>
+              <th>Vue</th>
+              <th>Date</th>
+              <th>Statut</th>
+              <th>À la une</th>
+              <th>Actions</th>
+              <th>Voir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="post in paginatedPosts" :key="post.$id">
+              <td class="title-cell">
+                <div class="title-with-img">
+                  <img v-if="post.image_url" :src="post.image_url" alt="miniature" class="thumb-mini" />
+                  <span class="ellipsis">{{ post.title }}</span>
+                </div>
+              </td>
+              <td>{{ post.views }}</td>
+              <td>{{ new Date(post.$createdAt).toLocaleDateString() }}</td>
+              <td>
+                <span class="status" :class="post.published ? 'success' : 'draft'">
+                  {{ post.published ? 'Publié' : 'Brouillon' }}
+                </span>
+              </td>
+              <td>
+                <input type="checkbox" :disabled="loadingFeatured === post.$id" v-model="post.featured" @change="toggleFeatured(post)" />
+              </td>
+              <td>
+                <div class="actions">
+                  <button class="icon-btn edit" @click="editPost(post)">
+                    <font-awesome-icon icon="pen" />
+                  </button>
+                  <button class="icon-btn delete" @click="deletePost(post.$id)">
+                    <font-awesome-icon icon="trash" />
+                  </button>
+               
+                </div>
+              </td>
+              <td>
+                <div class="preview"></div>
+                <button class="icon-btn preview" @click="previewPost(post)">
+                  <font-awesome-icon icon="scroll" /> 
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pagination-container centered">
+          <button @click="currentPage--" :disabled="currentPage === 1">←</button>
+          <button
+            v-for="page in totalPages"
+            :key="page"
+            @click="currentPage = page"
+            :class="{ active: currentPage === page }"
+          >
+            {{ page }}
+          </button>
+          <button @click="currentPage++" :disabled="currentPage === totalPages">→</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div v-if="showForm" class="modal-overlay" @click.self="toggleForm">
+  <button class="close-btn" @click="toggleForm">✖</button>
+  <div class="modal-content">
+    <form @submit.prevent="handleSubmit">
+      <div class="input-group">
+        <input v-model="form.title" required placeholder="Titre" @input="generateSlug" />
+      </div>
+
+      <div class="input-group">
+        <select v-model="form.subtitle" required>
+          <option disabled value="">Choisir une catégorie</option>
                 <option v-for="cat in categoryList" :key="cat" :value="cat">
                   {{ cat }}
                 </option>
@@ -118,84 +188,24 @@
               </button>
             </div>
           </form>
-        </div>
-      </transition>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Titre & Image</th>
-              <th>Vue</th>
-              <th>Date</th>
-              <th>Statut</th>
-              <th>À la une</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="post in paginatedPosts" :key="post.$id">
-              <td class="title-cell">
-                <div class="title-with-img">
-                  <img v-if="post.image_url" :src="post.image_url" alt="miniature" class="thumb-mini" />
-                  <span>{{ post.title }}</span>
-                </div>
-              </td>
-              <td>{{ post.views }}</td>
-              <td>{{ new Date(post.$createdAt).toLocaleDateString() }}</td>
-              <td>
-                <span class="status" :class="post.published ? 'success' : 'draft'">
-                  {{ post.published ? 'Publié' : 'Brouillon' }}
-                </span>
-              </td>
-              <td>
-                <input type="checkbox" :disabled="loadingFeatured === post.$id" v-model="post.featured" @change="toggleFeatured(post)" />
-              </td>
-              <td>
-                <div class="actions">
-                  <button class="icon-btn edit" @click="editPost(post)" title="Modifier l'article">
-                    <font-awesome-icon icon="pen" />
-                  </button>
-                  <button class="icon-btn delete" @click="deletePost(post.$id)">
-                    <font-awesome-icon icon="trash" />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- 🔢 Pagination -->
-        <div class="pagination-container centered">
-          <button @click="currentPage--" :disabled="currentPage === 1">←</button>
-          <button
-            v-for="page in totalPages"
-            :key="page"
-            @click="currentPage = page"
-            :class="{ active: currentPage === page }"
-          >
-            {{ page }}
-          </button>
-          <button @click="currentPage++" :disabled="currentPage === totalPages">→</button>
-        </div>
-      </div>
-
-      <!-- 📝 Formulaire Création / Édition -->
-      
-
-    </div>
-  </section>
+  </div>
+</div>
 
   <Footer />
 </template>
 
 
 <script setup>
-import { ref, onMounted, watchEffect, computed } from 'vue'
+import { ref, onMounted, watchEffect, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useBlogStore }   from '../stores/blog'
+import { useRouter } from 'vue-router'
+import { useBlogStore } from '../stores/blog'
+import { useHeaderStore } from '../stores/headerStore'
+const headerStore = useHeaderStore()
 const blog = useBlogStore()
 import Footer from '../components/Footer.vue'
 const { posts, authors, lastPost} = storeToRefs(blog)
+const router = useRouter()
 
 const currentPage = ref(1)
 const itemsPerPage = ref(5)
@@ -235,7 +245,9 @@ const categoryList = [
   'IA',
   'DevOps'
 ]
+
 const loadingFeatured = ref(null)
+
 
 const toggleFeatured = async (post) => {
   loadingFeatured.value = post.$id
@@ -249,6 +261,14 @@ const toggleFeatured = async (post) => {
     loadingFeatured.value = null
   }
 }
+
+watch(showForm, (val) => {
+  if (val) {
+    document.body.classList.add('modal-open')
+  } else {
+    document.body.classList.remove('modal-open')
+  }
+})
 
 
 const generateSlug = () => {
@@ -276,6 +296,7 @@ watchEffect(() => {
   }
 })
 
+
 onMounted(() => {
     blog.fetchArticlesList()
     loading.value = false
@@ -300,6 +321,11 @@ const deletePost = async (id) => {
   if (confirm('Supprimer ce post ?')) {
     await blog.deleteArticle(id)
   }
+}
+
+const previewPost = async (post) => {
+  const url = `${window.location.origin}/blog/${post.slug}`; // ou une route absolue genre `${window.location.origin}/preview/${post.$id}`
+  window.open(url, '_blank');
 }
 
 const editPost = (post) => {
@@ -400,6 +426,76 @@ const toggleForm = () => {
 
 <style scoped>
 
+.ellipsis {
+  display: inline-block;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  justify-content: center;
+}
+
+.modal-card {
+  background: white;
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.modal-content {
+  background: #fff;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2rem;
+  /* border-radius: 1rem; */
+  border-radius: 12px;
+  /* overflow: hidden;  */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+
 .table-header {
   display: flex;
   justify-content: space-between;
@@ -453,7 +549,7 @@ const toggleForm = () => {
 .pagination-container button.active {
   background-color: #45A79E;
   color: white;
-  border-color: #007bff;
+  border-color: white;
 }
 
 
@@ -660,40 +756,6 @@ const toggleForm = () => {
   font-size: 0.9rem;
   color: #6b7280;
   margin: 0;
-}
-
-.actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-}
-
-.icon-btn {
-  border: none;
-  border-radius: 8px;
-  padding: 0.4rem 0.6rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.icon-btn.edit {
-  background-color: #e0e7ff;
-  color: var(--accent-color);
-}
-
-.icon-btn.edit:hover {
-  background-color: #c7d2fe;
-}
-
-.icon-btn.delete {
-  background-color: #fee2e2;
-  color: #b91c1c;
-}
-
-.icon-btn.delete:hover {
-  background-color: #fecaca;
 }
 
 
@@ -908,10 +970,10 @@ const toggleForm = () => {
   transform-origin: left;
   transition: transform 0.3s ease-in-out;
 }
-
 .actions {
   display: flex;
-  gap: 0.5rem;
+  flex-direction: row;
+  gap: 0;
 }
 
 .icon-btn {
@@ -919,20 +981,37 @@ const toggleForm = () => {
   border: none;
   cursor: pointer;
   font-size: 1.1rem;
-  padding: 0.3rem;
-  border-radius: 6px;
+  padding: 0.3rem 0.4rem;
+  border-radius: 0;
   transition: background-color 0.2s;
 }
+
+.icon-btn:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.icon-btn:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
 .icon-btn.edit {
   color: #3b82f6;
 }
+
 .icon-btn.delete {
   color: #ef4444;
 }
+
+.icon-btn.preview {
+  color: #0d1012;
+  font-size: 1.1rem;
+}
+
 .icon-btn:hover {
   background-color: #f3f4f6;
 }
-
 
 .subtitle {
   font-size: 1rem;
@@ -945,7 +1024,7 @@ const toggleForm = () => {
   margin-bottom: 2rem;
   justify-content: space-between;
   flex-wrap: wrap;
-  background-color: #45A79E;
+  background-color: #cbd5e0;
   border: 1px solid #cbd5e0; 
   border-radius: 16px;       
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
@@ -1038,7 +1117,7 @@ const toggleForm = () => {
 }
 
 .circle-box {
-  background: white;
+  background: #d6e7fd;
   border-radius: 50%;
   width: 200px;
   height: 200px;
@@ -1076,7 +1155,7 @@ const toggleForm = () => {
 }
 .summary-box {
   flex: 1;
-  background: white;
+  background: #d6e7fd;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -1135,5 +1214,12 @@ th, td {
   font-size: 0.8rem;
   border-radius: 999px;
   display: inline-block;
+}
+</style>
+
+<style>
+body.modal-open {
+  overflow: hidden;
+  height: 100vh;
 }
 </style>

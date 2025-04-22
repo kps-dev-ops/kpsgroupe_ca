@@ -1,12 +1,7 @@
 <template>
   <Headers/>
   <div class="blog-detail" v-if="post">
-    <!-- Header -->
-    <div class="blog-header" data-aos="fade-down">
-      <!-- <div class="back-button" @click="router.push('/')">
-        <i class="bi bi-arrow-left"></i> Accueil
-      </div> -->
-    </div>
+  
 
     <!-- Hero Image with Title -->
     <div class="blog-hero">

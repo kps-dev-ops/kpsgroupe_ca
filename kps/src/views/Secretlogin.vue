@@ -38,7 +38,7 @@ import { useBlogStore } from '../stores/blog'
   const login = async () => {
   try {
     await blog.login(email.value, password.value)
-    router.push('/Blogs')
+    router.push('/dashboard')
   } catch (err) {
     error.value = err.message
   }
@@ -48,7 +48,7 @@ onMounted(async () => {
   try {
     const user = await account.get()
     authStore.setToken(user.$id)
-    router.push('/Blogs')
+    router.push('/dashboard')
   } catch {
   }
 })
@@ -133,7 +133,7 @@ onMounted(async () => {
   }
   
   button:hover {
-    background-color: #e3d4c0;
+    background-color: #71bab3;
   }
   
   .error {

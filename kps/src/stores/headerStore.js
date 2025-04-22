@@ -8,7 +8,7 @@ export const useHeaderStore = defineStore('header', {
       { label: 'À propos', href: '/#about' },
       { label: 'Expertise', href: '/#services' },
       { label: 'Technologies', href: '/#Technologies' },
-      { label: 'blog', href: '/#blog' }
+      { label: 'Blog', href: '/#blog' }
     ],
     contactText: 'Contactez-nous',
     contactHref: '/#contact',
@@ -19,7 +19,7 @@ export const useHeaderStore = defineStore('header', {
     toggleMenu() {
       console.log('toggleMenu called!') 
       this.isMenuOpen = !this.isMenuOpen
-      console.log('isMenuOpen:', this.isMenuOpen) // ✅ T
+      console.log('isMenuOpen:', this.isMenuOpen)
     },
 
     updateMenu(newMenu) {

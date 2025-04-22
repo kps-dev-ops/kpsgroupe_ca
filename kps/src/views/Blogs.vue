@@ -8,35 +8,7 @@
         <img :src="adminStore.logoPath" alt="Logo" class="logo-img" />
       </a>
 
-    
-      <nav id="navmenu" class="navmenu" :class="{ open: adminStore.isMenuOpen }">
-     
-        <i
-          v-if="adminStore.isMenuOpen"
-          class="close-icon bi bi-x d-xl-none"
-          @click="adminStore.toggleMenu"
-        ></i>
-
-       
-        <ul>
-          <li v-for="(item, index) in adminStore.menu" :key="index">
-            <a
-              :href="item.href"
-              :class="{ active: activeSection === item.href }"
-              @click="handleMenuClick(item.href)"
-            >
-              {{ item.label }}
-            </a>
-          </li>
-        </ul>
-      </nav>
-
-   
-      <div class="mobile-icons d-xl-none" v-if="!adminStore.isMenuOpen">
-        <i class="bi bi-list" @click="adminStore.toggleMenu"></i>
-      </div>
-
-      <button class="btn-getstarted" @click="handleLogout">
+      <button class="btn-getstarted" @click="handleLogout" style="border: none;">
         {{ adminStore.contactText }}
       </button>
 
@@ -108,7 +80,7 @@ const handleLogout = async () => {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1050;
+  z-index: 10;
 }
 
 .header-container {
@@ -121,33 +93,6 @@ const handleLogout = async () => {
 .logo-img {
   height: 42px;
   border-radius: 8px;
-}
-
-/* Menu desktop */
-.navmenu {
-  display: flex;
-  align-items: center;
-}
-.navmenu ul {
-  display: flex;
-  gap: 1.5rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.navmenu a {
-  color: #4a4a4a;
-  font-weight: 500;
-  text-decoration: none;
-  padding: 0.4rem 0.6rem;
-  transition: all 0.3s ease;
-  border-radius: 8px;
-}
-.navmenu a:hover,
-.navmenu a.active {
-  background-color: #45A79E;
-  color: white;
-  transform: translateY(-2px);
 }
 
 .btn-getstarted {
@@ -168,71 +113,4 @@ const handleLogout = async () => {
   cursor: pointer;
 }
 
-/* Menu responsive */
-@media (max-width: 1200px) {
-  .navmenu {
-    position: absolute;
-    top: 64px;
-    right: 0;
-    background: white;
-    flex-direction: column;
-    width: 250px;
-    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.08);
-    padding: 1.5rem 1rem;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 1000;
-    display: none;
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .navmenu.open {
-    transform: translateX(0);
-    display: flex;
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .navmenu ul {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    width: 100%;
-  }
-
-  .navmenu li {
-    width: 100%;
-  }
-
-  .navmenu li a {
-    display: block;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #1c1e21;
-    text-decoration: none;
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .navmenu li a:hover,
-  .navmenu li a.active {
-    background-color: #45A79E;
-    color: white;
-  }
-
-  .close-icon {
-    align-self: flex-end;
-    font-size: 1.6rem;
-    cursor: pointer;
-    margin-bottom: 1rem;
-  }
-}
 </style>
