@@ -20,6 +20,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.8",
+    "dotenv": "^16.5.0",
     "glightbox": "^3.3.1",
     "lottie-web": "^5.12.2",
     "pinia": "^3.0.1",
