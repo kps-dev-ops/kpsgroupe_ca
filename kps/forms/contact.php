@@ -13,7 +13,8 @@ use PHPMailer\PHPMailer\Exception;
 require '../src/assets/vendor/autoload.php';
 
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+// Path a preciser en fonction de la configuration au lemcement
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

@@ -1188,11 +1188,14 @@ const toggleForm = () => {
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
+  overflow-x: auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 .table-box h3 {
   margin-bottom: 1rem;
   font-size: 1.1rem;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 table {
   width: 100%;

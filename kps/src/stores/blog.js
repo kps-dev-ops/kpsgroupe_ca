@@ -3,10 +3,10 @@ import { ref } from 'vue'
 import { Query } from 'appwrite'
 import { account, databases, storage, ID } from '../lib/appwrite'
 
-const DATABASE_ID = '67f3de5700068b483ca7'
-const COLLECTION_ID = '67f3ebc80030da0f765e'
-const BUCKET_ID = '67f3ad7b0017d490c545'
-const DEFAULT_IMAGE_URL = 'https://appwrite.ubbfy.com/v1/storage/buckets/67f3ad7b0017d490c545/files/new_cover/view?project=67f3ad4f00234f8ab06c&project=67f3ad4f00234f8ab06c&mode=admin'
+const DATABASE_ID = import.meta.env.VITE_DATABASE_ID
+const COLLECTION_ID = import.meta.env.VITE_COLLECTION_ID
+const BUCKET_ID = import.meta.env.VITE_BUCKET_ID
+const DEFAULT_IMAGE_URL = import.meta.env.VITE_DEFAULT_IMAGE_URL
 
 export const useBlogStore = defineStore('blog', () => {
   const articles = ref([])
