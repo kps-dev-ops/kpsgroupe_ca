@@ -147,7 +147,7 @@ const categoryList = [
 
 .blog-hero {
   position:relative;
-  background: url('./src/assets/img/blogg.jpg') center/cover no-repeat;
+  background: url('/src/assets/img/blogg.jpg') center/cover no-repeat;
   color: white;
   text-align: center;
   padding: 17rem 0rem 3rem;

@@ -9,7 +9,7 @@
   
   <script setup>
   import { onMounted, ref } from 'vue'
-  import lottie from 'lottie-web'
+  import lottie from 'lottie-web/build/player/lottie_light.min.js'
   
   const lottieContainer = ref(null)
   
