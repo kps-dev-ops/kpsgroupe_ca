@@ -47,13 +47,25 @@ import { ref, onMounted, watch } from 'vue'
 import { useHeaderStore } from '../stores/headerStore'
 
 const store = useHeaderStore()
-const activeSection = ref(window.location.hash || '#hero')
+// const activeSection = ref(window.location.hash || '#hero')
+const activeSection = ref(window.location.pathname + window.location.hash)
+
+
+// onMounted(() => {
+//   window.addEventListener('hashchange', () => {
+//     activeSection.value = window.location.hash
+//   })
+// })
 
 onMounted(() => {
-  window.addEventListener('hashchange', () => {
-    activeSection.value = window.location.hash
-  })
+  const updateActive = () => {
+    activeSection.value = window.location.pathname + window.location.hash
+  }
+
+  updateActive()
+  window.addEventListener('hashchange', updateActive)
 })
+
 
 watch(() => store.isMenuOpen, (isOpen) => {
   if (isOpen) {
