@@ -193,7 +193,7 @@ onMounted(async () => {
   border-radius: 16px;
   padding: 1.5rem;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  border-left: 5px solid var(--accent-color);
+  /* border-left: 5px solid var(--accent-color); */
   transition: all 0.3s ease-in-out;
   align-self: start;
 }
