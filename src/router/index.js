@@ -7,6 +7,7 @@ import Dashboard from '../views/Blogs.vue'
 import Blogdetail from '../views/blogdetail.vue'
 import Allblog from '../views/Allblog.vue'
 import detailblog from '../views/detailblog.vue'
+import Documentation from '../components/Documentation.vue'
 
 const requireAuth = async (to, from, next) => {
   const blog = useBlogStore()
@@ -31,7 +32,9 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('../views/NotFound.vue'),
-  }
+  },
+  { path: '/Documentation', name: 'Documentation', component: Documentation, meta: { hidden: true } }
+
   
 ]
 
