@@ -32,7 +32,7 @@ const routes = [
     name: 'NotFound',
     component: () => import('../views/NotFound.vue'),
   },
-  { path: '/Documentation', name: 'Documentation', component: Documentation, meta: { hidden: true }, beforeEnter: requireAuth }
+  { path: '/kps-doc', name: 'Documentation', component: Documentation, meta: { hidden: true }, beforeEnter: requireAuth }
 ]
 
 const router = createRouter({

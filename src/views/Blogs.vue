@@ -16,11 +16,11 @@
       </button> -->
 
       <div class="btn-group">
+        <button class="btn-tutoriel" @click="goToTutoriel" style="border: none;">
+          {{ adminStore.tutoriels }}
+        </button>
       <button class="btn-getstarted" @click="handleLogout" style="border: none;">
         {{ adminStore.contactText }}
-      </button>
-      <button class="btn-tutoriel" @click="goToTutoriel" style="border: none;">
-        {{ adminStore.tutoriels }}
       </button>
      </div>
 
@@ -61,7 +61,7 @@ const handleMenuClick = (href) => {
 }
 
 const goToTutoriel = () => {
-  router.push('/Documentation')
+  router.push('/kps-doc')
 }
 
 
