@@ -8,9 +8,23 @@
         <img :src="adminStore.logoPath" alt="Logo" class="logo-img" />
       </a>
 
+      <!-- <button class="btn-getstarted" @click="handleLogout" style="border: none;">
+        {{ adminStore.contactText }}
+      </button>
+      <button class="btn-tutoriel" @click="goToTutoriel" style="border: none;">
+        {{ adminStore.tutoriels }}
+      </button> -->
+
+      <div class="btn-group">
       <button class="btn-getstarted" @click="handleLogout" style="border: none;">
         {{ adminStore.contactText }}
       </button>
+      <button class="btn-tutoriel" @click="goToTutoriel" style="border: none;">
+        {{ adminStore.tutoriels }}
+      </button>
+     </div>
+
+
 
     </div>
   </header>
@@ -46,6 +60,11 @@ const handleMenuClick = (href) => {
   adminStore.toggleMenu()
 }
 
+const goToTutoriel = () => {
+  router.push('/Documentation')
+}
+
+
 onMounted(async () => {
  
 })
@@ -61,6 +80,29 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
+
+.btn-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+.btn-tutoriel {
+  background-color: transparent;
+  color: #45A79E;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border: 2px solid #45A79E;
+  border-radius: 50px;
+  margin-left: 0.5rem;
+  transition: all 0.3s ease;
+}
+.btn-tutoriel:hover {
+  background-color: #45A79E;
+  color: white;
+}
+ 
 .header {
   background-color: white;
   height: 64px;

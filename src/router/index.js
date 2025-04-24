@@ -25,7 +25,6 @@ const routes = [
   { path: '/', name: 'home', component: home },
   { path: '/login', name: 'Secretlogin', component: Secretlogin, meta: { hidden: true } },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard, beforeEnter: requireAuth },
-  // { path: '/blog/:slug', name: 'BlogDetail', component: Blogdetail },
   { path: '/blog', name: 'Allblog', component: Allblog },
   {path: '/blog/:slug', name: 'detailblog', component: detailblog},
   {
@@ -33,9 +32,7 @@ const routes = [
     name: 'NotFound',
     component: () => import('../views/NotFound.vue'),
   },
-  { path: '/Documentation', name: 'Documentation', component: Documentation, meta: { hidden: true } }
-
-  
+  { path: '/Documentation', name: 'Documentation', component: Documentation, meta: { hidden: true }, beforeEnter: requireAuth }
 ]
 
 const router = createRouter({

@@ -11,6 +11,7 @@ export const Admminstore = defineStore('header', {
       // { label: 'blog', href: '#blog' }
     ],
     contactText: 'Logout',
+    tutoriels: 'Tuto',
     contactHref: '#Profil',
     isMenuOpen: false
   }),
