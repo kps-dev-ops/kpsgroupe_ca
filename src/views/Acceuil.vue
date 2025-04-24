@@ -16,10 +16,10 @@
             </p>
             <div class="hero-buttons d-flex flex-wrap gap-3">
               <a :href="store.contactHref" class="btn-primary-filled">{{ store.contactText }}</a>
-              <a :href="store.videoUrl" class="btn-outline glightbox">
+              <!-- <a :href="store.videoUrl" class="btn-outline glightbox">
                 <i class="bi bi-play-circle me-1"></i>
                 {{ store.videoText }}
-              </a>
+              </a> -->
             </div>
           </div>
         </div>
