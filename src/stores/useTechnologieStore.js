@@ -16,7 +16,7 @@ export const useTechnologieStore = defineStore('Technologies', {
           'Optimisation des processus de gestion.',
           'Vision claire pour meilleure prise de décision.'
         ],
-        image: './src/assets/img/features-illustration-1.webp'
+        image: '/src/assets/img/features-illustration-1.webp'
       },
       {
         id: 'features-tab-2',
@@ -28,7 +28,7 @@ export const useTechnologieStore = defineStore('Technologies', {
           'Analyse avec Power BI et Tableau.',
           'Dashboards interactifs et performants.'
         ],
-        image: './src/assets/img/features-illustration-2.webp'
+        image: '/src/assets/img/features-illustration-2.webp'
       },
       {
         id: 'features-tab-3',
@@ -40,7 +40,7 @@ export const useTechnologieStore = defineStore('Technologies', {
           'Gestion des accès et identités.',
           'Prévention et détection des menaces.'
         ],
-        image: './src/assets/img/features-illustration-3.webp'
+        image: '/src/assets/img/features-illustration-3.webp'
       }
     ]
   })
