@@ -1,4 +1,7 @@
 import { defineStore } from 'pinia'
+import image1 from '@/assets/img/features-illustration-1.webp'
+import image2 from '@/assets/img/features-illustration-2.webp'
+import image3 from '@/assets/img/features-illustration-3.webp'
 
 export const useTechnologieStore = defineStore('Technologies', {
   state: () => ({
@@ -16,7 +19,7 @@ export const useTechnologieStore = defineStore('Technologies', {
           'Optimisation des processus de gestion.',
           'Vision claire pour meilleure prise de décision.'
         ],
-        image: '/src/assets/img/features-illustration-1.webp'
+        image: image1
       },
       {
         id: 'features-tab-2',
@@ -28,7 +31,7 @@ export const useTechnologieStore = defineStore('Technologies', {
           'Analyse avec Power BI et Tableau.',
           'Dashboards interactifs et performants.'
         ],
-        image: '/src/assets/img/features-illustration-2.webp'
+        image: image2
       },
       {
         id: 'features-tab-3',
@@ -40,7 +43,7 @@ export const useTechnologieStore = defineStore('Technologies', {
           'Gestion des accès et identités.',
           'Prévention et détection des menaces.'
         ],
-        image: '/src/assets/img/features-illustration-3.webp'
+        image: image3
       }
     ]
   })

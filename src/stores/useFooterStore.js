@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
+import logo from '@/assets/img/logo2.png'
 
 export const useFooterStore = defineStore('footer', {
   state: () => ({
-    logo: new URL('../assets/img/logo2.png', import.meta.url).href,
+    logo: logo,
     citation: `“Nous mettons en œuvre une solution sur mesure pour renforcer votre efficacité et piloter votre activité en temps réel.”`,
     navLinks: [
       { label: 'Accueil', href: '#hero' },

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import jeuneImage from '@/assets/img/jeune.png'
 
 export const useAccueilStore = defineStore('accueil', {
   state: () => ({
@@ -11,7 +12,7 @@ export const useAccueilStore = defineStore('accueil', {
     contactHref: '#contact',
     videoText: 'Voir la vidéo',
     videoUrl: 'https://www.youtube.com/embed/Y7f98aduVJ8',
-    image: '/src/assets/img/jeune.png',
+    image: jeuneImage,
     message: `Nous mettons en œuvre une solution sur mesure
       pour renforcer votre efficacité et piloter votre activité en temps réel.`,
 
