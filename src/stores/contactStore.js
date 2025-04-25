@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import logo from '@/assets/img/logo2.png'
 
 export const useContactStore = defineStore('contact', {
   state: () => ({

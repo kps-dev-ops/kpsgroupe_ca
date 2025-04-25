@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
+import logo from '@/assets/img/logo2.png'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('token') || null,
-    logoUrl: '/src/assets/img/logo2.png',
+    logoUrl: logo,
   }),
   actions: {
     setToken(token) {
