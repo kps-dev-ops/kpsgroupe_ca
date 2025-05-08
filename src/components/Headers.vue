@@ -43,6 +43,7 @@
 </template>
 
 <script setup>
+
 import { ref, onMounted, watch } from 'vue'
 import { useHeaderStore } from '../stores/headerStore'
 
@@ -50,16 +51,34 @@ const store = useHeaderStore()
 
 const activeSection = ref(window.location.pathname + window.location.hash)
 
+let sections = [] // IMPORTANT : sections vide pour le moment
+
+const updateActiveOnScroll = () => {
+  let scrollPosition = window.scrollY + 150; // 150 pour tenir compte du header
+
+  for (let i = sections.length - 1; i >= 0; i--) {
+    const section = sections[i];
+    if (section && section.offsetTop <= scrollPosition) {
+      activeSection.value = window.location.pathname + '#' + section.id;
+      return;
+    }
+  }
+}
 
 onMounted(() => {
+  // On récupère les sections APRÈS que le DOM soit prêt
+  sections = store.menu
+    .map(item => document.querySelector(item.href.replace('/#', '#')))
+    .filter(Boolean); // on enlève les null au cas où
+
   const updateActive = () => {
     activeSection.value = window.location.pathname + window.location.hash
   }
 
   updateActive()
   window.addEventListener('hashchange', updateActive)
+  window.addEventListener('scroll', updateActiveOnScroll)
 })
-
 
 watch(() => store.isMenuOpen, (isOpen) => {
   if (isOpen) {
@@ -68,11 +87,44 @@ watch(() => store.isMenuOpen, (isOpen) => {
     document.body.classList.remove('mobile-nav-active')
   }
 })
+
+
+// import { ref, onMounted, watch } from 'vue'
+// import { useHeaderStore } from '../stores/headerStore'
+
+// const store = useHeaderStore()
+
+// const activeSection = ref(window.location.pathname + window.location.hash)
+
+
+
+// onMounted(() => {
+//   const updateActive = () => {
+//     activeSection.value = window.location.pathname + window.location.hash
+//   }
+
+//   updateActive()
+//   window.addEventListener('hashchange', updateActive)
+// })
+
+
+// watch(() => store.isMenuOpen, (isOpen) => {
+//   if (isOpen) {
+//     document.body.classList.add('mobile-nav-active')
+//   } else {
+//     document.body.classList.remove('mobile-nav-active')
+//   }
+// })
 </script>
 
 <style scoped>
 html {
   scroll-behavior: smooth;
+}
+
+img {
+  width: 99px;
+  height: 99px;
 }
 
 a {

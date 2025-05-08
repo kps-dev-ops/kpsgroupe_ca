@@ -75,6 +75,24 @@ import { useRouter } from 'vue-router'
 import { useBlogStore } from '../stores/blog'
 import Footer from '../components/Footer.vue'
 import Headers from '../components/Headers.vue'
+import { useHead } from '@vueuse/head'
+ 
+useHead({
+  title: 'Blog – Articles tech & cybersécurité | KPS',
+  meta: [
+    {
+      name: 'description',
+      content: 'Explorez nos articles sur le développement web, la cybersécurité, Node.js, Vue.js et les bonnes pratiques tech.'
+    }
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://www.kps-analytics.com/blog'
+    }
+  ]
+})
+
 
 const router = useRouter()
 const blogStore = useBlogStore()

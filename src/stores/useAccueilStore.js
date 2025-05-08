@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import jeuneImage from '@/assets/img/jeune.png'
+import jeuneImage from '@/assets/img/illustration-1.webp'
 
 export const useAccueilStore = defineStore('accueil', {
   state: () => ({
-    intro: 'Bienvenue sur :',
+    intro: 'Bienvenue sur',
     titre: 'KPS CONSULTING ANALYTICS',
     description: `Depuis plus de 8 ans, nos experts accompagnent des
     entreprises et administrations dans la réalisation de leurs

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import image1 from '@/assets/img/features-illustration-1.webp'
-import image2 from '@/assets/img/features-illustration-2.webp'
-import image3 from '@/assets/img/features-illustration-3.webp'
+import image2 from '@/assets/img/data.png'
+import image3 from '@/assets/img/securite.jpg'
 
 export const useTechnologieStore = defineStore('Technologies', {
   state: () => ({
@@ -13,11 +13,12 @@ export const useTechnologieStore = defineStore('Technologies', {
         id: 'features-tab-1',
         title: 'Gestion de la Performance',
         heading: 'Optimisation et Alignement Stratégique',
-        description: `Notre expertise des solutions EPM...`,
+        description: `Notre expertise des solutions EPM nous permet de renforcer la performance globale de 
+votre entreprise en alliant technologie et vision métier.`,
         points: [
-          'Tableaux de bord sur-mesure.',
-          'Optimisation des processus de gestion.',
-          'Vision claire pour meilleure prise de décision.'
+          'Tableaux de bord sur-mesure, conçus avec des outils comme Anaplan, Board, Pigment ou Tagetik.',
+          'Optimisation des processus de gestion : planification budgétaire, prévisions, modélisation.',
+          'Vision claire pour une meilleure prise de décision, grâce à des données fiables et centralisées.'
         ],
         image: image1
       },
@@ -25,11 +26,11 @@ export const useTechnologieStore = defineStore('Technologies', {
         id: 'features-tab-2',
         title: 'Big Data & Visualisation',
         heading: 'Exploitation des Données Massives',
-        description: `Grâce à notre expertise en Stambia, Semarchy...`,
+        description: `Notre expertise en traitement et valorisation de données vous permet de transformer la complexité en clarté.`,
         points: [
-          'Collecte et structuration des données.',
-          'Analyse avec Power BI et Tableau.',
-          'Dashboards interactifs et performants.'
+          'Collecte et structuration des données à l’aide d’outils puissants comme Stambia et Semarchy.',
+          'Analyse poussée et visualisation intuitive via Power BI et Tableau.',
+          'Dashboards interactifs et performants, pour une lecture rapide et une prise de décision éclairée.'
         ],
         image: image2
       },

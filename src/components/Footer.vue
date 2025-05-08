@@ -12,6 +12,9 @@
     <a v-for="(link, index) in store.socialLinks" :key="index" :href="link.href" target="_blank">
       <i :class="link.icon" class="fs-5"></i>
     </a>
+    <a v-for="(link, index) in store.socialFacebook" :key="index" :href="link.href" target="_blank">
+      <i :class="link.icon" class="fs-5"></i>
+    </a>
   </div>
 </div>
 

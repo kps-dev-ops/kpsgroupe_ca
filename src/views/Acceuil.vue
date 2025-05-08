@@ -109,14 +109,16 @@ onMounted(() => {
 .hero {
   position: relative;
   background: var(--color-light-blue);
-  padding: 0px 0 80px;
+  /* padding: 0px 0 80px; */
   margin-bottom: 0;
 }
 
 .hero-title {
-  font-size: 2.8rem;
-  font-weight: bold;
+
+  /* font-weight: gra; */
+  font-size: 2.3rem !important;
   color: var(--color-teal);
+  white-space: nowrap;
 }
 
 .hero-description {

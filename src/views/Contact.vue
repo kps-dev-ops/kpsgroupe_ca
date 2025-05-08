@@ -18,7 +18,21 @@
               <div class="content">
                 <h4>{{ info.title }}</h4>
                 <p v-if="Array.isArray(info.value)">
-                  <span v-for="(item, i) in info.value" :key="i">{{ item }}<br /></span>
+                  <span v-for="(item, i) in info.value" :key="i">
+                      <template v-if="i === 0">
+                        <a
+                          :href="`https://wa.me/${item.replace(/[^0-9]/g, '')}`"
+                          target="_blank"
+                          style="text-decoration: none; color: inherit"
+                        >
+                          {{ item }}
+                        </a>
+                      </template>
+                      <template v-else>
+                        {{ item }}
+                      </template>
+                      <br />
+                    </span>
                 </p>
                 <p v-else>
                   <a v-if="info.link" :href="info.link"  style="text-decoration: none;"target="_blank">{{ info.value }}</a>
