@@ -27,6 +27,17 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 import { account } from '../lib/appwrite.js'
 import { useBlogStore } from '../stores/blog'
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: 'Connexion | KPS',
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://www.kps-analytics.com/login'
+    }
+  ]
+})
 
   const email = ref('')
   const password = ref('')

@@ -41,6 +41,19 @@ import { ref, onMounted } from 'vue'
 import { useBlogStore } from '../stores/blog'
 import Headers from '../components/Headers.vue'
 import Footer from '../components/Footer.vue'
+import { useHead } from '@vueuse/head'
+
+const slug = route.params.slug
+
+useHead({
+  title: `Article - ${slug}`,
+  link: [
+    {
+      rel: 'canonical',
+      href: `https://www.kps-analytics.com/blog/${slug}`
+    }
+  ]
+})
 
 const router = useRouter()
 

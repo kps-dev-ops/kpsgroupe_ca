@@ -75,6 +75,17 @@ import { useRouter } from 'vue-router'
 import { useBlogStore } from '../stores/blog'
 import Footer from '../components/Footer.vue'
 import Headers from '../components/Headers.vue'
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: 'All blog | KPS',
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://www.kps-analytics.com/blog'
+    }
+  ]
+})
 
 const router = useRouter()
 const blogStore = useBlogStore()

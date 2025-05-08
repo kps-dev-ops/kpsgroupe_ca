@@ -3,13 +3,24 @@
       <div class="animation" ref="lottieContainer"></div>
       <h1>404 - Not Found</h1>
       <p>On dirait que cette page s’est envolée !</p>
-      <router-link to="/" class="btn-home">Retour à l'accueil</router-link>
+      <router-link to="/" class="btn-home" aria-label="Retour à la page d'accueil">Retour à l'accueil</router-link>
     </div>
   </template>
   
   <script setup>
   import { onMounted, ref } from 'vue'
   import lottie from 'lottie-web/build/player/lottie_light.min.js'
+  import { useHead } from '@vueuse/head'
+
+  useHead({
+    title: '404 - Page non trouvée | KPS Analytics',
+    meta: [
+      {
+        name: 'description',
+        content: "Cette page n'existe pas ou a été déplacée. Revenez à l'accueil."
+      }
+    ]
+  })
   
   const lottieContainer = ref(null)
   
@@ -23,7 +34,7 @@
     })
   })
   </script>
-  
+
   <style scoped>
   .notfound-container {
     display: flex;

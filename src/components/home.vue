@@ -23,5 +23,17 @@
   import Expertise from '../views/Expertise.vue';
   import Contact from '../views/Contact.vue';
   import blog from '../views/blog.vue';
+  import { useHead } from '@vueuse/head'
+
+useHead({
+  title: 'Accueil | KPS',
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://www.kps-analytics.com/'
+    }
+  ]
+})
+
   </script>
   

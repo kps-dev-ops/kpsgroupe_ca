@@ -14,6 +14,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@vueup/vue-quill": "^1.2.0",
+    "@vueuse/head": "^2.0.0",
     "aos": "^2.3.4",
     "appwrite": "^14.0.1",
     "blueimp-md5": "^2.19.0",

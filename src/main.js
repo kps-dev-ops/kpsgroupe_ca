@@ -36,11 +36,15 @@ import {
   faMagnifyingGlass,
   faScroll
 } from '@fortawesome/free-solid-svg-icons'
+import { createHead } from '@vueuse/head'
 
 library.add(faUsers, faFileAlt, faClock, faPen, faTrash, faEye, faMagnifyingGlass, faScroll)
 
 const app = createApp(App)
 const pinia = createPinia()
+const head = createHead()
+
+app.use(head)
 
 AOS.init()
 

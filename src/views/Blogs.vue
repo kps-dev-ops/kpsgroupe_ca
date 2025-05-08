@@ -43,6 +43,17 @@ import Dashboard from './Dashboard.vue'
 import Post from './Post.vue'
 import { useBlogStore } from '../stores/blog'
 import Headers from '../components/Headers.vue'
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: 'Dashborad | KPS',
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://www.kps-analytics.com/dashboard'
+    }
+  ]
+})
 
 const router = useRouter()
 const adminStore = Admminstore()
