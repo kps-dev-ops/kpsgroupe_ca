@@ -46,7 +46,13 @@ import Headers from '../components/Headers.vue'
 import { useHead } from '@vueuse/head'
 
 useHead({
-  title: 'Dashborad | KPS',
+  title: 'Dashboard | KPS',
+  meta: [
+    {
+      name: 'robots',
+      content: 'noindex, nofollow'
+    }
+  ],
   link: [
     {
       rel: 'canonical',
@@ -54,6 +60,7 @@ useHead({
     }
   ]
 })
+
 
 const router = useRouter()
 const adminStore = Admminstore()

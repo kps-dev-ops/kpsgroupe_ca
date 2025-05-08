@@ -20,7 +20,7 @@ export const useFooterStore = defineStore('footer', {
     contact: {
       adresse: '25 Rue de Ponthieu, 75008 Paris',
       tel: '+33 6 51 953 090 / +33 6 61 600 900 / +33 6 52 521 414',
-      email: 'contact@kpsgroupe.com'
+      email: 'contact@kps-analytics.com'
     }
   })
 })

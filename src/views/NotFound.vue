@@ -13,14 +13,25 @@
   import { useHead } from '@vueuse/head'
 
   useHead({
-    title: '404 - Page non trouvée | KPS Analytics',
-    meta: [
-      {
-        name: 'description',
-        content: "Cette page n'existe pas ou a été déplacée. Revenez à l'accueil."
-      }
-    ]
-  })
+  title: '404 - Page non trouvée | KPS Analytics',
+  meta: [
+    {
+      name: 'description',
+      content: "Oups ! Cette page n'existe pas ou a été déplacée. Retournez à l'accueil de KPS Analytics pour retrouver nos articles, services ou contact."
+    },
+    {
+      name: 'robots',
+      content: 'noindex, follow'
+    }
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://www.kps-analytics.com/404'
+    }
+  ]
+})
+
   
   const lottieContainer = ref(null)
   

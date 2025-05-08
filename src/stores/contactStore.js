@@ -14,14 +14,14 @@ export const useContactStore = defineStore('contact', {
       },
       {
         title: 'Numéros de téléphone',
-        value: ['+33 6 52 521 414', '+33 6 61 600 900', '+33 6 51 953 090'],
+        value: ['+33 6 51 953 090', '+33 6 61 600 900', '+33 6 52 521 414'],
         icon: 'bi bi-telephone',
         delay: 400
       },
       {
         title: 'Email',
-        value: 'contact@kpsgroupe.com',
-        link: 'mailto:contact@kpsgroupe.com',
+        value: 'contact@kps-analytics.com',
+        link: 'mailto:contact@kps-analytics.com',
         icon: 'bi bi-envelope',
         delay: 500
       },

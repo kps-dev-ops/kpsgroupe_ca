@@ -34,29 +34,15 @@
 </div>
 <Footer/>
 </template>
-
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useBlogStore } from '../stores/blog'
 import Headers from '../components/Headers.vue'
 import Footer from '../components/Footer.vue'
 import { useHead } from '@vueuse/head'
 
-const slug = route.params.slug
-
-useHead({
-  title: `Article - ${slug}`,
-  link: [
-    {
-      rel: 'canonical',
-      href: `https://www.kps-analytics.com/blog/${slug}`
-    }
-  ]
-})
-
 const router = useRouter()
-
 const route = useRoute()
 const blogStore = useBlogStore()
 
@@ -68,17 +54,35 @@ const goToPost = (article) => {
   router.push({ name: 'detailblog', params: { slug: article.slug } })
 }
 
-
-
 onMounted(async () => {
   await blogStore.fetchArticleBySlug(route.params.slug)
   post.value = blogStore.currentArticle
 
-  recentPosts.value = await blogStore.fetchArticlesLast() // 👈 ajoute cette ligne
+  recentPosts.value = await blogStore.fetchArticlesLast()
   loading.value = false
 })
 
+watch(post, (p) => {
+  if (p) {
+    useHead({
+      title: `${p.title} | Blog KPS`,
+      meta: [
+        {
+          name: 'description',
+          content: p.description || p.content.slice(0, 160) + '...'
+        }
+      ],
+      link: [
+        {
+          rel: 'canonical',
+          href: `https://www.kps-analytics.com/blog/${p.slug}`
+        }
+      ]
+    })
+  }
+})
 </script>
+
 
 <style scoped>
 .blog-header {

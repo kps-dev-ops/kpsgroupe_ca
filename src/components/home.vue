@@ -24,9 +24,14 @@
   import Contact from '../views/Contact.vue';
   import blog from '../views/blog.vue';
   import { useHead } from '@vueuse/head'
-
-useHead({
-  title: 'Accueil | KPS',
+  useHead({
+  title: 'Accueil | KPS – Conseil en données & développement web',
+  meta: [
+    {
+      name: 'description',
+      content: 'KPS Analytics vous accompagne en développement web, data science, Vue.js, Node.js et cybersécurité.'
+    }
+  ],
   link: [
     {
       rel: 'canonical',
@@ -34,6 +39,7 @@ useHead({
     }
   ]
 })
+
 
   </script>
   

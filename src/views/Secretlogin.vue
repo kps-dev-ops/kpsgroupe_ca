@@ -30,14 +30,25 @@ import { useBlogStore } from '../stores/blog'
 import { useHead } from '@vueuse/head'
 
 useHead({
-  title: 'Connexion | KPS',
+  title: 'Connexion secrète | KPS',
+  meta: [
+    {
+      name: 'robots',
+      content: 'noindex, nofollow'
+    },
+    {
+      name: 'description',
+      content: 'Page de connexion réservée aux administrateurs KPS.'
+    }
+  ],
   link: [
     {
       rel: 'canonical',
-      href: 'https://www.kps-analytics.com/login'
+      href: 'https://www.kps-analytics.com/login-secret'
     }
   ]
 })
+
 
   const email = ref('')
   const password = ref('')
