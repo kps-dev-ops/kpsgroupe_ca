@@ -29,7 +29,7 @@
   meta: [
     {
       name: 'description',
-      content: 'KPS Analytics vous accompagne en développement web, data science, Vue.js, Node.js et cybersécurité.'
+      content: 'KPS Analytics vous accompagne dans tout processus de transformation digitale : web, data science, cybersécurité...'
     }
   ],
   link: [
