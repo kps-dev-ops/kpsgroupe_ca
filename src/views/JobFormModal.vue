@@ -171,6 +171,7 @@ const form = ref({
   requirements: [] as string[]
 })
 
+
 const skillInput = ref('')
 const requirementsInput = ref('')
 const responsibilitiesInput = ref('')
