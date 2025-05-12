@@ -5,14 +5,16 @@ export const Admminstore = defineStore('header', {
   state: () => ({
     logoPath: logo,
     menu: [
-      // { label: 'Dashboad', href: '#Dashboad' },
-      // { label: 'Post', href: '#Post' },
+      //  { label: 'Dashboad', href: '/Dashboad' },
+      //  { label: 'Carrrieredash', href: '/Carrrieredash' },
       // { label: 'Statistique', href: '#Statistique' },
       // { label: 'Cathegories', href: '#Cathegorie' },
       // { label: 'blog', href: '#blog' }
     ],
     contactText: 'Logout',
     tutoriels: 'Help',
+    Dashboad: 'Dashboad',
+    Carriere: 'Carriere',
     contactHref: '#Profil',
     isMenuOpen: false
   }),

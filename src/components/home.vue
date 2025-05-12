@@ -7,6 +7,7 @@
     <Technologies/>
     <Clients/>
     <blog/>
+    <carriere/>
     <Contact/>
     <Footer/>
     
@@ -23,6 +24,7 @@
   import Expertise from '../views/Expertise.vue';
   import Contact from '../views/Contact.vue';
   import blog from '../views/blog.vue';
+  import carriere from '../views/carriere.vue';
   import { useHead } from '@vueuse/head'
   useHead({
   title: 'Accueil | KPS – Conseil en données & développement web',
