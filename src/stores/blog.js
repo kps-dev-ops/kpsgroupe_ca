@@ -7,9 +7,11 @@ const DATABASE_ID = import.meta.env.VITE_DATABASE_ID
 const COLLECTION_ID = import.meta.env.VITE_COLLECTION_ID
 const BUCKET_ID = import.meta.env.VITE_BUCKET_ID
 const DEFAULT_IMAGE_URL = import.meta.env.VITE_DEFAULT_IMAGE_URL
+const VITE_POST_ID = import.meta.env.VITE_POST_ID
 
 export const useBlogStore = defineStore('blog', () => {
   const articles = ref([])
+  const jobPosts = ref([])
   const totalCount = ref(0)
   const currentArticle = ref(null)
   const loading = ref(false)
@@ -192,6 +194,126 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
+  const fetchJobBySlug = async (slug) => {
+    loading.value = true
+    try {
+      const { documents } = await databases.listDocuments(DATABASE_ID, VITE_POST_ID, [
+        Query.equal('slug', slug)
+      ])
+      currentJob.value = documents[0] || null
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur fetchJobBySlug :', err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const fetchJobs = async (page = 1, limit = 5, type = '') => {
+    loading.value = true
+    const offset = (page - 1) * limit
+  
+    try {
+      const queries = [
+        Query.equal("published", true),
+        Query.limit(limit),
+        Query.offset(offset),
+        Query.orderDesc('date') // tri par date de publication
+      ]
+  
+      if (type) {
+        queries.push(Query.equal("type", type)) // présentiel / remote / hybride
+      }
+  
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        VITE_POST_ID,
+        queries
+      )
+  
+      jobs.value = response.documents
+      totalCount.value = response.total
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur fetchJobs :', err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // const fetchFeaturedJobs = async () => {
+  //   loading.value = true
+  //   try {
+  //     const response = await databases.listDocuments(
+  //       DATABASE_ID,
+  //       JOB_COLLECTION_ID,
+  //       [
+  //         Query.equal("featured", true),
+  //         Query.orderDesc('date')
+  //       ]
+  //     )
+  //     jobs.value = response.documents
+  //     totalCount.value = response.total
+  //   } catch (err) {
+  //     error.value = err.message
+  //     console.error('Erreur fetchFeaturedJobs :', err)
+  //   } finally {
+  //     loading.value = false
+  //   }
+  // }
+
+  const fetchLastJobs = async (limit = 6) => {
+    loading.value = true
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        VITE_POST_ID,
+        [
+          Query.equal("published", true),
+          Query.limit(limit),
+          Query.orderDesc('date')
+        ]
+      )
+      return response.documents
+    } catch (err) {
+      console.error('Erreur fetchLastJobs :', err)
+      return []
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const fetchJobsList = async () => {
+    loading.value = true
+    try {
+      const result = await databases.listDocuments(
+        DATABASE_ID,
+        VITE_POST_ID,
+        [Query.orderDesc('date')]
+      )
+      jobPosts.value = result.documents
+      lastJobPost.value = result.documents.at(0)
+    } catch (err) {
+      console.error('Erreur fetchJobsList :', err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const fetchJob = async (id) => {
+    loading.value = true
+    try {
+      const doc = await databases.getDocument(DATABASE_ID, VITE_POST_ID, id)
+      currentJob.value = doc
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur fetchJob :', err)
+    } finally {
+      loading.value = false
+    }
+  }
+  
+
   const uploadImage = async (file) => {
     const allowedExtensions = ['image/jpeg', 'image/png', 'image/jpg']
     if (!allowedExtensions.includes(file.type)) {
@@ -295,6 +417,85 @@ export const useBlogStore = defineStore('blog', () => {
     }
   }
 
+  const createJobPost = async (post) => {
+    try {
+      const payload = formatJobPayload(post)
+  
+      const doc = await databases.createDocument(DATABASE_ID, VITE_POST_ID, ID.unique(), payload)
+      jobPosts.value.push(doc)
+      return doc
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur createJobPost :', err)
+    }
+  }
+  
+  const updateJobPost = async (id, post) => {
+    try {
+      const payload = formatJobPayload(post, true)
+  
+      const existingDoc = await databases.getDocument(DATABASE_ID, VITE_POST_ID, id)
+  
+      const doc = await databases.updateDocument(DATABASE_ID, VITE_POST_ID, id, {
+        ...existingDoc,
+        ...payload
+      })
+  
+      const index = jobPosts.value.findIndex((j) => j.$id === id)
+      if (index !== -1) jobPosts.value[index] = doc
+  
+      return doc
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur updateJobPost :', err)
+    }
+  }
+  
+  const patchJobPost = async (id, updates) => {
+    try {
+      const payload = typeof updates === 'object' ? updates : formatJobPayload(updates, true)
+  
+      const doc = await databases.updateDocument(DATABASE_ID, VITE_POST_ID, id, payload)
+      const index = jobPosts.value.findIndex((j) => j.$id === id)
+      if (index !== -1) jobPosts.value[index] = doc
+  
+      return doc
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur patchJobPost :', err)
+    }
+  }
+  
+  const deleteJobPost = async (id) => {
+    try {
+      await databases.deleteDocument(DATABASE_ID, VITE_POST_ID, id)
+      jobPosts.value = jobPosts.value.filter((j) => j.$id !== id)
+    } catch (err) {
+      error.value = err.message
+      console.error('Erreur deleteJobPost :', err)
+    }
+  }
+  
+  const formatJobPayload = (payload, isUpdate = false) => {
+    const now = new Date().toISOString().split('T')[0]
+  
+    return {
+      title: payload.title?.trim() || '',
+      contrat: payload.contrat || '',
+      location: payload.location?.trim() || '',
+      date: payload.date || now,
+      description: payload.description?.trim() || '',
+      fullDescription: payload.fullDescription?.trim() || '',
+      skills: payload.skills || [],
+      responsibilities: payload.responsibilities || [],
+      requirements: payload.requirements || [],
+      type: payload.type || 'présentiel',
+      updated_at: new Date().toISOString(),
+      created_at: isUpdate ? payload.created_at : new Date().toISOString(),
+    }
+  }
+  
+
   return {
     user,
     articles,
@@ -305,6 +506,7 @@ export const useBlogStore = defineStore('blog', () => {
     authors,
     totalCount,
     lastPost,
+    jobPosts,
     login,
     logout,
     checkAuth,
@@ -319,6 +521,15 @@ export const useBlogStore = defineStore('blog', () => {
     fetchArticleBySlug,
     fetchArticlesLast,
     deleteArticle,
-    incrementViews
+    incrementViews,
+    createJobPost,
+    updateJobPost,
+    patchJobPost,
+    fetchJobs,
+    // fetchFeaturedJobs,
+    fetchLastJobs,
+    fetchJobsList,
+    fetchJob,
+    deleteJobPost
   }
 })
