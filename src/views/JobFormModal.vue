@@ -51,6 +51,11 @@
             <label>Description complète</label>
             <textarea v-model="form.fullDescription" maxlength="2000" placeholder="Décrivez en détail le poste, les missions et les responsabilités" />
           </div>
+          <div class="form-group">
+            <label>Slug (généré automatiquement)</label>
+            <input v-model="form.slug" readonly />
+          </div>
+
 <!-- 
           <div class="form-group">
             <label>Compétences requises</label>
@@ -140,6 +145,7 @@ const form = ref({
   location: '',
   date: '',
   description: '',
+  slug: '',
   fullDescription: '',
   skills: [] as string[],
   responsibilities: [] as string[],
@@ -163,6 +169,16 @@ watch(() => props.jobToEdit, (job) => {
     responsibilitiesInput.value = job.responsibilities?.join(', ') || ''
   }
 }, { immediate: true })
+
+
+watch(() => form.value.title, (newTitle) => {
+  form.value.slug = newTitle
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9 -]/g, '')     
+    .replace(/\s+/g, '-')   
+    .replace(/-+/g, '-')
+})
 
 const addSkill = () => {
   const skill = skillInput.value.trim()
