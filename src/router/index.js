@@ -8,6 +8,8 @@ import Blogdetail from '../views/blogdetail.vue'
 import Allblog from '../views/Allblog.vue'
 import detailblog from '../views/detailblog.vue'
 import Documentation from '../components/Documentation.vue'
+import DashboardE from '../views/DashboardE.vue'
+import Carrrieredash from '../views/Carrrieredash.vue'
 
 const requireAuth = async (to, from, next) => {
   const blog = useBlogStore()
@@ -32,7 +34,11 @@ const routes = [
     name: 'NotFound',
     component: () => import('../views/NotFound.vue'),
   },
-  { path: '/kps-doc', name: 'Documentation', component: Documentation, meta: { hidden: true }, beforeEnter: requireAuth }
+  { path: '/kps-doc', name: 'Documentation', component: Documentation, meta: { hidden: true }, beforeEnter: requireAuth },
+  { path: '/Dashboad', name: 'DashboardE', component: DashboardE, meta: { hidden: true }, beforeEnter: requireAuth },
+  { path: '/Carrrieredash', name: ' Carrrieredash', component:  Carrrieredash, meta: { hidden: true }, beforeEnter: requireAuth }
+
+
 ]
 
 const router = createRouter({

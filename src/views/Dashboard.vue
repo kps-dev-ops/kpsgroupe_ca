@@ -6,6 +6,7 @@
       <div class="dashboard-header" data-aos="fade-down">
         <h1 class="title">Tableau de bord</h1>
         <p class="subtitle">Suivez vos indicateurs en un coup d'œil</p>
+        <button class="btn" @click="showJobForm = true">➕ Poster une offre</button>
       </div>
 
 
@@ -165,6 +166,7 @@
           </form>
   </div>
 </div>
+<JobFormModal :show="showJobForm" @close="showJobForm = false" />
 
   <Footer />
 </template>
@@ -176,6 +178,8 @@ import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useBlogStore } from '../stores/blog'
 import { useHeaderStore } from '../stores/headerStore'
+import JobFormModal from './JobFormModal.vue'
+
 const headerStore = useHeaderStore()
 const blog = useBlogStore()
 import Footer from '../components/Footer.vue'
@@ -185,7 +189,7 @@ const router = useRouter()
 const currentPage = ref(1)
 const itemsPerPage = ref(5)
 
-
+const showJobForm = ref(false)
 
 const paginatedPosts = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value

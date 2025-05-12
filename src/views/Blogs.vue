@@ -1,21 +1,41 @@
 <template>
-  <!-- <Headers/> -->
+
    <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="header-container container-fluid d-flex align-items-center justify-between px-4">
 
    
       <a :href="adminStore.menu[0]?.href" class="logo d-flex align-items-center">
         <img :src="adminStore.logoPath" alt="Logo" class="logo-img" />
-      </a>
+      </a>  
+
+      <nav class="nav-links">
+  <a
+    v-for="item in adminStore.menu"
+    :key="item.href"
+    :href="item.href"
+    class="nav-link"
+    :class="{ active: activeSection === item.href }"
+    @click="handleMenuClick(item.href)"
+  >
+    {{ item.label }}
+  </a>
+</nav>
+
 
       <!-- <button class="btn-getstarted" @click="handleLogout" style="border: none;">
         {{ adminStore.contactText }}
       </button>
       <button class="btn-tutoriel" @click="goToTutoriel" style="border: none;">
-        {{ adminStore.tutoriels }}
+        {{ adminStore.tutoriels }}  
       </button> -->
 
       <div class="btn-group">
+        <button class="btn-carriere" @click="goToCarriere" style="border: none;">
+        {{ adminStore.Carriere }}
+      </button>
+      <button class="btn-dashboad" @click="goToDash" style="border: none;">
+        {{ adminStore.Dashboad }}
+      </button>
         <button class="btn-tutoriel" @click="goToTutoriel" style="border: none;">
           {{ adminStore.tutoriels }}
         </button>
@@ -29,7 +49,7 @@
     </div>
   </header>
   <Dashboard/>
-  <Post/>
+
 </template>
 
 <script setup>
@@ -39,7 +59,7 @@ import { Admminstore } from '../stores/Adminstrore'
 import { useAuthStore } from '../stores/authStore'
 import { Client, Account } from 'appwrite'
 import md5 from 'blueimp-md5'
-import Dashboard from './Dashboard.vue'
+import Dashboard from './DashboardE.vue'
 import Post from './Post.vue'
 import { useBlogStore } from '../stores/blog'
 import Headers from '../components/Headers.vue'
@@ -83,6 +103,17 @@ const goToTutoriel = () => {
 }
 
 
+const goToDash = () => {
+  router.push('/Dashboad')
+}
+
+
+
+const goToCarriere = () => {
+  router.push('/Carrrieredash')
+}
+
+
 onMounted(async () => {
  
 })
@@ -98,6 +129,20 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-link.active {
+  color: #45A79E;
+}
 
 .btn-group {
   display: flex;
@@ -111,8 +156,8 @@ const handleLogout = async () => {
   color: #45A79E;
   font-weight: 500;
   padding: 0.5rem 1rem;
-  border: 2px solid #45A79E;
-  border-radius: 50px;
+  /* border: 2px solid #45A79E; */
+  border-radius: 10px;
   margin-left: 0.5rem;
   transition: all 0.3s ease;
 }
@@ -154,6 +199,40 @@ const handleLogout = async () => {
   border-radius: 10px;
   text-decoration: none;
   transition: background 0.3s ease;
+}
+
+
+.btn-carriere {
+  background-color: white;
+  color: #45A79E;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+
+.btn-dashboad {
+  
+  /* color: white; */
+  background: white;
+  color: #45A79E;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.btn-carriere:hover {
+  background-color: #45A79E;
+  color: white;
+}
+
+.btn-dashboad:hover {
+  background-color: #45A79E;
+  color: white;
 }
 .btn-getstarted:hover {
   background-color: #866840;
