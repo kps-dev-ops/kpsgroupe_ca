@@ -25,9 +25,9 @@
               <label>Mode de travail</label>
               <select v-model="form.type" required>
                 <option disabled value="">Sélectionnez un mode de travail</option>
-                <option>remote</option>
-                <option>hybride</option>
-                <option>présentiel</option>
+                <option>Remote</option>
+                <option>Hybride</option>
+                <option>Présentiel</option>
               </select>
             </div>
           </div>
@@ -127,15 +127,34 @@
 
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, watch } from 'vue'
-import { Client, Databases, ID } from 'appwrite'
-
+// import { Client, Databases, ID } from 'appwrite'
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+import { useBlogStore } from '../stores/blog'
 const props = defineProps<{ show: boolean, jobToEdit?: any }>()
 const emit = defineEmits(['close', 'refresh'])
+const blog = useBlogStore();
+const { jobPosts, lastPost, posts } = storeToRefs(blog)
+const router = useRouter()
 
-const client = new Client().setEndpoint('https://TON_ENDPOINT').setProject('TON_PROJECT_ID')
-const databases = new Databases(client)
-const databaseId = 'TON_DATABASE_ID'
-const collectionId = 'TON_COLLECTION_ID'
+const currentPage = ref(1)
+const itemsPerPage = ref(5)
+
+const showJobForm = ref(false)
+
+// const paginatedPosts = computed(() => {
+//   const start = (currentPage.value - 1) * itemsPerPage.value
+//   return posts.value.slice(start, start + itemsPerPage.value)
+// })
+
+// const totalPages = computed(() => {
+//   return Math.ceil(posts.value.length / itemsPerPage.value)
+// })
+
+// const client = new Client().setEndpoint('https://TON_ENDPOINT').setProject('TON_PROJECT_ID')
+// const databases = new Databases(client)
+// const databaseId = 'TON_DATABASE_ID'
+// const collectionId = 'TON_COLLECTION_ID'
 
 const editingId = ref<string | null>(null)
 const form = ref({
@@ -195,10 +214,12 @@ const saveDraft = async () => {
   try {
     const draftData = { ...form.value, statut: 'brouillon' }
     if (editingId.value) {
-      await databases.updateDocument(databaseId, collectionId, editingId.value, draftData)
+      console.log('Mise à jour du post', draftData)
+      await blog.updateJobPost(editingId.value, draftData);
       alert('Brouillon mis à jour 📝')
     } else {
-      await databases.createDocument(databaseId, collectionId, ID.unique(), draftData)
+      console.log('Création du post', draftData)
+      await blog.createJobPost(draftData);
       alert('Brouillon enregistré 📝')
     }
     emit('refresh')
@@ -222,10 +243,10 @@ const handleSubmit = async () => {
   form.value.responsibilities = responsibilitiesInput.value.split(',').map(v => v.trim())
   try {
     if (editingId.value) {
-      await databases.updateDocument(databaseId, collectionId, editingId.value, form.value)
+      await blog.updateJobPost(editingId.value, form.value)
       alert('Offre mise à jour ✅')
     } else {
-      await databases.createDocument(databaseId, collectionId, ID.unique(), form.value)
+      await blog.createJobPost(form.value)
       alert('Offre publiée ✅')
     }
     emit('refresh')
@@ -240,7 +261,7 @@ const handleDelete = async () => {
   if (!editingId.value) return
   if (confirm('Supprimer cette offre ?')) {
     try {
-      await databases.deleteDocument(databaseId, collectionId, editingId.value)
+      await blog.deleteJobPost(editingId.value)
       alert('Offre supprimée ❌')
       emit('refresh')
       close()

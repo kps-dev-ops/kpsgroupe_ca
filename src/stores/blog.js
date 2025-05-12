@@ -20,6 +20,7 @@ export const useBlogStore = defineStore('blog', () => {
   const posts = ref([])
   const authors = ref([])
   const lastPost = ref(null)
+  const lastJobPost = ref(null)
 
   const login = async (email, password) => {
     try {
@@ -212,7 +213,6 @@ export const useBlogStore = defineStore('blog', () => {
   const fetchJobs = async (page = 1, limit = 5, type = '') => {
     loading.value = true
     const offset = (page - 1) * limit
-  
     try {
       const queries = [
         Query.equal("published", true),
@@ -221,16 +221,18 @@ export const useBlogStore = defineStore('blog', () => {
         Query.orderDesc('date') // tri par date de publication
       ]
   
-      if (type) {
-        queries.push(Query.equal("type", type)) // présentiel / remote / hybride
-      }
+      // if (type) {
+      //   queries.push(Query.equal("type", type)) // présentiel / remote / hybride
+      // }
   
       const response = await databases.listDocuments(
         DATABASE_ID,
         VITE_POST_ID,
         queries
       )
-  
+    
+      console.log(response)
+
       jobs.value = response.documents
       totalCount.value = response.total
     } catch (err) {
@@ -291,8 +293,11 @@ export const useBlogStore = defineStore('blog', () => {
         VITE_POST_ID,
         [Query.orderDesc('date')]
       )
+      console.log(result)
       jobPosts.value = result.documents
+
       lastJobPost.value = result.documents.at(0)
+      console.log(lastJobPost.value)
     } catch (err) {
       console.error('Erreur fetchJobsList :', err)
     } finally {
@@ -419,6 +424,7 @@ export const useBlogStore = defineStore('blog', () => {
 
   const createJobPost = async (post) => {
     try {
+      console.log('Création du post', post)
       const payload = formatJobPayload(post)
   
       const doc = await databases.createDocument(DATABASE_ID, VITE_POST_ID, ID.unique(), payload)
@@ -485,11 +491,14 @@ export const useBlogStore = defineStore('blog', () => {
       location: payload.location?.trim() || '',
       date: payload.date || now,
       description: payload.description?.trim() || '',
+      slug: payload.slug?.trim() || '',
       fullDescription: payload.fullDescription?.trim() || '',
       skills: payload.skills || [],
       responsibilities: payload.responsibilities || [],
       requirements: payload.requirements || [],
+      published: payload.published ?? true,
       type: payload.type || 'présentiel',
+      date: payload.date || now,
       updated_at: new Date().toISOString(),
       created_at: isUpdate ? payload.created_at : new Date().toISOString(),
     }

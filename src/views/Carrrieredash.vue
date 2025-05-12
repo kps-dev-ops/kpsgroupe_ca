@@ -12,7 +12,7 @@
       <div class="graph-summary">
         <div class="circle-box" data-aos="zoom-in-right">
           <div class="circle-content">
-            <span class="circle-number">{{ posts.length }}</span>
+            <span class="circle-number">{{ jobPosts.length }}</span>
             <span class="circle-label">Offres publiées</span>
           </div>
         </div>
@@ -20,8 +20,8 @@
         <div class="summary-box" data-aos="zoom-in-left">
           <h3><i class="fas fa-chart-pie"></i> Résumé rapide</h3>
           <ul>
-            <li><i class="fas fa-file-alt"></i> <strong>Total offres :</strong> {{ posts.length }}</li>
-            <li><i class="fas fa-clock"></i> <strong>Dernière offre :</strong> {{ lastPost?.title || 'Aucune' }}</li>
+            <li><i class="fas fa-file-alt"></i> <strong>Total offres :</strong> {{ jobPosts.length }}</li>
+            <li><i class="fas fa-clock"></i> <strong>Dernière offre :</strong> {{ lastJobPost?.title || 'Aucune' }}</li>
           </ul>
         </div>
       </div>
@@ -101,7 +101,7 @@ import Footer from '../components/Footer.vue'
 
 const headerStore = useHeaderStore()
 const blog = useBlogStore()
-const { posts, authors, lastPost } = storeToRefs(blog)
+const {lastJobPost, jobPosts} = storeToRefs(blog)
 const router = useRouter()
 
 const currentPage = ref(1)
@@ -111,16 +111,16 @@ const jobToEdit = ref(null)
 
 const paginatedPosts = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value
-  return posts.value.slice(start, start + itemsPerPage.value)
+  return jobPosts.value.slice(start, start + itemsPerPage.value)
 })
 
 const totalPages = computed(() => {
-  return Math.ceil(posts.value.length / itemsPerPage.value)
+  return Math.ceil(jobPosts.value.length / itemsPerPage.value)
 })
 
 const deletePost = async (id) => {
   if (confirm('Supprimer ce post ?')) {
-    await blog.deleteArticle(id)
+    await blog.deleteJobPost(id)
   }
 }
 
@@ -130,6 +130,7 @@ const previewPost = async (post) => {
 }
 
 const editPost = (post) => {
+  console.log(post)
   jobToEdit.value = {
     $id: post.$id,
     title: post.title,
@@ -138,17 +139,19 @@ const editPost = (post) => {
     location: post.location,
     date: post.date,
     description: post.description || '',
+    slug: post.slug,
     fullDescription: post.fullDescription || '',
     skills: post.skills || [],
     responsibilities: post.responsibilities || [],
     requirements: post.requirements || [],
-    isPublished: post.isPublished !== false
+    Published: post.Published !== false
   }
   showJobForm.value = true
 }
 
 const refreshData = async () => {
-  await blog.fetchArticlesList()
+  await blog.fetchJobsList()
+  // console.log(jobPosts.value)
 }
 
 onMounted(() => {

@@ -3,7 +3,7 @@
       <div class="container">
         <h2 class="section-title">Nos offres d'emploi</h2>
         <div class="job-list">
-          <div v-for="(job, index) in jobs" :key="index" class="job-card">
+          <div v-for="(job, index) in publishedJobs" :key="index" class="job-card">
             <div class="job-content">
               <div class="job-header">
                 <h3 class="job-title">{{ job.title }}</h3>
@@ -84,27 +84,28 @@ import { useBlogStore } from '@/stores/blog'
 import JobApplicationForm from './JobApplicationForm.vue'
 
 const blog = useBlogStore()
-const { posts } = storeToRefs(blog)
+const { jobPosts, loading } = storeToRefs(blog)
 
 const showForm = ref(false)
 const selectedPosition = ref('')
 
-const showJobDetails = (job) => {
-  selectedPosition.value = job.title
+const showJobDetails = (jobPost) => {
+  selectedPosition.value = jobPost.title
   showForm.value = true
 }
 
 const publishedJobs = computed(() => {
-  return posts.value.filter(post => post.isPublished)
+  return jobPosts.value.filter(jobPost => jobPost.published === true)
 })
 
 onMounted(async () => {
-  await blog.fetchArticlesList()
+  await blog.fetchJobsList()
+  console.log(jobPosts.value)
+  loading.value = false
 })
+
 </script>
 
-  
-  
   <style scoped>
   .modal-overlay {
   position: fixed;
