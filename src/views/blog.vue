@@ -10,12 +10,12 @@
       @click="viewMore(post)"
     >
     <div class="blog-image">
-  <img :src="post.image_url" alt="cover" />
-  <span class="badge top-right">{{ post.subtitle|| 'ACTUALITÉ' }}</span>
-  <div class="blog-overlay">
-    <h3>{{ post.title }}</h3>
-  </div>
-</div>
+        <img :src="post.image_url" alt="cover" />
+        <span class="badge top-right">{{ post.subtitle|| 'ACTUALITÉ' }}</span>
+      <div class="blog-overlay">
+        <h3>{{ post.title }}</h3>
+      </div>
+    </div>
 
     </div>
   </div>

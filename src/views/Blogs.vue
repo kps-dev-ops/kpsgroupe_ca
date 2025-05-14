@@ -3,12 +3,12 @@
    <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="header-container container-fluid d-flex align-items-center justify-between px-4">
 
-   
+<!--    
       <a :href="adminStore.menu[0]?.href" class="logo d-flex align-items-center">
         <img :src="adminStore.logoPath" alt="Logo" class="logo-img" />
-      </a>  
+      </a>   -->
 
-      <nav class="nav-links">
+      <!-- <nav class="nav-links">
   <a
     v-for="item in adminStore.menu"
     :key="item.href"
@@ -19,16 +19,27 @@
   >
     {{ item.label }}
   </a>
+</nav> -->
+
+<a href="/">
+  <img :src="adminStore.logoPath" alt="Logo" class="logo" />
+</a>
+<nav class="nav-links flex items-center gap-6">
+  <a
+    v-for="item in adminStore.menu"
+    :key="item.label"
+    :href="item.href || '#'"
+    class="nav-link"
+    :class="{ active: activeSection === item.href }"
+    @click="() => handleMenuClick(item)"
+  >
+    {{ item.label }}
+  </a>
 </nav>
 
 
-      <!-- <button class="btn-getstarted" @click="handleLogout" style="border: none;">
-        {{ adminStore.contactText }}
-      </button>
-      <button class="btn-tutoriel" @click="goToTutoriel" style="border: none;">
-        {{ adminStore.tutoriels }}  
-      </button> -->
 
+<!-- 
       <div class="btn-group">
         <button class="btn-carriere" @click="goToCarriere" style="border: none;">
         {{ adminStore.Carriere }}
@@ -42,13 +53,13 @@
       <button class="btn-getstarted" @click="handleLogout" style="border: none;">
         {{ adminStore.contactText }}
       </button>
-     </div>
+     </div> -->
 
 
 
     </div>
   </header>
-  <Dashboard/>
+  <!-- <Dashboard/> -->
 
 </template>
 
@@ -93,10 +104,10 @@ const activeSection = ref(adminStore.menu[0]?.href)
 
 const user = ref({ name: '', email: '', avatar: '' })
 
-const handleMenuClick = (href) => {
-  activeSection.value = href
-  adminStore.toggleMenu()
-}
+// const handleMenuClick = (href) => {
+//   activeSection.value = href
+//   adminStore.toggleMenu()
+// }
 
 const goToTutoriel = () => {
   router.push('/kps-doc')
@@ -126,9 +137,34 @@ const handleLogout = async () => {
     console.error('Erreur de déconnexion :', err)
   }
 }
+
+const handleMenuClick = (item) => {
+  if (item.action === 'logout') {
+    handleLogout()
+    return
+  }
+
+  if (item.href) {
+    activeSection.value = item.href
+    adminStore.toggleMenu()
+    router.push(item.href)
+  }
+}
+
 </script>
 
 <style scoped>
+.logo-img{
+  height: 0px;
+  width: 0px;
+}
+.logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
 .nav-links {
   display: flex;
   gap: 1rem;

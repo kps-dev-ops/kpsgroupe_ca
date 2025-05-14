@@ -1,4 +1,5 @@
 <template>
+  <!-- <Blogs/> -->
   <section id="Dashboard" class="dashboard-wrapper">
     <div class="dashboard-container">
       <!-- En-tête -->
@@ -30,8 +31,8 @@
       <div class="table-box" data-aos="fade-up">
         <div class="table-header">
           <h3>Aperçu des offres</h3>
-          <button class="toggle-btn"  @click="showJobForm = true">
-            {{ showForm ? 'Fermer' : '➕ Nouvelle offre' }}
+          <button class="toggle-btn"   @click="createNewPost">
+            {{ showJobForm ? 'Fermer' : '➕ Nouvelle offre' }}
           </button>
         </div>
 
@@ -54,8 +55,8 @@
               <td>{{ post.contrat }}</td>
               <td>
               
-                <span class="status" :class="!post.isPublished ? 'draft' : 'success'">
-                  {{ !post.isPublished ? 'Brouillon' : 'Publié' }}
+                <span class="status" :class="!post.published ? 'draft' : 'success'">
+                  {{ !post.published ? 'Brouillon' : 'Publié' }}
                 </span>
               </td>
               <td>
@@ -84,7 +85,9 @@
 
   <!-- Formulaire modal intégré depuis code 2 -->
   <!-- <JobFormModal :show="showJobForm" @close="showJobForm = false" /> -->
-  <JobFormModal :show="showJobForm" @close="showJobForm = false" />
+   <!-- <JobFormModal :show="showJobForm" @close="showJobForm = false" /> -->
+  <JobFormModal :show="showJobForm" :job-to-edit="jobToEdit" @close="showJobForm = false"   @refresh="refreshData"/>
+
 <p v-if="showJobForm">⚠️ MODALE ACTIVE ⚠️</p>
 
 
@@ -98,6 +101,7 @@ import { useBlogStore } from '../stores/blog'
 import { useHeaderStore } from '../stores/headerStore'
 import JobFormModal from './JobFormModal.vue'
 import Footer from '../components/Footer.vue'
+import Blogs from './Blogs.vue'
 
 const headerStore = useHeaderStore()
 const blog = useBlogStore()
@@ -113,6 +117,12 @@ const paginatedPosts = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value
   return jobPosts.value.slice(start, start + itemsPerPage.value)
 })
+
+const createNewPost = () => {
+  jobToEdit.value = null 
+  showJobForm.value = true
+}
+
 
 const totalPages = computed(() => {
   return Math.ceil(jobPosts.value.length / itemsPerPage.value)
@@ -144,7 +154,7 @@ const editPost = (post) => {
     skills: post.skills || [],
     responsibilities: post.responsibilities || [],
     requirements: post.requirements || [],
-    Published: post.Published !== false
+    published: post.published !== false
   }
   showJobForm.value = true
 }
@@ -158,250 +168,7 @@ onMounted(() => {
   refreshData()
 })
 </script>
-
-  
-  <!-- <script setup>
-  import { ref, onMounted, watchEffect, computed, watch } from 'vue'
-  import { storeToRefs } from 'pinia'
-  import { useRouter } from 'vue-router'
-  import { useBlogStore } from '../stores/blog'
-  import { useHeaderStore } from '../stores/headerStore'
-  import JobFormModal from './JobFormModal.vue'
-  
-  const headerStore = useHeaderStore()
-  const blog = useBlogStore()
-  import Footer from '../components/Footer.vue'
-  const { posts, authors, lastPost} = storeToRefs(blog)
-  const router = useRouter()
-  
-  const currentPage = ref(1)
-  const itemsPerPage = ref(5)
-  
-  const showJobForm = ref(false)
-  
-  const paginatedPosts = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage.value
-    return posts.value.slice(start, start + itemsPerPage.value)
-  })
-  
-  const totalPages = computed(() => {
-    return Math.ceil(posts.value.length / itemsPerPage.value)
-  })
-  
-  const showForm = ref(false)
-  const editingId = ref(null)
-  
-  const form = ref({
-    title: '',
-    contrat: '',
-    type: '',
-    location: '',
-    date: '',
-    description: '',
-    fullDescription: '',
-    skills: [],
-    responsibilities: [],
-    requirements: [],
-    isPublished: false
-  })
-  
-  const categoryList = [
-    'Data',
-    'Développement',
-    'Design',
-    'Marketing',
-    'Cybersécurité',
-    'Cloud',
-    'IA',
-    'DevOps'
-  ]
-  
-  const loadingFeatured = ref(null)
-  
-  
-  const toggleFeatured = async (post) => {
-    loadingFeatured.value = post.$id
-    try {
-      await blog.updateArticle2(post.$id, {
-        featured: post.featured
-      })
-    } catch (error) {
-      console.error('Erreur mise à la une :', error)
-    } finally {
-      loadingFeatured.value = null
-    }
-  }
-  
-  watch(showForm, (val) => {
-    if (val) {
-      document.body.classList.add('modal-open')
-    } else {
-      document.body.classList.remove('modal-open')
-    }
-  })
-  
-  
-  const generateSlug = () => {
-    form.value.slug = form.value.title
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/g, '')
-  }
-  
-  const loading = ref(false)
-  
-  
-  const chartData = ref({ labels: ['Posts', 'Auteurs'], datasets: [] })
-  
-  watchEffect(() => {
-    chartData.value = {
-      labels: ['Posts', 'Auteurs'],
-      datasets: [{
-        label: 'Contenu',
-        backgroundColor: ['#3B82F6', '#10B981'],
-        borderRadius: 8,
-        barThickness: 32,
-        data: [posts.value.length, authors.value.length]
-      }]
-    }
-  })
-  
-  
-  onMounted(() => {
-      blog.fetchArticlesList()
-      loading.value = false
-    })
-  
-  
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      title: { display: false }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: { stepSize: 1 }
-      }
-    }
-  }
-  
-  const deletePost = async (id) => {
-    if (confirm('Supprimer ce post ?')) {
-      await blog.deleteArticle(id)
-    }
-  }
-  
-  const previewPost = async (post) => {
-    const url = `${window.location.origin}/blog/${post.slug}`;
-    window.open(url, '_blank');
-  }
-  
-  const editPost = (post) => {
-    editingId.value = post.$id
-    form.value = {
-      $id: post.$id,
-    title: post.title,
-    contrat: post.contrat,
-    type: post.type,
-    location: post.location,
-    date: post.date,
-    description: post.description || '',
-    fullDescription: post.fullDescription || '',
-    skills: post.skills || [],
-    responsibilities: post.responsibilities || [],
-    requirements: post.requirements || [],
-    isPublished: post.isPublished !== false
-
-    }
-    showForm.value = true
-  }
-  
-  const resetForm = () => {
-    editingId.value = null
-    form.value = {
-      title: '',
-    contrat: '',
-    type: '',
-    location: '',
-    date: '',
-    description: '',
-    fullDescription: '',
-    skills: [],
-    responsibilities: [],
-    requirements: [],
-    isPublished: false
-    }
-  }
-  
-  const validateForm = () => {
-    if (!form.value.title || !form.value.content) {
-      alert('Le titre et le contenu sont obligatoires')
-      return false
-    }
-    return true
-  }
-  
-  
-  const handleSubmit = async () => {
-    if (!validateForm()) return
-  
-    loading.value = true
-  
-    const payload = {
-      ...form.value,
-      subtitle: form.value.subtitle || '',
-    }
-  
-    try {
-      if (editingId.value) {
-        console.log('Mise à jour du post', payload)
-        await blog.updateArticle(editingId.value, payload)
-      } else {
-        await blog.createArticle(payload)
-      }
-    } catch (err) {
-      console.error('Erreur de soumission du formulaire :', err)
-    } finally {
-      loading.value = false
-      showForm.value = false
-      resetForm()
-    }
-  }
-  
-  
-  const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    
-    if (!file || !file.type.startsWith('image/')) {
-      alert("Veuillez télécharger une image valide.");
-      return;
-    }
-  
-    const reader = new FileReader();
-    reader.onload = () => {
-      form.value.image_url = reader.result;
-    };
-    reader.readAsDataURL(file);
-  
-    try {
-      const imageUrl = await blog.uploadImage(file);
-      form.value.image = imageUrl;
-    } catch (err) {
-      console.error("Erreur lors de l'upload de l'image :", err);
-    }
-  };
-  
-  
-  
-  const toggleForm = () => {
-    showForm.value = !showForm.value
-    if (showForm.value && !editingId.value) resetForm()
-  }
-  
-  </script>
-   -->
+ 
   <style scoped>
   
   .ellipsis {

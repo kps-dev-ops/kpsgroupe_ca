@@ -5,16 +5,20 @@ export const Admminstore = defineStore('header', {
   state: () => ({
     logoPath: logo,
     menu: [
-      //  { label: 'Dashboad', href: '/Dashboad' },
-      //  { label: 'Carrrieredash', href: '/Carrrieredash' },
+      { label: 'Dashboard', href: '/layer/Dashboad' },
+      { label: 'Carrière', href: '/layer/Carrrieredash' },
+      { label: 'Documentation', href: '/layer/kps-doc' },
+       { label: 'Déconnexion', action: 'logout' }
+
+     
       // { label: 'Statistique', href: '#Statistique' },
       // { label: 'Cathegories', href: '#Cathegorie' },
       // { label: 'blog', href: '#blog' }
     ],
-    contactText: 'Logout',
-    tutoriels: 'Help',
-    Dashboad: 'Dashboad',
-    Carriere: 'Carriere',
+    // contactText: 'Logout',
+    // tutoriels: 'Help',
+    // Dashboad: 'Dashboad',
+    // Carriere: 'Carriere',
     contactHref: '#Profil',
     isMenuOpen: false
   }),

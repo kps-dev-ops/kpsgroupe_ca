@@ -2,7 +2,7 @@
   <div v-if="show" class="modal-overlay" @click.self="close">
     <div class="modal-content-scrollable">
       <div class="modal-content">
-        <button class="close-btn" @click="close">✖</button>
+        <button class="close-btn" @click="close">×</button>
         <form @submit.prevent="handleSubmit">
           <h2 class="form-title">{{ editingId ? "Modifier l'offre" : "Nouvelle offre d'emploi" }}</h2>
 
@@ -87,14 +87,27 @@
           </div> -->
           <div class="form-group">
   <label>Compétences requises</label>
-  <div class="skills-input-wrapper">
+  <!-- <div class="skills-input-wrapper">
     <input
       v-model="skillInput"
       @keyup.enter.prevent="addSkill"
       placeholder="Ajouter une compétence et appuyez sur Entrée"
     />
     <button class="add-skill-btn" @click.prevent="addSkill">+</button>
-  </div>
+  </div> -->
+  <div class="skills-input-wrapper">
+  <input
+    v-model="skillInput"
+    @keyup.enter.prevent="addSkill"
+    placeholder="Ajouter une compétence et appuyez sur Entrée"
+    class="skill-input"
+  />
+  <button
+    @click.prevent="addSkill"
+    class="add-skill-inside"
+  >+</button>
+</div>
+
   <div class="tag-list">
     <span v-for="(skill, i) in form.skills" :key="i" class="tag">
       {{ skill }}
@@ -114,8 +127,8 @@
           </div>
 
 <div class="form-actions">
-  <button type="submit" class="submit">📨 {{ editingId ? 'Mettre à jour' : 'Publier l\'offre' }}</button>
-  <button type="button" class="draft" @click="saveDraft">💾 Enregistrer comme brouillon</button>
+  <button type="submit" class="submit"> {{ editingId ? 'Mettre à jour' : 'Publier l\'offre' }}</button>
+  <button type="button" class="draft" @click="saveDraft">Enregistrer comme brouillon</button>
   <button v-if="editingId" type="button" class="delete" @click="handleDelete">🗑 Supprimer</button>
 </div>
 
@@ -157,6 +170,7 @@ const showJobForm = ref(false)
 // const collectionId = 'TON_COLLECTION_ID'
 
 const editingId = ref<string | null>(null)
+
 const form = ref({
   title: '',
   contrat: '',
@@ -168,7 +182,8 @@ const form = ref({
   fullDescription: '',
   skills: [] as string[],
   responsibilities: [] as string[],
-  requirements: [] as string[]
+  requirements: [] as string[],
+  published: false
 })
 
 
@@ -177,6 +192,7 @@ const requirementsInput = ref('')
 const responsibilitiesInput = ref('')
 
 watch(() => props.jobToEdit, (job) => {
+  console.log(props.jobToEdit)
   if (job) {
     editingId.value = job.$id
     form.value = {
@@ -211,6 +227,7 @@ const addSkill = () => {
 const saveDraft = async () => {
   form.value.requirements = requirementsInput.value.split(',').map(v => v.trim())
   form.value.responsibilities = responsibilitiesInput.value.split(',').map(v => v.trim())
+  form.value.published = false
 
   try {
     const draftData = { ...form.value, statut: 'brouillon' }
@@ -223,8 +240,10 @@ const saveDraft = async () => {
       await blog.createJobPost(draftData);
       alert('Brouillon enregistré 📝')
     }
+    // await blog.fetchJobsList()
     emit('refresh')
     close()
+
   } catch (err) {
     console.error(err)
     alert("Erreur lors de l'enregistrement du brouillon.")
@@ -242,6 +261,7 @@ const close = () => {
 const handleSubmit = async () => {
   form.value.requirements = requirementsInput.value.split(',').map(v => v.trim())
   form.value.responsibilities = responsibilitiesInput.value.split(',').map(v => v.trim())
+  form.value.published = true
   try {
     if (editingId.value) {
       await blog.updateJobPost(editingId.value, form.value)
@@ -250,8 +270,10 @@ const handleSubmit = async () => {
       await blog.createJobPost(form.value)
       alert('Offre publiée ✅')
     }
+    // await blog.fetchJobsList()
     emit('refresh')
     close()
+
   } catch (err) {
     console.error(err)
     alert('Erreur lors de l’envoi.')
@@ -276,9 +298,9 @@ const handleDelete = async () => {
 
 <style scoped>
 :root {
-  --primary-color: #a855f7;
+  --primary-color: #45A79E;
   --tag-bg: #f3e8ff;
-  --tag-text: #7e22ce;
+  --tag-text: #45A79E;
   --input-bg: #f9f9f9;
   --input-border: #e5e7eb;
 }
@@ -311,13 +333,14 @@ const handleDelete = async () => {
 }
 
 .close-btn {
-  position: absolute;
+  color: #45A79E !important;
+   position: absolute;
   top: 1.2rem;
   right: 1.2rem;
   background: none;
   border: none;
   font-size: 1.4rem;
-  color: #bbb;
+
   cursor: pointer;
 }
 
@@ -407,7 +430,7 @@ textarea {
 }
 
 .submit {
-  background: var(--primary-color);
+  background: #45A79E;
   color: #fff;
   border: none;
   padding: 0.75rem 1.8rem;
@@ -418,9 +441,22 @@ textarea {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 2px 6px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 2px 6px #45A79E;
 }
-
+.draft{
+  background: #45A79E;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.8rem;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 6px #45A79E;
+}
 .delete {
   background: #ef4444;
   color: white;
@@ -431,4 +467,34 @@ textarea {
   font-weight: 600;
   font-size: 1rem;
 }
+
+.skills-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.skill-input {
+  width: 100%;
+  padding-right: 40px; /* espace à droite pour le + */
+  padding-left: 10px;
+  height: 40px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.add-skill-inside {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555;
+}
+
 </style>

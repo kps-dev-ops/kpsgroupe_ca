@@ -3,7 +3,9 @@
       <div class="container">
         <h2 class="section-title">Nos offres d'emploi</h2>
         <div class="job-list">
-          <div v-for="(job, index) in publishedJobs" :key="index" class="job-card">
+          <!-- <div v-for="(job, index) in publishedJobs" :key="index" class="job-card"> -->
+            <div v-for="(job, index) in limitedJobs" :key="index" class="job-card">
+
             <div class="job-content">
               <div class="job-header">
                 <h3 class="job-title">{{ job.title }}</h3>
@@ -40,48 +42,22 @@
         </div>
       </div>
 
+      <div class="see-more-container" v-if="publishedJobs.length > 2">
+  <button class="see-more-button" @click="goToJobsPage">Voir plus d’offres</button>
+</div>
+
+
     </section>
   </template>
-<!--   
-  <script setup >
-  import { ref } from 'vue'
-  import JobApplicationForm from './JobApplicationForm.vue'
 
-  
-  const jobs = ref([
-    {
-      title: 'Développeur Full Stack',
-      contrat: 'CDI',
-      type: 'remote',
-      location: 'Paris, France',
-      date: '08/05/2025',
-      description: 'Rejoignez notre équipe de développement...',
-      skills: ['JavaScript', 'Vue.js', 'Node.js', 'MongoDB', 'Git'],
-    },
-    {
-      title: 'Chef de Projet Digital',
-      contrat: 'CDI',
-      type: 'remote',
-      location: 'Lyon, France',
-      date: '05/05/2025',
-      description: 'Pilotez des projets digitaux stratégiques...',
-      skills: ['Gestion de projet', 'Méthodologies Agile', 'Outils collaboratifs', 'Communication'],
-    },
-  ])
-  
-  const showForm = ref(false)
-  const selectedPosition = ref('')
-  
-  const showJobDetails = (job) => {
-    selectedPosition.value = job.title
-    showForm.value = true
-  }
-  </script> -->
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBlogStore } from '@/stores/blog'
 import JobApplicationForm from './JobApplicationForm.vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
 
 const blog = useBlogStore()
 const { jobPosts, loading } = storeToRefs(blog)
@@ -94,9 +70,18 @@ const showJobDetails = (jobPost) => {
   showForm.value = true
 }
 
+const limitedJobs = computed(() => {
+  return publishedJobs.value.slice(0, 4)
+})
+
 const publishedJobs = computed(() => {
   return jobPosts.value.filter(jobPost => jobPost.published === true)
 })
+
+
+const goToJobsPage = () => {
+  router.push('/jobs')
+}
 
 onMounted(async () => {
   await blog.fetchJobsList()
@@ -107,6 +92,28 @@ onMounted(async () => {
 </script>
 
   <style scoped>
+
+.see-more-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.see-more-button {
+  background-color: #45A79E;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.see-more-button:hover {
+  background-color: #3b928b;
+}
+
   .modal-overlay {
   position: fixed;
   top: 0;

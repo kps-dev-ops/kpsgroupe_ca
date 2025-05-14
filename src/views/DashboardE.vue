@@ -1,4 +1,5 @@
 <template>
+  <!-- <Blogs/> -->
   <section id="Dashboard" class="dashboard-wrapper">
     <div class="dashboard-container">
 
@@ -179,6 +180,7 @@ import { useRouter } from 'vue-router'
 import { useBlogStore } from '../stores/blog'
 import { useHeaderStore } from '../stores/headerStore'
 import JobFormModal from './JobFormModal.vue'
+import Blogs from './Blogs.vue'
 
 const headerStore = useHeaderStore()
 const blog = useBlogStore()
