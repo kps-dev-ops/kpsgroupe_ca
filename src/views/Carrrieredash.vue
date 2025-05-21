@@ -45,6 +45,7 @@
               <th>Contrat</th>
               <th>Statut</th>
               <th>Actions</th>
+              <th>Voir</th>
             </tr>
           </thead>
           <tbody>
@@ -62,6 +63,12 @@
               <td>
                 <button class="icon-btn edit" @click="editPost(post)">✏️</button>
                 <button class="icon-btn delete" @click="deletePost(post.$id)">🗑</button>
+              </td>
+              <td>
+                <div class="preview"></div>
+                <button class="icon-btn preview" @click="previewPost(post)">
+                  <font-awesome-icon icon="scroll" /> 
+                </button>
               </td>
             </tr>
           </tbody>
@@ -135,7 +142,7 @@ const deletePost = async (id) => {
 }
 
 const previewPost = async (post) => {
-  const url = `${window.location.origin}/blog/${post.slug}`
+  const url = `${window.location.origin}/job/${post.slug}`
   window.open(url, '_blank')
 }
 

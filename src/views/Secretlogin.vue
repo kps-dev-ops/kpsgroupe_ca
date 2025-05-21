@@ -60,7 +60,7 @@ useHead({
   const login = async () => {
   try {
     await blog.login(email.value, password.value)
-    router.push('/dashboard')
+    router.push('/layer/Dashboad')
   } catch (err) {
     error.value = err.message
   }
@@ -70,7 +70,7 @@ onMounted(async () => {
   try {
     const user = await account.get()
     authStore.setToken(user.$id)
-    router.push('/dashboard')
+    router.push('/layer/Dashboad')
   } catch {
   }
 })

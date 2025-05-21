@@ -206,6 +206,31 @@ watch(() => props.jobToEdit, (job) => {
   }
 }, { immediate: true })
 
+const resetForm = () => {
+  form.value = {
+    title: '',
+    contrat: '',
+    type: '',
+    location: '',
+    date: '',
+    description: '',
+    slug: '',
+    fullDescription: '',
+    skills: [],
+    responsibilities: [],
+    requirements: [],
+    published: false
+  }
+  skillInput.value = ''
+  requirementsInput.value = ''
+  responsibilitiesInput.value = ''
+}
+
+// const close = () => {
+//   editingId.value = null
+//   resetForm()
+//   emit('close')
+// }
 
 watch(() => form.value.title, (newTitle) => {
   form.value.slug = newTitle
@@ -264,6 +289,7 @@ const handleSubmit = async () => {
   form.value.published = true
   try {
     if (editingId.value) {
+      console.log('Mise à jour du post', form.value)
       await blog.updateJobPost(editingId.value, form.value)
       alert('Offre mise à jour ✅')
     } else {

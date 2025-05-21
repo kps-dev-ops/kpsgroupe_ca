@@ -291,7 +291,7 @@ export const useBlogStore = defineStore('blog', () => {
       const result = await databases.listDocuments(
         DATABASE_ID,
         VITE_POST_ID,
-        [Query.orderDesc('date')]
+        [Query.orderDesc('created_at')]
       )
       console.log(result)
       jobPosts.value = result.documents
@@ -308,7 +308,7 @@ export const useBlogStore = defineStore('blog', () => {
   const fetchJob = async (id) => {
     loading.value = true
     try {
-      const doc = await databases.getDocument(DATABASE_ID, VITE_POST_ID, id)
+      const doc = await databases.getDocument(DATABASE_ID, VITE_POST_ID, id,[Query.equal("published", true)])
       currentJob.value = doc
     } catch (err) {
       error.value = err.message
@@ -440,12 +440,7 @@ export const useBlogStore = defineStore('blog', () => {
     try {
       const payload = formatJobPayload(post, true)
   
-      const existingDoc = await databases.getDocument(DATABASE_ID, VITE_POST_ID, id)
-  
-      const doc = await databases.updateDocument(DATABASE_ID, VITE_POST_ID, id, {
-        ...existingDoc,
-        ...payload
-      })
+      const doc = await databases.updateDocument(DATABASE_ID, VITE_POST_ID, id, payload)
   
       const index = jobPosts.value.findIndex((j) => j.$id === id)
       if (index !== -1) jobPosts.value[index] = doc
