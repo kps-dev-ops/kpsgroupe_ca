@@ -25,7 +25,7 @@
                 </span>
               </div>
               <div class="job-footer">
-                <span class="job-date">Publié le {{ job.date }}</span>
+                  <span class="job-date">Publié le {{ formatDate(job.date) }}</span>
                 <button class="apply-button" @click="showJobDetails(job)">Postuler</button>
               </div>
             </div>
@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <div class="see-more-container" v-if="publishedJobs.length > 2">
+      <div class="see-more-container" v-if="publishedJobs.length > 1">
   <button class="see-more-button" @click="goToJobsPage">Voir plus d’offres</button>
 </div>
 
@@ -73,6 +73,15 @@ const showJobDetails = (jobPost) => {
 const limitedJobs = computed(() => {
   return publishedJobs.value.slice(0, 4)
 })
+
+const formatDate = (date) => {
+  if (!date) return '-';
+  return new Date(date).toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: 'long', // ou '2-digit' si tu veux un format court
+    year: 'numeric',
+  });
+}
 
 const publishedJobs = computed(() => {
   return jobPosts.value.filter(jobPost => jobPost.published === true)
