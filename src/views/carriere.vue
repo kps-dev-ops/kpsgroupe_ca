@@ -219,12 +219,12 @@ onMounted(async () => {
   }
   
   .job-location {
-    font-size: 14px;
+    font-size: 15px;
     color: #333;
-    margin-bottom: 12px;
-    display: flex;
+    margin-bottom: 16px;
+    /* display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 6px; */
   }
   
   .job-description {
