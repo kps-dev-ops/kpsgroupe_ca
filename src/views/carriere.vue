@@ -4,9 +4,8 @@
         <h2 class="section-title">Nos offres d'emploi</h2>
         <div class="job-list">
           <!-- <div v-for="(job, index) in publishedJobs" :key="index" class="job-card"> -->
-            <div v-for="(job, index) in limitedJobs" :key="index" class="job-card">
-
-            <div class="job-content">
+          <div v-for="(job, index) in limitedJobs" :key="index" class="job-card" @click="viewMore(job)">
+            <div class="job-content" >
               <div class="job-header">
                 <h3 class="job-title">{{ job.title }}</h3>
                 <span :class="job.contrat === 'CDI' ? 'job-type-cdi' : 'job-type-cdd'" class="job-type">
@@ -26,7 +25,7 @@
               </div>
               <div class="job-footer">
                   <span class="job-date">Publié le {{ formatDate(job.date) }}</span>
-                <button class="apply-button" @click="showJobDetails(job)">Postuler</button>
+                <button class="apply-button" @click.stop="showJobDetails(job)">Postuler</button>
               </div>
             </div>
           </div>
@@ -68,6 +67,11 @@ const selectedPosition = ref('')
 const showJobDetails = (jobPost) => {
   selectedPosition.value = jobPost.title
   showForm.value = true
+}
+
+const viewMore = (jobPost) => {
+//   blogStore.incrementViews()
+  router.push({ name: 'jobdetail', params: { slug: jobPost.slug } })
 }
 
 const limitedJobs = computed(() => {

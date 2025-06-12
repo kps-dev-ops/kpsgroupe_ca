@@ -59,7 +59,7 @@
               class="recent-article"
               v-for="job in recentJobs"
               :key="job.$id"
-              @click="showJobDetails(job)"
+              @click="viewMore(job)"
             >
               <div class="info">
                 <p class="title">{{ job.title }}</p>
@@ -156,111 +156,7 @@ const viewMore = (jobPost) => {
     blog.fetchJobsList()
   })
   </script>
-  
-<!-- 
-<style scoped>
-.job-card {
-  border: 1px solid #cfe2ff;
-  border-radius: 10px;
-  transition: box-shadow 0.3s ease;
-  background: #fff;
-}
-
-.job-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.job-content {
-  padding: 24px;
-}
-
-.job-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  margin-bottom: 12px;
-}
-
-.job-title {
-  font-size: 20px;
-  font-weight: bold;
-  color: #45a79e;
-}
-
-.job-type {
-  font-size: 14px;
-  padding: 4px 10px;
-  border-radius: 15px;
-}
-
-.job-type-cdi {
-  background: #cfe2ff;
-  color: #5e5325;
-}
-
-.job-type-cdd {
-  background: #fdf3e6;
-  color: #5e5325;
-}
-
-.job-location {
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.job-description {
-  color: #444;
-  font-size: 15px;
-  margin-bottom: 16px;
-}
-
-.job-skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.skill-badge {
-  background: #cfe2ff;
-  color: #5e5325;
-  padding: 6px 10px;
-  font-size: 13px;
-  border-radius: 20px;
-}
-
-.job-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.job-date {
-  font-size: 13px;
-  color: #666;
-}
-
-.apply-button {
-  background-color: #45a79e;
-  color: #fff;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s ease;
-}
-
-.apply-button:hover {
-  background-color: #3a8f87;
-}
-</style> -->
-
-
+ 
 
 <style scoped>
 

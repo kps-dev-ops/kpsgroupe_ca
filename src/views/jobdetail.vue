@@ -65,8 +65,9 @@
   
   onMounted(async () => {
     await blog.fetchJobsList()
-    const found = blog.jobPosts.find(j => j.$id === route.params.id)
-    job.value = found || null
+    await blog.fetchJobBySlug(route.params.slug)
+    job.value = blog.currentJob
+
   })
   </script>
   
@@ -93,7 +94,7 @@
     z-index: 1;
     color: #fff;
   }
-  
+/*   
   .container {
     max-width: 1100px;
     margin: 0 auto;
@@ -129,6 +130,105 @@
   
   .job-lists li {
     margin-bottom: 0.5rem;
+  } */
+
+  .job-details {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 2.5rem;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+
+.job-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f9fafc;
+  border-radius: 8px;
+  border: 1px solid #e0e6ed;
+}
+
+.job-meta p {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.job-meta strong {
+  display: block;
+  color: #555;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.job-full-description {
+  margin-bottom: 2rem;
+}
+
+.job-full-description h2 {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #45a79e;
+  padding-bottom: 0.5rem;
+}
+
+.job-full-description p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #444;
+}
+
+.job-lists {
+  margin-bottom: 2rem;
+}
+
+.job-lists h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  color: #222;
+  border-left: 4px solid #45a79e;
+  padding-left: 0.6rem;
+}
+
+.job-lists ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.job-lists li {
+  background: #f4f8fb;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.6rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #333;
+  position: relative;
+}
+
+.job-lists li::before {
+  content: '✓';
+  color: #45a79e;
+  margin-right: 0.6rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
   </style>
   
