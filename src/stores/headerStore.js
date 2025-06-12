@@ -9,7 +9,8 @@ export const useHeaderStore = defineStore('header', {
       { label: 'À propos', href: '/#about' },
       { label: 'Expertise', href: '/#services' },
       { label: 'Technologies', href: '/#Technologies' },
-      { label: 'Blog', href: '/#blog' }
+      { label: 'Blog', href: '/#blog' },
+      {  label: 'Carrières', href: '/#Carrières' }
     ],
     contactText: 'Contactez-nous',
     contactHref: '/#contact',

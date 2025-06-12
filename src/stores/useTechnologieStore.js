@@ -13,7 +13,7 @@ export const useTechnologieStore = defineStore('Technologies', {
         id: 'features-tab-1',
         title: 'Gestion de la Performance',
         heading: 'Optimisation et Alignement Stratégique',
-        description: `Notre expertise des solutions EPM nous permet de renforcer la performance globale de 
+        description: `Notre expertise des solutions EPM nous permet de  renforcer la performance globale de 
 votre entreprise en alliant technologie et vision métier.`,
         points: [
           'Tableaux de bord sur-mesure, conçus avec des outils comme Anaplan, Board, Pigment ou Tagetik.',

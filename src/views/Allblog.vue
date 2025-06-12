@@ -1,7 +1,6 @@
 <template>
   <Headers/>
  
-  
   <div class="blog-hero">
     <div class="overlay"></div>
     <div class="container">

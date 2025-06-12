@@ -7,6 +7,7 @@
     <Technologies/>
     <Clients/>
     <blog/>
+    <carriere/>
     <Contact/>
     <Footer/>
     
@@ -23,13 +24,14 @@
   import Expertise from '../views/Expertise.vue';
   import Contact from '../views/Contact.vue';
   import blog from '../views/blog.vue';
+  import carriere from '../views/carriere.vue';
   import { useHead } from '@vueuse/head'
   useHead({
   title: 'Accueil | KPS – Conseil en données & développement web',
   meta: [
     {
       name: 'description',
-      content: 'KPS Analytics vous accompagne en développement web, data science, Vue.js, Node.js et cybersécurité.'
+      content: 'KPS Analytics vous accompagne dans tout processus de transformation digitale : web, data science, cybersécurité...'
     }
   ],
   link: [

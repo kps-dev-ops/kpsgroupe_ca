@@ -118,7 +118,7 @@ onMounted(() => {
   /* font-weight: gra; */
   font-size: 2.3rem !important;
   color: var(--color-teal);
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .hero-description {
@@ -261,5 +261,18 @@ onMounted(() => {
   font-size: 0.95rem;
   color: #666;
   margin: 0;
+}
+
+
+@media (max-width: 600px) {
+  
+.hero-title {
+
+/* font-weight: gra; */
+font-size: 2.3rem !important;
+color: var(--color-teal);
+
+}
+  
 }
 </style>

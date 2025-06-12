@@ -89,7 +89,7 @@ const form = ref({
 
 const handleSubmit = async () => {
   try {
-    const response = await fetch('http://localhost:8000/forms/contact.php', { 
+    const response = await fetch('https://api-d.ubbfy.com/api/send-email-kpsanalytics', { 
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
