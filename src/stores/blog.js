@@ -21,6 +21,8 @@ export const useBlogStore = defineStore('blog', () => {
   const authors = ref([])
   const lastPost = ref(null)
   const lastJobPost = ref(null)
+  const currentJob = ref(null)
+
 
   const login = async (email, password) => {
     try {
@@ -534,6 +536,9 @@ export const useBlogStore = defineStore('blog', () => {
     fetchLastJobs,
     fetchJobsList,
     fetchJob,
-    deleteJobPost
+    deleteJobPost,
+    fetchJobBySlug,
+    currentJob
+
   }
 })

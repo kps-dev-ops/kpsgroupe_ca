@@ -105,7 +105,7 @@ const submitApplication = async () => {
       formData.append('motivationFile', form.value.motivationFile)
     }
 
-    const response = await fetch('http://localhost:8000/forms/job-application.php', {
+    const response = await fetch('http://localhost:8080/api/send-email-postulation', {
       method: 'POST',
       body: formData
     })
@@ -118,7 +118,6 @@ const submitApplication = async () => {
 
     if (result.status === 'success') {
       alert('Candidature envoyée avec succès !')
-      // Réinitialisation
       form.value = {
         firstName: '',
         lastName: '',
