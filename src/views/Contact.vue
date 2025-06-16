@@ -1,7 +1,7 @@
 <template>
   <section id="contact" class="contact section light-background">
     <div class="container section-title" data-aos="fade-up">
-      <h2 style="color:#5E5325;" >{{ contactStore.sectionTitle }}</h2>
+      <h2 style="color:#5E5325;">{{ contactStore.sectionTitle }}</h2>
       <p>{{ contactStore.sectionDescription }}</p>
     </div>
 
@@ -9,7 +9,7 @@
       <div class="row g-4 g-lg-5">
         <div class="col-lg-5">
           <div class="info-box" data-aos="fade-up" data-aos-delay="200">
-            <h3 >Contact Info</h3>
+            <h3>Contact Info</h3>
             <p>Nous sommes disponibles pour vous accompagner dans tous vos projets.</p>
             <div v-for="(info, index) in contactStore.contactInfos" :key="index" class="info-item" data-aos="fade-up" :data-aos-delay="info.delay">
               <div class="icon-box">
@@ -19,23 +19,19 @@
                 <h4>{{ info.title }}</h4>
                 <p v-if="Array.isArray(info.value)">
                   <span v-for="(item, i) in info.value" :key="i">
-                      <template v-if="i === 0">
-                        <a
-                          :href="`https://wa.me/${item.replace(/[^0-9]/g, '')}`"
-                          target="_blank"
-                          style="text-decoration: none; color: inherit"
-                        >
-                          {{ item }}
-                        </a>
-                      </template>
-                      <template v-else>
+                    <template v-if="i === 0">
+                      <a :href="`https://wa.me/${item.replace(/[^0-9]/g, '')}`" target="_blank" style="text-decoration: none; color: inherit">
                         {{ item }}
-                      </template>
-                      <br />
-                    </span>
+                      </a>
+                    </template>
+                    <template v-else>
+                      {{ item }}
+                    </template>
+                    <br />
+                  </span>
                 </p>
                 <p v-else>
-                  <a v-if="info.link" :href="info.link"  style="text-decoration: none;"target="_blank">{{ info.value }}</a>
+                  <a v-if="info.link" :href="info.link" style="text-decoration: none;" target="_blank">{{ info.value }}</a>
                   <span v-else>{{ info.value }}</span>
                 </p>
               </div>
@@ -51,10 +47,22 @@
             <form @submit.prevent="handleSubmit" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
               <div class="row gy-4">
                 <div class="col-md-6">
-                  <input type="text" v-model="form.name" class="form-control" placeholder="Votre Nom" required />
+                  <input type="text" v-model="form.lastName" class="form-control" placeholder="Nom" required />
                 </div>
                 <div class="col-md-6">
-                  <input type="email" v-model="form.email" class="form-control" placeholder="Votre Email" required />
+                  <input type="text" v-model="form.firstName" class="form-control" placeholder="Prénom" required />
+                </div>
+                <div class="col-md-6">
+                  <input type="email" v-model="form.email" class="form-control" placeholder="Email" required />
+                </div>
+                <div class="col-md-6">
+                  <input type="text" v-model="form.phone" class="form-control" placeholder="Téléphone" />
+                </div>
+                <div class="col-md-6">
+                  <input type="text" v-model="form.enterprise" class="form-control" placeholder="Entreprise" />
+                </div>
+                <div class="col-md-6">
+                  <input type="text" v-model="form.fonction" class="form-control" placeholder="Fonction" />
                 </div>
                 <div class="col-12">
                   <input type="text" v-model="form.subject" class="form-control" placeholder="Sujet" required />
@@ -81,20 +89,28 @@ import { useContactStore } from '../stores/contactStore';
 const contactStore = useContactStore();
 
 const form = ref({
-  name: '',
+  lastName: '',
+  firstName: '',
   email: '',
+  phone: '',
+  enterprise: '',
+  fonction: '',
   subject: '',
   message: ''
 });
 
 const handleSubmit = async () => {
   try {
-    const response = await fetch('https://api-d.ubbfy.com/api/send-email-kpsanalytics', { 
+    const response = await fetch('https://api-d.ubbfy.com/api/send-email-kpsgroupe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
-        name: form.value.name,
+        lastName: form.value.lastName,
+        firstName: form.value.firstName,
         email: form.value.email,
+        phone: form.value.phone,
+        enterprise: form.value.enterprise,
+        fonction: form.value.fonction,
         subject: form.value.subject,
         message: form.value.message
       })
@@ -108,7 +124,16 @@ const handleSubmit = async () => {
 
     if (result.status === 'success') {
       alert('Message envoyé avec succès !');
-      form.value = { name: '', email: '', subject: '', message: '' };
+      form.value = {
+        lastName: '',
+        firstName: '',
+        email: '',
+        phone: '',
+        enterprise: '',
+        fonction: '',
+        subject: '',
+        message: ''
+      };
     } else {
       alert(`Échec de l'envoi : ${result.message}`);
     }
@@ -117,5 +142,4 @@ const handleSubmit = async () => {
     alert('Échec de l\'envoi du message. Vérifiez votre connexion et réessayez.');
   }
 };
-
 </script>
