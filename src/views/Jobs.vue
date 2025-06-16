@@ -405,4 +405,23 @@ const viewMore = (jobPost) => {
 .apply-button:hover {
   background-color: #3a8f87;
 }
+
+@media (max-width: 768px) {
+  .grid-with-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .job-card {
+    margin-bottom: 1rem;
+  }
+
+  .search-filter input {
+    min-width: 100%;
+  }
+}
+
 </style>

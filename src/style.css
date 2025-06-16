@@ -43,6 +43,12 @@
   --contrast-color: var(--color-white);
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+
 /* Corps du document */
 body {
   color: var(--default-color);

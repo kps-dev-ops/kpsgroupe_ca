@@ -38,6 +38,13 @@ export const useContactStore = defineStore('contact', {
         link: 'https://www.linkedin.com/company/kps-analytics/',
         icon: 'bi bi-linkedin',
         delay: 700
+      },
+        {
+        title: 'Facebook',
+        value: 'Suivez-nous sur Facebook',
+        link: 'https://www.facebook.com/kpsgroupe/',
+        icon: 'bi bi-facebook',
+        delay: 800
       }
     ]
   })

@@ -59,7 +59,7 @@
       data-aos-duration="900"
       data-aos-easing="ease-out-cubic"
     >
-      <div class="p-4 bg-white shadow rounded h-100 d-flex flex-column align-items-center justify-content-center">
+      <div class="text p-4 bg-white shadow rounded h-100 d-flex flex-column align-items-center justify-content-center">
         <div class="feature-icon mb-3">
           <i :class="stat.icon" style="color:#45A79E"></i>
         </div>
@@ -105,6 +105,15 @@ onMounted(() => {
   --color-dark-brown: #45A79E;
   --color-cream: #fdf7ef;
 }
+.text {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.text:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
 
 .hero {
   position: relative;
@@ -132,7 +141,7 @@ onMounted(() => {
 .company-badge {
   font-weight: 600;
   color: var(--color-dark-brown);
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   letter-spacing: 1px;
   font-size: 0.9rem;
 }

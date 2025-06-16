@@ -7,7 +7,7 @@ export const useAccueilStore = defineStore('accueil', {
     titre: 'KPS CONSULTING ANALYTICS',
     description: `Depuis plus de 8 ans, nos experts accompagnent des
     entreprises et administrations dans la réalisation de leurs
-    projets de transformation digitale en France et en Europe.`,
+    projets de transformation digitale en Europe et à l'international.`,
     contactText: 'Contactez-nous',
     contactHref: '#contact',
     videoText: 'Voir la vidéo',
