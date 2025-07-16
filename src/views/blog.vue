@@ -1,7 +1,7 @@
 <template>
   <section id="blog" class="blog-section">
   <h1>Nos derniers articles</h1>
-
+<div class="container">
   <div class="blog-grid">
     <div
       v-for="post in displayedPosts"
@@ -18,6 +18,7 @@
     </div>
 
     </div>
+  </div>
   </div>
 
   <div class="see-more">
@@ -41,10 +42,16 @@ const activeIndex = ref(0)
 let autoScrollInterval = null
 
 const showAll = ref(false)
+
+const safeArticles = computed(() => {
+  const articles = blogStore.articles
+  return Array.isArray(articles) ? articles : [articles]
+})
+
 const displayedPosts = computed(() =>
   showAll.value
-    ? blogStore.articles.filter((post) => post.published && post.featured)
-    : blogStore.articles.filter((post) => post.published && post.featured).slice(0, 5)
+    ? safeArticles.value.filter((post) => post.published && post.featured)
+    : safeArticles.value.filter((post) => post.published && post.featured).slice(0, 5)
 )
 
 
@@ -67,6 +74,7 @@ const scrollCarousel = (direction) => {
 
 onMounted(async () => {
   await blogStore.fetchArticlesFeatured()
+  console.log('Articles récupérés :', blogStore.articles)
   autoScrollInterval = setInterval(() => scrollCarousel('right'), 7000)
 })
 
@@ -121,6 +129,13 @@ h1::after {
   border-radius: 4px;
   margin: 0.5rem auto 0;
 }
+/* 
+.container {
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 0 1rem;
+} */
+
 
 .blog-grid {
   display: grid;
