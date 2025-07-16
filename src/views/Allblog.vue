@@ -325,7 +325,7 @@ const categoryList = [
   background-color: #f9f9f9;
 }
 .container {
-  max-width: 1200px;
+  max-width: 310px;
   margin: 0 auto;
 }
 

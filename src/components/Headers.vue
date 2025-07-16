@@ -123,8 +123,8 @@ html {
 }
 
 img {
-  width: 120px;
-  height: 160px;
+  width: 100px;
+  height: 100px;
 }
 
 a {
