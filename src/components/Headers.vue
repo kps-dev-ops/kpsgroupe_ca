@@ -41,45 +41,55 @@
     </div>
   </header>
 </template>
-
 <script setup>
-
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, onBeforeUnmount } from 'vue'
 import { useHeaderStore } from '../stores/headerStore'
 
 const store = useHeaderStore()
 
 const activeSection = ref(window.location.pathname + window.location.hash)
+let sections = []
 
-let sections = [] // IMPORTANT : sections vide pour le moment
-
+// Met à jour la section active en fonction du scroll
 const updateActiveOnScroll = () => {
-  let scrollPosition = window.scrollY + 150; // 150 pour tenir compte du header
+  const scrollPosition = window.scrollY + 150 // Décalage pour le header
 
   for (let i = sections.length - 1; i >= 0; i--) {
-    const section = sections[i];
+    const section = sections[i]
     if (section && section.offsetTop <= scrollPosition) {
-      activeSection.value = window.location.pathname + '#' + section.id;
-      return;
+      activeSection.value = window.location.pathname + '#' + section.id
+      return
     }
   }
 }
 
+// Met à jour la section active lors d'un changement de hash
+const updateActive = () => {
+  activeSection.value = window.location.pathname + window.location.hash
+}
+
 onMounted(() => {
-  // On récupère les sections APRÈS que le DOM soit prêt
+  // Récupère uniquement les sections qui sont des ancres (href avec #)
   sections = store.menu
+    .filter(item => item.href.startsWith('/#')) // garde uniquement les liens d'ancre
     .map(item => document.querySelector(item.href.replace('/#', '#')))
-    .filter(Boolean); // on enlève les null au cas où
+    .filter(Boolean) // enlève les null
 
-  const updateActive = () => {
-    activeSection.value = window.location.pathname + window.location.hash
-  }
-
+  // Initialise l'état actif
   updateActive()
+
+  // Ajoute les écouteurs
   window.addEventListener('hashchange', updateActive)
   window.addEventListener('scroll', updateActiveOnScroll)
 })
 
+// Nettoyage à la destruction
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', updateActive)
+  window.removeEventListener('scroll', updateActiveOnScroll)
+})
+
+// Observe l'état du menu mobile
 watch(() => store.isMenuOpen, (isOpen) => {
   if (isOpen) {
     document.body.classList.add('mobile-nav-active')
@@ -87,35 +97,8 @@ watch(() => store.isMenuOpen, (isOpen) => {
     document.body.classList.remove('mobile-nav-active')
   }
 })
-
-
-// import { ref, onMounted, watch } from 'vue'
-// import { useHeaderStore } from '../stores/headerStore'
-
-// const store = useHeaderStore()
-
-// const activeSection = ref(window.location.pathname + window.location.hash)
-
-
-
-// onMounted(() => {
-//   const updateActive = () => {
-//     activeSection.value = window.location.pathname + window.location.hash
-//   }
-
-//   updateActive()
-//   window.addEventListener('hashchange', updateActive)
-// })
-
-
-// watch(() => store.isMenuOpen, (isOpen) => {
-//   if (isOpen) {
-//     document.body.classList.add('mobile-nav-active')
-//   } else {
-//     document.body.classList.remove('mobile-nav-active')
-//   }
-// })
 </script>
+
 
 <style scoped>
 html {
