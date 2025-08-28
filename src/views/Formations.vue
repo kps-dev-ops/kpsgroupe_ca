@@ -185,8 +185,11 @@
     </section>
 
     <!-- Modal des détails -->
-    <div v-if="showModal" class="modal-overlay" @click="closeModal">
-      <div class="modal-content" @click.stop>
+<div v-if="showModal" 
+     class="pers" 
+     style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;justify-content:center;align-items:center;z-index:9999;"
+     @click="closeModal">
+      <div class="content-pers" @click.stop>
         <div class="modal-header">
           <h4 class="modal-title">
             {{ selectedCourse?.name || 'Détails de la formation' }}
@@ -705,21 +708,25 @@ export default {
 }
 
 /* Modal Styles */
-.modal-overlay {
+/* Remplacez cette partie dans votre CSS : */
+/* Dans votre fichier, trouvez la section "Modal Styles" et remplacez EXACTEMENT ces règles : */
+
+/* Modal Styles */
+.pers {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7) !important; /* Fond sombre avec !important */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
-.modal-content {
-  background: white;
+.content-pers {
+  background: white !important; /* Fond blanc avec !important */
   border-radius: 12px;
   max-width: 800px;
   width: 90%;
@@ -727,6 +734,8 @@ export default {
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
+
+/* IMPORTANT: Supprimez ou commentez toute autre règle .modal-overlay dans votre CSS */
 
 .modal-header {
   display: flex;
@@ -832,7 +841,7 @@ export default {
     flex-direction: column;
   }
   
-  .modal-content {
+  .content-pers {
     width: 95%;
     margin: 10px;
   }
