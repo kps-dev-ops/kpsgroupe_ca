@@ -303,6 +303,7 @@
 import { ref, computed, onMounted } from 'vue'
 import Headers from '../components/Headers.vue'
 import Footer from '../components/Footer.vue'
+import heroImageSrc from '../assets/img/formation-qualifiante-certifiante.jpg'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
@@ -314,8 +315,6 @@ export default {
   },
   setup() {
     // Image hero
-    const heroImageSrc = '/src/assets/img/formation-qualifiante-certifiante.jpg'
-
     // État des formations
     const courses = ref([])
     const isLoading = ref(true)
